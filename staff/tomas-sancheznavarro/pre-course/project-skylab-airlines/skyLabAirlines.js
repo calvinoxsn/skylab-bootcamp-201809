@@ -107,7 +107,13 @@ var resultTime = dayHour();
 
 function logIn() {
     const name = prompt("Ingrese su nombre");
-    window.alert(resultTime + ', ' + name + ".\nBienvenid@ a SkyLab Airlines.");
+    if (name === "") {
+        window.alert("Por favor, ingrese su nombre");
+        return logIn();
+    } else {
+        window.alert(resultTime + ', ' + name + ".\nBienvenid@ a SkyLab Airlines.");
+    }
+
 
     function viewFlights() {
         console.log('Estimad@ ' + name + ":");

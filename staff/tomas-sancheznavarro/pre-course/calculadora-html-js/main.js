@@ -3,16 +3,22 @@ function calc() {
     var b = parseInt(document.querySelector("#value2").value);
     var operator = document.querySelector("#operator").value;
     var calculate;
+    console.log(operator);
 
-    if (operator == "add") {
-        calculate = a + b;
-    } else if (operator == "min") {
-        calculate = a - b;
-    } else if (operator == "div") {
-        calculate = a / b;
-    } else if (operator == "mul") {
-        calculate = a * b;
-    }
+    switch (operator) {
+        case "add":
+            calculate = a + b;
+            break;
+        case "min":
+            calculate = a - b;
+            break;
+        case "div":
+            calculate = a / b;
+            break;
+        case "mul":
+            calculate = a * b;
+            break;
+    };
 
     document.querySelector("#result").innerHTML = calculate;
-}
+};
