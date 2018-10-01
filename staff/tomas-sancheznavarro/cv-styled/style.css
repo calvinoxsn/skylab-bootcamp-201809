@@ -6,10 +6,6 @@
     grid-area: header;
 }
 
-/* 
-.item2 {
-    grid-area: address;
-} */
 
 .item3 {
     grid-area: section;
@@ -47,7 +43,6 @@
 }
 
 header,
-/* section, */
 div,
 footer {
     border: 3px solid white;
