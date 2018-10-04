@@ -1,12 +1,23 @@
-function passwordAdmin() {
+var safeBox;
+
+(function () {
     var secret;
     var password;
+
     var safeBox = {
         saveSecret: function (_secret, _password) {
             // TODO
-            if (_password == 'undefined' && typeof _password !== String) {
+            if (typeof _password === 'undefined' && typeof _password !== String) {
                 throw Error("Password must be set");
             }
+            if (_password.length === 0) {
+                throw Error('invalid password');
+            }
+
+            if (!_password.trim().length === 0) {
+                throw Error('invalid password')
+            }
+
             secret = _secret;
             password = _password;
         },
@@ -19,5 +30,4 @@ function passwordAdmin() {
         }
     }
     return safeBox;
-}
-var safeBox = passwordAdmin();
+})()
