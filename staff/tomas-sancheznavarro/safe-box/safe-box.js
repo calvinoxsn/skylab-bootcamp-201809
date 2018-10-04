@@ -1,4 +1,4 @@
-function passAdmin(_secret, _password) {
+function passwordAdmin() {
     var secret;
     var password;
     var safeBox = {
@@ -20,4 +20,4 @@ function passAdmin(_secret, _password) {
     }
     return safeBox;
 }
-var safeBox = passAdmin();
+var safeBox = passwordAdmin();
