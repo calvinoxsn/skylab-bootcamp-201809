@@ -19,17 +19,17 @@ var server = http.createServer(function (req, res) {
         res.writeHead(200, { "Content-Type": "application/json" })
         res.write(JSON.stringify(resp))
 
-    } else {
+    } else if (path === "/api/unixtime") {
 
         let date = new Date(query.iso)
         let resp = {
-            unixtime: date.unixtime
+            unixtime: date.getTime()
 
         }
         res.writeHead(200, { "Content-Type": "application/json" })
         res.write(JSON.stringify(resp))
     }
-
+    res.end()
 
 })
 
