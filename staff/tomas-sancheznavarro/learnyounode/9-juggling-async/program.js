@@ -1,6 +1,8 @@
 let http = require('http')
 let bl = require('bl')
 
+// const {argv; [, , ...url]} = process >> para exraer un número indeterminado de URLs
+
 
 http.get(process.argv[2], (res) => {
     res.pipe(bl((err, data) => {

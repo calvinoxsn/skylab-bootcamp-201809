@@ -1,9 +1,9 @@
-var http = require('http')
-var fs = require('fs')
+const http = require('http')
+const fs = require('fs')
 let [, , port, url] = process.argv
 
 
-var server = http.createServer(function (req, res) {
+const server = http.createServer(function (req, res) {
     fs.createReadStream(url).pipe(res)
 
 })
