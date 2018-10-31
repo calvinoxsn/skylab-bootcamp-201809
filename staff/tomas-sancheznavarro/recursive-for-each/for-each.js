@@ -1,16 +1,18 @@
-module.exports = function forEach(arr, callback) {
+module.exports = function forEach(arr, index, callback) {
 
-    const copy = Array.from(arr)
+    // const copy = Array.from(arr)
 
-    if (!copy.length) return
+    if (!arr.length) return
 
-    const firstValue = copy.shift()
+    if (index === arr.length) return// const firstValue = copy.shift()
     if (callback) {
-        callback(firstValue)
-        forEach(copy, callback)
+        callback(index, arr[index])
+        index++
+        forEach(arr, index, callback)
     }
-    else {
-        console.log(firstValue)
-        forEach(copy)
-    }
+    // else {
+    //     console.log(firstValue)
+    //     forEach(copy)
+    // }
+
 }

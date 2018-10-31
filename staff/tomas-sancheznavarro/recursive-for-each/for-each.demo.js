@@ -2,4 +2,4 @@ var forEach = require('./for-each')
 
 const nums = [1, 2, 3]
 
-forEach(nums, (n) => console.log(n))
+forEach(nums, 0, (index, n) => console.log(index, n))
