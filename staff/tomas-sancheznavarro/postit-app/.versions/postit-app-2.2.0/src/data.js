@@ -6,4 +6,5 @@ class Postit {
 }
 
 export default { Postit }
+
 // module.exports = { Postit }

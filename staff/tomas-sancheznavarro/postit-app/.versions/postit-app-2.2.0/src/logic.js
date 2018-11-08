@@ -19,7 +19,7 @@ const logic = {
         if (!username.trim()) throw Error('username is empty or blank')
         if (!password.trim()) throw Error('password is empty or blank')
 
-        return fetch('http://localhost:5000/api/users', {
+        return fetch('https://skylabcoders.herokuapp.com/api/user', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json; charset=utf-8'
@@ -39,7 +39,7 @@ const logic = {
         if (!username.trim()) throw Error('username is empty or blank')
         if (!password.trim()) throw Error('password is empty or blank')
 
-        return fetch('http://localhost:5000/api/auth', {
+        return fetch('https://skylabcoders.herokuapp.com/api/auth', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json; charset=utf-8'
@@ -80,7 +80,7 @@ const logic = {
 
         this._postits.push(new Postit(text))
 
-        return fetch(`http://localhost:5000/api/users/${this._userId}`, {
+        return fetch(`https://skylabcoders.herokuapp.com/api/user/${this._userId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json; charset=utf-8',
@@ -95,7 +95,7 @@ const logic = {
     },
 
     listPostits() {
-        return fetch(`https://localhost:5000/api/user/${this._userId}`, {
+        return fetch(`https://skylabcoders.herokuapp.com/api/user/${this._userId}`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${this._token}`
@@ -114,7 +114,7 @@ const logic = {
 
         this._postits = this._postits.filter(postit => postit.id !== id)
 
-        return fetch(`https://localhost:5000//api/user/${this._userId}`, {
+        return fetch(`https://skylabcoders.herokuapp.com/api/user/${this._userId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json; charset=utf-8',
@@ -139,7 +139,7 @@ const logic = {
 
         postit.text = text
 
-        return fetch(`https://localhost:5000/api/user/${this._userId}`, {
+        return fetch(`https://skylabcoders.herokuapp.com/api/user/${this._userId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json; charset=utf-8',
