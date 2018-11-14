@@ -152,8 +152,9 @@ const logic = {
 
 
                 return user.postits.map(postit => {
+                    postit.id = postit._id.toString()
 
-                    delete postit.id
+                    delete postit._id
 
                     return postit
                 })
