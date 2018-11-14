@@ -10,7 +10,7 @@ const User = new Schema({
     surname: String,
     username: String,
     password: String,
-    postit: [Postit]
+    postits: [Postit]
 })
 
 module.exports = {

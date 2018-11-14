@@ -15,7 +15,7 @@ class InputForm extends Component {
     handleSubmit = event => {
         event.preventDefault()
 
-        this.props.onSubmit(this.state.text, this.state.status)
+        this.props.onSubmit(this.state.text, 'TODO')
 
         this.setState({ text: '' })
     }

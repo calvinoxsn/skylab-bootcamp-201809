@@ -78,6 +78,7 @@ router.patch('/users/:id', [bearerTokenParser, jwtVerifier, jsonBodyParser], (re
 router.post('/users/:id/postits', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, res) => {
     routeHandler(() => {
         const { sub, params: { id }, body: { text, status } } = req
+        debugger
 
         if (id !== sub) throw Error('token sub does not match user id')
 

@@ -3,7 +3,8 @@ import React, { Component } from 'react'
 class Post extends Component {
     state = {
         text: this.props.text,
-        status: this.props.status
+        status: this.props.status,
+
     }
 
     handleChange = event => {
@@ -13,11 +14,13 @@ class Post extends Component {
     }
 
     handleStatusChange = (event, text, id) => {
+        debugger
         this.props.onUpdatePost(id, text, event.target.value)
     }
 
     handleBlur = () => {
         this.props.onUpdatePost(this.props.id, this.state.text)
+        debugger
     }
 
     render() {

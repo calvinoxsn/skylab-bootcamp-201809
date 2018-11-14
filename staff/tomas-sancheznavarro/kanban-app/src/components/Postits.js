@@ -33,10 +33,13 @@ class Postits extends Component {
     // TODO error handling!
 
 
-    handleModifyPostit = (id, text, status) =>
+    handleModifyPostit = (id, text, status) => {
+        debugger
         logic.modifyPostit(id, text, status)
             .then(() => logic.listPostits())
             .then(postits => this.setState({ postits }))
+    }
+
 
     // TODO error handling!
 
@@ -55,6 +58,7 @@ class Postits extends Component {
                 <section className='postit-col'>
                     <h1>To Do</h1>
                     {/* <InputForm status='TODO' onSubmit={this.handleSubmit} /> */}
+
                     {this.state.postits.filter(postit => postit.status === 'TODO').map(postit => <Post key={postit.id} text={postit.text} id={postit.id} onDeletePost={this.handleRemovePostit} onUpdatePost={this.handleModifyPostit} name='TODO' />)}
                 </section>
                 <section className='postit-col'>
