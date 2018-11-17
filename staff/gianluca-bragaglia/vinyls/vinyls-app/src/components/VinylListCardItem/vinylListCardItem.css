@@ -1,0 +1,53 @@
+
+.title{
+    font-weight: bold;
+    color: black;
+    font-size: 20px;
+    margin-left: 23px;
+    margin-top: -15px;
+    text-transform: capitalize;
+}
+.card {
+    margin-top: 20px;
+    width: 300px;
+    margin-bottom: 20px;
+    
+}
+
+.artist {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    margin-top: 10px;
+    margin-left: 23px;
+    text-transform: capitalize;
+}
+
+.year {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    margin-left: 23px;
+}
+
+.card-content {
+    margin-left: 23px;
+    font-size: 15px;
+    margin-right: 10px;
+}
+
+.float{
+	position: absolute;;
+	width:60px;
+	height:60px;
+	bottom:150px;
+	right:20px;
+	background-color:#509aaf;
+	color:#FFF;
+	border-radius:50px;
+	text-align:center;
+	box-shadow: 2px 2px 3px #999;
+}
+
+.my-float{
+    color: white;
+	margin-top:22px;
+}

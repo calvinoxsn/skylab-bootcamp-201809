@@ -48,7 +48,6 @@ const logic = {
 
             users.forEach(user => {
 
-                delete user._id
                 delete user.__v
                 delete user.password
 
@@ -117,6 +116,39 @@ const logic = {
                 await user.save()
             }
         })()
+    },
+
+    addFollow(id, followUsername) {
+
+        console.log(id, followUsername);
+        
+        
+        if (typeof id !== 'string') throw TypeError(`${id} is not a string`)
+        if (id != null && typeof id !== 'string') throw TypeError(`${id} is not a string`)
+
+        if (!id.trim().length) throw new ValueError('id is empty or blank')
+        if (followUsername != null && !followUsername.trim().length) throw new ValueError('followUsername is empty or blank')
+
+        return (async () => {
+            const user = await User.findById(id)
+
+            if (!user) throw new NotFoundError(`user with id ${id} not found`)
+
+            const follow = await User.findOne({ username: followUsername })
+
+            if (!follow) throw new NotFoundError(`user with username ${followUsername} not found`)
+
+            if (user.id === follow.id) throw new NotAllowedError('user cannotfollow himself')
+
+            user.follows.forEach(_followId => {
+                if (_followId === follow.id) throw new AlreadyExistsError(`user with id ${id} arleady has follow with id ${_followId}`)
+            })
+
+            user.follows.push(follow._id)
+
+            await user.save()
+        })()
+
     },
 
     // /**

@@ -1,6 +1,6 @@
-//const { Schema, SchemaTypes: { ObjectId } } = require('mongoose')
+const { Schema, SchemaTypes: { ObjectId } } = require('mongoose')
 
-const { Schema } = require('mongoose')
+
 /* 
 const Vinyl = new Schema({
     title: {
@@ -66,7 +66,16 @@ const User = new Schema({
     bio: {
         type: String
 
-    }
+    },
+    followers: [{
+        type: ObjectId,
+        ref: 'User'
+    }],
+    follows: [{
+        type: ObjectId,
+        ref: 'User'
+    }]
+    
 
 })
 
