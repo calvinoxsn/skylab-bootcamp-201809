@@ -1,6 +1,6 @@
 {
-  "name": "kanban-api-mongoose-async-await",
-  "version": "2.2.0",
+  "name": "kanban-api-relational",
+  "version": "2.1.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -10,7 +10,10 @@
     "debug-test": "mocha debug logic",
     "test-data": "mocha data"
   },
-  "keywords": [],
+  "keywords": [
+    "relational",
+    "not-embedded"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {

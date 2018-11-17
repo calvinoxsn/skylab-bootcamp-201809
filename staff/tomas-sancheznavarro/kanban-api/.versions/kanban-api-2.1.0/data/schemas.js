@@ -13,13 +13,7 @@ const Postit = new Schema({
     },
     status: {
         type: String,
-        required: true,
-        default: 'TODO',
-        enum: ['TODO', 'DOING', 'REVIEW', 'DONE']
-    },
-    assignedTo: {
-        type: ObjectId,
-        ref: 'User',
+        required: true
     }
 })
 

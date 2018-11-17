@@ -1,6 +1,6 @@
 {
-  "name": "kanban-api-mongoose-async-await",
-  "version": "2.2.0",
+  "name": "kanban-api-mongoosed",
+  "version": "2.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {

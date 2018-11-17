@@ -14,7 +14,7 @@ const MONGO_URL = 'mongodb://localhost:27017/postit-test'
 describe('logic', () => {
     before(() => mongoose.connect(MONGO_URL, { useNewUrlParser: true }))
 
-    beforeEach(() => Promise.all([User.deleteMany(), Postit.deleteMany()]))
+    beforeEach(() => User.deleteMany())
 
     describe('user', () => {
         describe('register', () => {
@@ -29,7 +29,6 @@ describe('logic', () => {
 
             it('should succeed on correct data', () =>
                 logic.registerUser(name, surname, username, password)
-                    .then(res => expect(res).to.be.undefined)
                     .then(() => User.find())
                     .then(_users => {
                         expect(_users.length).to.equal(1)
@@ -123,6 +122,9 @@ describe('logic', () => {
 
             beforeEach(() => (user = new User({ name: 'John', surname: 'Doe', username: 'jd', password: '123' })).save())
 
+            // User.create(user)
+
+
             it('should update on correct data and password', () => {
                 const { id, name, surname, username, password } = user
 
@@ -132,7 +134,6 @@ describe('logic', () => {
                 const newPassword = `${password}-${Math.random()}`
 
                 return logic.updateUser(id, newName, newSurname, newUsername, newPassword, password)
-                    .then(res => expect(res).to.be.undefined)
                     .then(() => User.find())
                     .then(_users => {
                         const [_user] = _users
@@ -247,14 +248,20 @@ describe('logic', () => {
 
             it('should succeed on correct data', () =>
                 logic.addPostit(user.id, text, status)
-                    .then(res => expect(res).to.be.undefined)
-                    .then(() => Postit.find())
-                    .then(postits => {
+                    .then(() => User.find())
+                    .then(_users => {
+                        debugger
+                        const [_user] = _users
+
+                        expect(_user.id).to.equal(user.id)
+
+                        const { postits } = _user
+
+                        expect(postits.length).to.equal(1)
+
                         const [postit] = postits
 
                         expect(postit.text).to.equal(text)
-
-                        expect(postit.user.toString()).to.equal(user.id)
                     })
             )
 
@@ -265,24 +272,27 @@ describe('logic', () => {
             let user, postit, postit2
 
             beforeEach(() => {
-                user = new User({ name: 'John', surname: 'Doe', username: 'jd', password: '123' })
+                postit = new Postit({ text: 'hello text' })
+                postit2 = new Postit({ text: 'hello text 2' })
 
-                postit = new Postit({ text: 'hello text', user: user.id })
-                postit2 = new Postit({ text: 'hello text 2', user: user.id })
+                user = new User({ name: 'John', surname: 'Doe', username: 'jd', password: '123', postits: [postit, postit2] })
 
                 return user.save()
-                    // .then(() => Promise.all([postit.save(), postit2.save()]))
-
-                    // or the risky version, since the saving order is not guaranteed
-                    .then(() => postit.save())
-                    .then(() => postit2.save())
             })
 
             it('should succeed on correct data', () =>
                 logic.listPostits(user.id)
                     .then(postits => {
-                        return Postit.find()
-                            .then(_postits => {
+                        return User.find()
+                            .then(_users => {
+                                expect(_users.length).to.equal(1)
+
+                                const [_user] = _users
+
+                                expect(_user.id).to.equal(user.id)
+
+                                const { postits: _postits } = _user
+
                                 expect(_postits.length).to.equal(2)
 
                                 expect(postits.length).to.equal(_postits.length)
@@ -315,17 +325,25 @@ describe('logic', () => {
 
             beforeEach(() => {
                 postit = new Postit({ text: 'hello text' })
-                user = new User({ name: 'John', surname: 'Doe', username: 'jd', password: '123' })
-                postit = new Postit({ text: 'hello text', user: user.id })
+                user = new User({ name: 'John', surname: 'Doe', username: 'jd', password: '123', postits: [postit] })
 
-                return Promise.all([user.save(), postit.save()])
+                return user.save()
             })
 
             it('should succeed on correct data', () =>
                 logic.removePostit(user.id, postit.id)
-                    .then(res => expect(res).to.be.undefined)
-                    .then(() => Postit.find())
-                    .then(postits => expect(postits.length).to.equal(0))
+                    .then(() => User.find())
+                    .then(_users => {
+                        expect(_users.length).to.equal(1)
+
+                        const [_user] = _users
+
+                        expect(_user.id).to.equal(user.id)
+
+                        const { postits } = _user
+
+                        expect(postits.length).to.equal(0)
+                    })
             )
         })
 
@@ -333,19 +351,26 @@ describe('logic', () => {
             let user, postit, newText
 
             beforeEach(() => {
-                user = new User({ name: 'John', surname: 'Doe', username: 'jd', password: '123' })
-                postit = new Postit({ text: 'hello text', user: user.id })
+                postit = new Postit({ text: 'hello text' })
+                user = new User({ name: 'John', surname: 'Doe', username: 'jd', password: '123', postits: [postit] })
 
                 newText = `new-text-${Math.random()}`
 
-                return Promise.all([user.save(), postit.save()])
+                return user.save()
             })
 
             it('should succeed on correct data', () =>
                 logic.modifyPostit(user.id, postit.id, newText)
-                    .then(res => expect(res).to.be.undefined)
-                    .then(() => Postit.find())
-                    .then(postits => {
+                    .then(() => User.find())
+                    .then(_users => {
+                        expect(_users.length).to.equal(1)
+
+                        const [_user] = _users
+
+                        expect(_user.id).to.equal(user.id)
+
+                        const { postits } = _user
+
                         expect(postits.length).to.equal(1)
 
                         const [postit] = postits
