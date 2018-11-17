@@ -34,7 +34,7 @@ class Postits extends Component {
 
 
     handleModifyPostit = (id, text, status) => {
-        debugger
+
         logic.modifyPostit(id, text, status)
             .then(() => logic.listPostits())
             .then(postits => this.setState({ postits }))
