@@ -100,6 +100,35 @@ router.patch('/users/:id/follows', [bearerTokenParser, jwtVerifier, jsonBodyPars
     }, res)
 })
 
+router.patch('/users/:id/follows', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, res) => {
+    routeHandler(() => {
+        const { params: { id }, sub, body: { followUsername } } = req
+
+        if (id !== sub) throw Error('token sub does not match user id')
+
+        return logic.removeFollow(id, followUsername)
+            .then(() =>
+                res.json({
+                    message: 'follow removed'
+                })
+            )
+    }, res)
+})
+
+router.get('/users/:id/follows', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, res) => {
+    routeHandler(() => {
+        const { params: { id }, sub } = req
+
+        if (id !== sub) throw Error('token sub does not match user id')
+
+        return logic.retrieveFollows(id)
+            .then(follows => res.json({
+                data: follows
+            }))
+            
+    }, res)
+})
+
 router.post('/users/:id/postits', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, res) => {
     routeHandler(() => {
         const { sub, params: { id }, body: { text, status } } = req

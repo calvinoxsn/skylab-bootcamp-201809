@@ -216,7 +216,6 @@ const logic = {
 
     addFollow(followUsername) {
 
-        console.log(followUsername)
         
         if (typeof followUsername !== 'string') throw TypeError(`${followUsername} is not a string`)
 
@@ -234,6 +233,58 @@ const logic = {
             .then(res => {
                 if (res.error) throw Error(res.error)
             })
+    },
+
+
+    removeFollow(followUsername) {
+
+        
+        if (typeof followUsername !== 'string') throw TypeError(`${followUsername} is not a string`)
+
+        if (!followUsername.trim()) throw Error('followUsername is empty or blank')
+
+        return fetch(`${this.url}/users/${this._userId}/follows`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8',
+                'Authorization': `Bearer ${this._token}`
+            },
+            body: JSON.stringify({ followUsername })
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res.error) throw Error(res.error)
+            })
+    },
+
+    retrieveFollows(id) {
+        // if (typeof id !== 'string') throw Error(`${id} is not a string`)
+        // if (typeof id === 'number') throw Error(`${id} is not a string`)
+        // if (id instanceof Array) throw Error(` is not a string`)
+        // if (typeof id === 'boolean') throw Error(`${id} is not a string`)
+        // if (typeof id === 'object') throw Error(`[object Object] is not a string`)
+        return fetch(`${this.url}/users/${this._userId}/follows`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${this._token}`
+            }
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res.error) throw Error(res.error)
+                console.log(res.data);
+                
+                const follows = res.data
+                follows.map(follow => {
+                    if(follow.id == id) {
+                        return true
+                    }else{
+                        return false
+                    }
+                })   
+                
+            })
+
     },
 
 

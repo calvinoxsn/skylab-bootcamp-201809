@@ -119,9 +119,7 @@ const logic = {
     },
 
     addFollow(id, followUsername) {
-
-        console.log(id, followUsername);
-        
+ 
         
         if (typeof id !== 'string') throw TypeError(`${id} is not a string`)
         if (id != null && typeof id !== 'string') throw TypeError(`${id} is not a string`)
@@ -138,15 +136,73 @@ const logic = {
 
             if (!follow) throw new NotFoundError(`user with username ${followUsername} not found`)
 
-            if (user.id === follow.id) throw new NotAllowedError('user cannotfollow himself')
-
+            if (user.id === follow.id) throw new NotAllowedError('user cannot follow himself')
+            
             user.follows.forEach(_followId => {
-                if (_followId === follow.id) throw new AlreadyExistsError(`user with id ${id} arleady has follow with id ${_followId}`)
+                
+                if (_followId == follow.id) throw new AlreadyExistsError(`already follow this user`)
             })
 
             user.follows.push(follow._id)
 
             await user.save()
+        })()
+
+    },
+
+    removeFollow(id, followUsername) {
+ 
+        
+        if (typeof id !== 'string') throw TypeError(`${id} is not a string`)
+        if (id != null && typeof id !== 'string') throw TypeError(`${id} is not a string`)
+
+        if (!id.trim().length) throw new ValueError('id is empty or blank')
+        if (followUsername != null && !followUsername.trim().length) throw new ValueError('followUsername is empty or blank')
+
+        return (async () => {
+            const user = await User.findById(id)
+
+            if (!user) throw new NotFoundError(`user with id ${id} not found`)
+
+            const follow = await User.findOne({ username: followUsername })
+
+            if (!follow) throw new NotFoundError(`user with username ${followUsername} not found`)
+
+            if (user.id === follow.id) throw new NotAllowedError('user cannot follow himself')
+            
+            user.follows.forEach((_follow, i) => {
+                
+                if (_follow[i] == follow.id) {
+                    follows.splice(i, 1)
+                }
+                
+            })
+
+            await user.save()
+        })()
+
+    },
+
+    retrieveFollows(id) {
+ 
+        
+        // if (typeof id !== 'string') throw TypeError(`${id} is not a string`)
+        // if (id != null && typeof id !== 'string') throw TypeError(`${id} is not a string`)
+
+        // if (!id.trim().length) throw new ValueError('id is empty or blank')
+        // if (followUsername != null && !followUsername.trim().length) throw new ValueError('followUsername is empty or blank')
+
+        return (async () => {
+            const user = await User.findById(id)
+            console.log(user.follows + 'user follows')
+
+            if (!user) throw new NotFoundError(`user with id ${id} not found`)
+
+            const follows = user.follows
+            
+            return follows
+
+
         })()
 
     },
