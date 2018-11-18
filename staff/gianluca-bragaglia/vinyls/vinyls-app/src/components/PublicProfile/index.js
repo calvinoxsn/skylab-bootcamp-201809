@@ -15,31 +15,32 @@ class PublicProfile extends Component {
             .then(user => { this.setState({ username: user.username, imgProfileUrl: user.imgProfileUrl, bio: user.bio  }) })
             .catch(err => this.setState({ error: err.message }))
             logic.retrieveFollows(this.props.id)        
-            .then(res => this.setState ({ fallowSelected:res }))
+            .then(res => {this.setState ({ followSelected: res })})
             .catch(err => this.setState({ error: err.message }))
         } catch (err) {
             this.setState({ error: err.message })
         }
     }
+    
 
-    handleFollowClick = () => {
-
+    handleFollowClick = event => {
+        event.preventDefault()
              try {       
             
                 logic.addFollow(this.state.username)
-                .then(() => { this.setState({ error: null  }) })
+                .then(() => this.setState({followSelected: true }))
                 .catch(err => this.setState({ error: err.message }))
             } catch (err) {
                 this.setState({ error: err.message })
             }
     }
 
-    handleDontFollowClick = () => {
-
+    handleDontFollowClick = event => {
+        event.preventDefault()
         try {       
        
            logic.removeFollow(this.state.username)
-           .then(() => { this.setState({ error: null  }) })
+           .then(() => this.setState({followSelected: false }))
            .catch(err => this.setState({ error: err.message }))
        } catch (err) {
            this.setState({ error: err.message })
@@ -50,14 +51,15 @@ class PublicProfile extends Component {
 
         const { imgProfileUrl, error, username, bio, followSelected } = this.state
 
+        
         return<div className='profile-container'>
             <img className='profile-img' src={imgProfileUrl ? imgProfileUrl : './img/icon-profile.png'} ></img>
             <br></br>
 
                 <p className='profile-username'> {username}</p>
                 {error && <Error message={error} />}
-                {/* <Button onClick={this.handleFollowClick}>Follow</Button> */}
-                <a href="#" className="favourites-btn" onClick={followSelected ? this.handleDontFollowClick : this.handleFollowClick}><i className={this.state.followSelected ? 'fas fa-star' : 'far fa-star' }>  {this.state.followSelected ? <span>Added to favourites</span>: <span>Add to favourites</span>}</i></a> 
+                {/* <a href="#" className="favourites-btn" onClick={followSelected ? this.handleDontFollowClick : this.handleFollowClick}><i className={followSelected ? 'fas fa-star' : 'far fa-star' }>  {followSelected ? <span>Added to favourites</span>: <span><Button onClick={this.handleFollowClick}>Follow</Button></span>}</i></a>  */}
+                <a href="#" className="favourites-btn" onClick={followSelected ? this.handleDontFollowClick : this.handleFollowClick}> {followSelected ? <span>you follow {username}</span> : <span>Follow</span>}</a>
                 <p className='profile-bio'>{bio}</p>
             
             

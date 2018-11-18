@@ -169,14 +169,12 @@ const logic = {
             if (!follow) throw new NotFoundError(`user with username ${followUsername} not found`)
 
             if (user.id === follow.id) throw new NotAllowedError('user cannot follow himself')
-            
-            user.follows.forEach((_follow, i) => {
-                
-                if (_follow[i] == follow.id) {
-                    follows.splice(i, 1)
-                }
-                
+
+            const index = user.follows.findIndex(_index => {
+                return _index == follow.id
             })
+
+            user.follows.splice(index,1)
 
             await user.save()
         })()
@@ -194,7 +192,6 @@ const logic = {
 
         return (async () => {
             const user = await User.findById(id)
-            console.log(user.follows + 'user follows')
 
             if (!user) throw new NotFoundError(`user with id ${id} not found`)
 

@@ -100,7 +100,7 @@ router.patch('/users/:id/follows', [bearerTokenParser, jwtVerifier, jsonBodyPars
     }, res)
 })
 
-router.patch('/users/:id/follows', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, res) => {
+router.delete('/users/:id/follows', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, res) => {
     routeHandler(() => {
         const { params: { id }, sub, body: { followUsername } } = req
 

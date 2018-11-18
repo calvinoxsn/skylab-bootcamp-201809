@@ -216,6 +216,7 @@ const logic = {
 
     addFollow(followUsername) {
 
+        console.log('add follow');
         
         if (typeof followUsername !== 'string') throw TypeError(`${followUsername} is not a string`)
 
@@ -238,13 +239,14 @@ const logic = {
 
     removeFollow(followUsername) {
 
+        console.log('dont follow'+ followUsername)
         
         if (typeof followUsername !== 'string') throw TypeError(`${followUsername} is not a string`)
 
         if (!followUsername.trim()) throw Error('followUsername is empty or blank')
 
         return fetch(`${this.url}/users/${this._userId}/follows`, {
-            method: 'PATCH',
+            method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json; charset=utf-8',
                 'Authorization': `Bearer ${this._token}`
@@ -258,11 +260,15 @@ const logic = {
     },
 
     retrieveFollows(id) {
-        // if (typeof id !== 'string') throw Error(`${id} is not a string`)
-        // if (typeof id === 'number') throw Error(`${id} is not a string`)
-        // if (id instanceof Array) throw Error(` is not a string`)
-        // if (typeof id === 'boolean') throw Error(`${id} is not a string`)
-        // if (typeof id === 'object') throw Error(`[object Object] is not a string`)
+        
+        console.log('retrieve follow' + id)
+        
+        if (typeof id !== 'string') throw Error(`${id} is not a string`)
+        if (typeof id === 'number') throw Error(`${id} is not a string`)
+        if (id instanceof Array) throw Error(` is not a string`)
+        if (typeof id === 'boolean') throw Error(`${id} is not a string`)
+        if (typeof id === 'object') throw Error(`[object Object] is not a string`)
+
         return fetch(`${this.url}/users/${this._userId}/follows`, {
             method: 'GET',
             headers: {
@@ -272,17 +278,14 @@ const logic = {
             .then(res => res.json())
             .then(res => {
                 if (res.error) throw Error(res.error)
-                console.log(res.data);
                 
                 const follows = res.data
-                follows.map(follow => {
-                    if(follow.id == id) {
-                        return true
-                    }else{
-                        return false
-                    }
-                })   
+
+                if(follows.includes(id) )
                 
+                return true
+               
+                           
             })
 
     },
