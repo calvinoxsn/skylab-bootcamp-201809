@@ -122,12 +122,21 @@ const logic = {
 
     getUsers() {
 
-        return fetch(`${this.url}/users/`, {headers: { 'Authorization': `Bearer ${this._token}` }})
+        return fetch(`${this.url}/users/user/${this._userId}`, {headers: { 'Authorization': `Bearer ${this._token}` } })
             .then(res => res.json())
             .then(res => {
                 
                 if (res.error) throw Error(res.error)
-                return res.data
+                const users = res.data
+                // console.log(users + ' ' + this._userId);
+                
+                // const index = users.findIndex(_index => {
+                //     return _index !== this._userId
+                // })
+    
+                // users.splice(index,1)
+
+                return users
             })
     },
 
@@ -216,7 +225,6 @@ const logic = {
 
     addFollow(followUsername) {
 
-        console.log('add follow');
         
         if (typeof followUsername !== 'string') throw TypeError(`${followUsername} is not a string`)
 
@@ -239,7 +247,6 @@ const logic = {
 
     removeFollow(followUsername) {
 
-        console.log('dont follow'+ followUsername)
         
         if (typeof followUsername !== 'string') throw TypeError(`${followUsername} is not a string`)
 
@@ -260,8 +267,7 @@ const logic = {
     },
 
     retrieveFollows(id) {
-        
-        console.log('retrieve follow' + id)
+
         
         if (typeof id !== 'string') throw Error(`${id} is not a string`)
         if (typeof id === 'number') throw Error(`${id} is not a string`)

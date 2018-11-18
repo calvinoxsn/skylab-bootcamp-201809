@@ -45,10 +45,16 @@ router.post('/auth', jsonBodyParser, (req, res) => {
     }, res)
 })
 
-router.get('/users', [bearerTokenParser, jwtVerifier], (req, res) => {
+
+router.get('/users/user/:id', [bearerTokenParser, jwtVerifier], (req, res) => {
     routeHandler(() => {
 
-        return logic.retrieveUsers()
+        const { params: { id }, sub } = req
+
+        console.log(id)
+        
+
+        return logic.retrieveUsers(id)
             .then(users =>
                 res.json({
                     data: users

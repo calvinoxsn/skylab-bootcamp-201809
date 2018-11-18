@@ -39,8 +39,8 @@ const logic = {
         })()
     },
 
-    retrieveUsers() {
-
+    retrieveUsers(id) {
+        
         return (async () => {
             const users = await User.find().lean()
 
@@ -53,7 +53,9 @@ const logic = {
 
             })
 
-            return users
+            const _users = users.filter( _index => _index._id != id )
+
+            return _users
 
         })()
     },
@@ -143,9 +145,17 @@ const logic = {
                 if (_followId == follow.id) throw new AlreadyExistsError(`already follow this user`)
             })
 
+            follow.followers.forEach(_followersId => {
+                
+                if (_followersId == id) throw new AlreadyExistsError(`already follow this user`)
+            })
+
             user.follows.push(follow._id)
+            follow.followers.push(id)
 
             await user.save()
+            await follow.save()
+
         })()
 
     },
@@ -168,15 +178,19 @@ const logic = {
 
             if (!follow) throw new NotFoundError(`user with username ${followUsername} not found`)
 
-            if (user.id === follow.id) throw new NotAllowedError('user cannot follow himself')
-
             const index = user.follows.findIndex(_index => {
                 return _index == follow.id
             })
 
+            const index2 = follow.follows.findIndex(_index => {
+                return _index == id
+            })
+
             user.follows.splice(index,1)
+            follow.followers.splice(index2,1)
 
             await user.save()
+            await follow.save()
         })()
 
     },

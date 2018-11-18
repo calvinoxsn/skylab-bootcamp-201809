@@ -2,17 +2,18 @@ import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
 import logic from '../../logic'
 import Error from '../Error'
-import { Button } from 'mdbreact'
+import './index.css'
+
 
 class PublicProfile extends Component {
 
-    state = { username: '', imgProfileUrl: null, bio: '', error: null, followSelected: false }
+    state = { username: '', imgProfileUrl: null, bio: '', error: null, follows: [], followers: [] }
 
     componentDidMount() {
         try {       
             
             logic.retrieveUserById(this.props.id)
-            .then(user => { this.setState({ username: user.username, imgProfileUrl: user.imgProfileUrl, bio: user.bio  }) })
+            .then(user => { this.setState({ username: user.username, imgProfileUrl: user.imgProfileUrl, bio: user.bio, follows: user.follows, followers: user.followers }) })
             .catch(err => this.setState({ error: err.message }))
             logic.retrieveFollows(this.props.id)        
             .then(res => {this.setState ({ followSelected: res })})
@@ -30,6 +31,9 @@ class PublicProfile extends Component {
                 logic.addFollow(this.state.username)
                 .then(() => this.setState({followSelected: true }))
                 .catch(err => this.setState({ error: err.message }))
+                logic.retrieveUserById(this.props.id)
+                .then(user => { this.setState({ username: user.username, imgProfileUrl: user.imgProfileUrl, bio: user.bio, follows: user.follows, followers: user.followers }) })
+            .catch(err => this.setState({ error: err.message }))
             } catch (err) {
                 this.setState({ error: err.message })
             }
@@ -42,6 +46,9 @@ class PublicProfile extends Component {
            logic.removeFollow(this.state.username)
            .then(() => this.setState({followSelected: false }))
            .catch(err => this.setState({ error: err.message }))
+           logic.retrieveUserById(this.props.id)
+           .then(user => { this.setState({ username: user.username, imgProfileUrl: user.imgProfileUrl, bio: user.bio, follows: user.follows, followers: user.followers }) })
+           .catch(err => this.setState({ error: err.message }))
        } catch (err) {
            this.setState({ error: err.message })
        }
@@ -49,7 +56,7 @@ class PublicProfile extends Component {
 
     render() {
 
-        const { imgProfileUrl, error, username, bio, followSelected } = this.state
+        const { imgProfileUrl, error, username, bio, followSelected, follows, followers } = this.state
 
         
         return<div className='profile-container'>
@@ -58,8 +65,9 @@ class PublicProfile extends Component {
 
                 <p className='profile-username'> {username}</p>
                 {error && <Error message={error} />}
-                {/* <a href="#" className="favourites-btn" onClick={followSelected ? this.handleDontFollowClick : this.handleFollowClick}><i className={followSelected ? 'fas fa-star' : 'far fa-star' }>  {followSelected ? <span>Added to favourites</span>: <span><Button onClick={this.handleFollowClick}>Follow</Button></span>}</i></a>  */}
-                <a href="#" className="favourites-btn" onClick={followSelected ? this.handleDontFollowClick : this.handleFollowClick}> {followSelected ? <span>you follow {username}</span> : <span>Follow</span>}</a>
+                <p className='profile-bio'>Follow: {follows.length}</p> <p className='profile-bio'>Followers: {followers.length}</p>
+                <a href="#" className="favourites-btn" onClick={followSelected ? this.handleDontFollowClick : this.handleFollowClick}> {followSelected ? <span className='dont-follow-btn'>stop follow {username}</span> : <span className='follow-btn'>Follow</span>}</a>
+                <br></br> <br></br>
                 <p className='profile-bio'>{bio}</p>
             
             
