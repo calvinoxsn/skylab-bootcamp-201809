@@ -40,25 +40,56 @@ const logic = {
     },
 
     retrieveUsers(id) {
+
+        if (typeof id !== 'string') throw TypeError(`${id} is not a string`)
+
+        if (!id.trim().length) throw new ValueError('id is empty or blank')
         
         return (async () => {
             const users = await User.find().lean()
 
             if (!users) throw new NotFoundError(`users not found`)
 
-            users.forEach(user => {
+            const _users = users.filter( _index => _index._id != id )
 
+            _users.forEach(user => {
+
+                //delete user._id
                 delete user.__v
                 delete user.password
 
             })
 
-            const _users = users.filter( _index => _index._id != id )
-
             return _users
 
         })()
     },
+
+    // retrieveUserFollows(id) {
+
+    //     if (typeof id !== 'string') throw TypeError(`${id} is not a string`)
+
+    //     if (!id.trim().length) throw new ValueError('id is empty or blank')
+        
+    //     return (async () => {
+    //         const users = await User.find().lean()
+
+    //         if (!users) throw new NotFoundError(`users not found`)
+
+    //         const _users = users.filter( _index => _index._id != id )
+
+    //         _users.forEach(user => {
+
+    //             //delete user._id
+    //             delete user.__v
+    //             delete user.password
+
+    //         })
+
+    //         return _users
+
+    //     })()
+    // },
 
     retrieveUser(id) {
         if (typeof id !== 'string') throw TypeError(`${id} is not a string`)

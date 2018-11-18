@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Navbar, NavbarBrand, NavbarNav, NavbarToggler, Collapse, NavItem } from 'mdbreact'
 import logic from '../../logic'
 import { withRouter } from 'react-router-dom'
-import './navbarComponent.css'
+import './index.css'
 import Event from '../../plugins/bus'
 
 // Redux

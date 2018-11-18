@@ -3,7 +3,7 @@ import AliceCarousel from 'react-alice-carousel'
 import { Link } from 'react-router-dom'
 import logic from '../../logic'
 import 'react-alice-carousel/lib/alice-carousel.css'
-import './usersGallery.css'
+import './index.css'
 
 class UsersGallery extends Component {  
 

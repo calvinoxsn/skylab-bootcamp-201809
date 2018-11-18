@@ -296,6 +296,26 @@ const logic = {
 
     },
 
+    retrieveFollowsListUser() {
+
+        return fetch(`${this.url}/users/${this._userId}/follows`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${this._token}`
+            }
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res.error) throw Error(res.error)
+                
+                const follows = res.data
+                
+                return follows
+                                     
+            })
+
+    },
+
 
     
     

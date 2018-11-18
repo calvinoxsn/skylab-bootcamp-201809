@@ -22,6 +22,7 @@ class PublicProfile extends Component {
             this.setState({ error: err.message })
         }
     }
+
     
 
     handleFollowClick = event => {
@@ -57,7 +58,6 @@ class PublicProfile extends Component {
     render() {
 
         const { imgProfileUrl, error, username, bio, followSelected, follows, followers } = this.state
-
         
         return<div className='profile-container'>
             <img className='profile-img' src={imgProfileUrl ? imgProfileUrl : './img/icon-profile.png'} ></img>
@@ -66,7 +66,8 @@ class PublicProfile extends Component {
                 <p className='profile-username'> {username}</p>
                 {error && <Error message={error} />}
                 <p className='profile-bio'>Follow: {follows.length}</p> <p className='profile-bio'>Followers: {followers.length}</p>
-                <a href="#" className="favourites-btn" onClick={followSelected ? this.handleDontFollowClick : this.handleFollowClick}> {followSelected ? <span className='dont-follow-btn'>stop follow {username}</span> : <span className='follow-btn'>Follow</span>}</a>
+
+                <a href="#" onClick={followSelected ? this.handleDontFollowClick : this.handleFollowClick}> {followSelected ? <span className='dont-follow-btn'>stop follow {username}</span> : <span className='follow-btn'>Follow</span>}</a>
                 <br></br> <br></br>
                 <p className='profile-bio'>{bio}</p>
             

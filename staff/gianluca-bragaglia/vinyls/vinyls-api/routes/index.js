@@ -50,8 +50,6 @@ router.get('/users/user/:id', [bearerTokenParser, jwtVerifier], (req, res) => {
     routeHandler(() => {
 
         const { params: { id }, sub } = req
-
-        console.log(id)
         
 
         return logic.retrieveUsers(id)

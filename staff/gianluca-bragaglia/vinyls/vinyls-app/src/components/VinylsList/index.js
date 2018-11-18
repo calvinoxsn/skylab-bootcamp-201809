@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import VinylListItem from '../VinylListItem'
 import VinylListCardItem from '../VinylListCardItem'
-import './vinylList.css'
+import './index.css'
 
 
 

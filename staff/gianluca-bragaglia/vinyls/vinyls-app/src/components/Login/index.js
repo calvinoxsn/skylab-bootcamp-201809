@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import { Button, Input } from 'mdbreact'
-import  './login.css'
+import  './index.css'
 
 class Login extends Component {
     state = { username: '', password: '' }

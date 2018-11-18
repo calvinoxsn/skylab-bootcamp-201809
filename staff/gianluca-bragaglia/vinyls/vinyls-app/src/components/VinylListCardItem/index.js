@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import './vinylListCardItem.css'
+import './index.css'
 
 class VinylListCardItem extends Component {
     
@@ -10,7 +10,7 @@ class VinylListCardItem extends Component {
               <div className='card'>
                 <div className='card-image'>
                   <img src={imageUrl} alt='vinyls'/>
-                  <a href="#" className="float">
+                  <a className="float">
                     <i className="fa fa-plus my-float"></i>
                   </a>
                   <p className='artist'>{artist}</p>

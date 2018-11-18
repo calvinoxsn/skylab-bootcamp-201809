@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import './vinylListItem.css'
+import './index.css'
 
 class vinylListItem extends Component {
     
