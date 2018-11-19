@@ -1,32 +1,102 @@
 [
     {
+        "instrument": "guitar",
         "brand": "Fender",
-        "model": "Stratocaster",
-        "shortDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque consequat justo enim, ut blandit felis sagittis ut. Aliquam vehicula convallis nulla vitae hendrerit.",
-        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque consequat justo enim, ut blandit felis sagittis ut. Aliquam vehicula convallis nulla vitae hendrerit. Sed vel mauris lacinia ante ultrices egestas. Sed sed risus nulla. Cras mi nunc, eleifend id interdum vel, iaculis vel nisi. Integer molestie neque sed tellus laoreet, eget venenatis nunc varius. Curabitur lobortis tellus at vehicula euismod. Mauris gravida mi quis justo semper placerat. Nullam quis tortor leo. Ut molestie urna non neque efficitur consequat. Ut lacinia, mi eu vehicula dignissim, quam risus sagittis nunc, nec imperdiet erat dolor vel lorem.",
-        "price": 590,
-        "stock": 25,
+        "model": "Stratocaster American Special",
+        "keyFeatures": {
+            "title": "Key Features",
+            "content": [
+                "Highly Resonant and Lightweight Alder Body",
+                "Two Texas Special Single-Coil Pickups and an Atomic Humbucker",
+                "Maple Neck with a Modern C Profile",
+                "Greasebucket Tone Circuit",
+                "6-Saddle Vintage Style Synchronized Tremolo Bridge"
+            ]
+        },
+        "description": "The Fender American Special HSS Stratocaster electric guitar delivers genuine U.S-made Fender quality into the hands of beginners and professionals alike. Combining the resonant Alder body with a Maple neck and Rosewood fingerboard, the American Special HSS Stratocaster provides a smooth and comfortable playing experience. The two single-coil Texas Special pickups with an Atomic Humbucker in a HSS configuration produce a bright and full tone that's ideal for everything from country and blues to rock, punk, jazz and more.",
+        "price": 847,
+        "inStock": 25,
         "imageUrl": "https://images.static-thomann.de/pics/prod/402337.jpg",
         "type": "ELECTRIC"
     },
     {
+        "instrument": "guitar",
         "brand": "Gibson",
-        "model": "SG",
-        "shortDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque consequat justo enim, ut blandit felis sagittis ut. Aliquam vehicula convallis nulla vitae hendrerit.",
-        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque consequat justo enim, ut blandit felis sagittis ut. Aliquam vehicula convallis nulla vitae hendrerit. Sed vel mauris lacinia ante ultrices egestas. Sed sed risus nulla. Cras mi nunc, eleifend id interdum vel, iaculis vel nisi. Integer molestie neque sed tellus laoreet, eget venenatis nunc varius. Curabitur lobortis tellus at vehicula euismod. Mauris gravida mi quis justo semper placerat. Nullam quis tortor leo. Ut molestie urna non neque efficitur consequat. Ut lacinia, mi eu vehicula dignissim, quam risus sagittis nunc, nec imperdiet erat dolor vel lorem.",
-        "price": 790,
-        "stock": 15,
-        "imageUrl": "https://images.static-thomann.de/pics/prod/402337.jpg",
+        "model": "SG Faded 2018, Worn Bourbon",
+        "keyFeatures": {
+            "title": "Key Features",
+            "content": [
+                "Versatile 490R & 490T Humbuckers Offer Rich, Vintage Tones",
+                "Iconic SG Shaped Mahogany Body Delivers Warm Characteristics",
+                "Slim Taper Neck Provides Comfortable Playing Experience",
+                "Tektoid Nut Increases Middle & Upper Harmonics",
+                "Includes Gibson Softshell Case for Transportation"
+            ]
+        },
+        "description": "The Gibson SG Faded Electric Guitar, Worn Bourbon (2018) provides players with the legendary SG performance with a worn-in aesthetic, creating the same feeling as a guitar that's seen many years of life. The lightweight mahogany body is finished in a stunning worn bourbon colour, delivering a beautiful look which reflect its warm, organic tones. The slim taper maple neck delivers an incredibly smooth performance, while the addition of a rosewood fingerboard helps warm the harsh tones of the maple for a beautiful tonality. The SG is also equipped with a set of 490 humbuckers, offering a stunning, vintage tone, with independent tone and volume control to dial in a range of powerful sounds. The guitar also features a tune-o-matic bridge, tektoid nut, and vintage-style keystone tuners to deliver incredible string stability and enhance sustain and resonance. Delivered with a softshell case, the Gibson SG Faded Guitar is perfect for players wanting high quality SG performance with a vintage aesthetic.",
+        "price": 649,
+        "inStock": 5,
+        "imageUrl": "https://d1aeri3ty3izns.cloudfront.net/media/36/367294/1200/preview.jpg",
         "type": "ELECTRIC"
     },
     {
+        "instrument": "guitar",
         "brand": "Fender",
-        "model": "Stratocaster",
-        "shortDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque consequat justo enim, ut blandit felis sagittis ut. Aliquam vehicula convallis nulla vitae hendrerit.",
-        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque consequat justo enim, ut blandit felis sagittis ut. Aliquam vehicula convallis nulla vitae hendrerit. Sed vel mauris lacinia ante ultrices egestas. Sed sed risus nulla. Cras mi nunc, eleifend id interdum vel, iaculis vel nisi. Integer molestie neque sed tellus laoreet, eget venenatis nunc varius. Curabitur lobortis tellus at vehicula euismod. Mauris gravida mi quis justo semper placerat. Nullam quis tortor leo. Ut molestie urna non neque efficitur consequat. Ut lacinia, mi eu vehicula dignissim, quam risus sagittis nunc, nec imperdiet erat dolor vel lorem.",
-        "price": 590,
-        "stock": 25,
-        "imageUrl": "https://images.musicstore.de/images/1600/gibson-sg-faded-2018-worn-bourbon_1_GIT0042731-000.jpg",
+        "model": "Fender American Original '50s Telecaster MN, Butterscotch Blonde",
+        "keyFeatures": {
+            "title": "Key Features",
+            "content": [
+                "Pure Vintage '52 Tele Pickups Delivers Powerfully Authentic Tones",
+                "Iconic Telecaster Body For Signature Fender Style & Tone",
+                "Perfect For Upper Fingerboard Shredding Due To Cutaway Profile",
+                "Lacquer Finish Enables The Wood To Breath Naturally",
+                "Butterscotch Blonde Finish Offers Eye-Catching & Authentic Look"
+            ]
+        },
+        "description": "The Fender American Original '50s Telecaster MN, Butterscotch Blonde recreates the sound and appearance of those 1950s Telecasters, combined with a modern feel for a classic Fender tone and style. Players who love the Telecaster's unique feel and style will truly appreciate the American Original Tele's tonal characteristics that take you soaring back to the 1950s. The Fender American Original Telecaster features Pure Vintage '52 single-coil Tele pickups which were built to be as period-correct as possible to deliver a powerfully authentic sound and a vintage-styled fat warmth. With these pickups, players are able to achieve the classic sounds from the 50s decade, from rock and roll, to swing, rockabilly, and rhythm and blues. With the American Original's iconic Telecaster body, thick U shaped neck profile, and familiar 9.5\" fingerboard radius, players can benefit from enhanced playability and the comfort that's on offer. The American Original also features a lacquer finish which allows the wood to breath naturally for added resonance, as well as helping the appearance to age in a distinctively appealing way. With all of these exceptional qualities, this is the reason why many legendary artists choose Fender.",
+        "price": 1590,
+        "inStock": 25,
+        "imageUrl": "https://d1aeri3ty3izns.cloudfront.net/media/17/170869/1200/preview.jpg",
+        "type": "ELECTRIC"
+    },
+    {
+        "instrument": "guitar",
+        "brand": "Gretsch",
+        "model": "G2420T Streamliner Hollow Body with Bigsby",
+        "keyFeatures": {
+            "title": "Key Features",
+            "content": [
+                "Broad-Tron Humbucking Pickups Deliver High Output",
+                "Fast Playing 12\"Radius Rosewood Fingerboard",
+                "Vintage “Big Block” Inlays and Electro-style Control Knobs",
+                "Bigsby Tailpiece Offers Pitch Bending Effects & Sustain",
+                "Classic F Holes Offer Traditional Look & Acoustic Projection"
+            ]
+        },
+        "description": "The Fender American Original '50s Telecaster MN, Butterscotch Blonde recreates the sound and appearance of those 1950s Telecasters, combined with a modern feel for a classic Fender tone and style. Players who love the Telecaster's unique feel and style will truly appreciate the American Original Tele's tonal characteristics that take you soaring back to the 1950s. The Fender American Original Telecaster features Pure Vintage '52 single-coil Tele pickups which were built to be as period-correct as possible to deliver a powerfully authentic sound and a vintage-styled fat warmth. With these pickups, players are able to achieve the classic sounds from the 50s decade, from rock and roll, to swing, rockabilly, and rhythm and blues. With the American Original's iconic Telecaster body, thick U shaped neck profile, and familiar 9.5\" fingerboard radius, players can benefit from enhanced playability and the comfort that's on offer. The American Original also features a lacquer finish which allows the wood to breath naturally for added resonance, as well as helping the appearance to age in a distinctively appealing way. With all of these exceptional qualities, this is the reason why many legendary artists choose Fender.",
+        "price": 790,
+        "inStock": 12,
+        "imageUrl": "https://d1aeri3ty3izns.cloudfront.net/media/23/236294/1200/preview.jpg",
+        "type": "ELECTRIC"
+    },
+    {
+        "instrument": "guitar",
+        "brand": "Ibanez",
+        "model": "AF200 Artstar Prestige 2018, Brown Sunburst",
+        "keyFeatures": {
+            "title": "Key Features",
+            "content": [
+                "Super 58 Pickups for Vintage-Inspired Sounds",
+                "Spruce Top Hollow Body Gives Airy & Resonant Tonality",
+                "Flamed Maple Body & Abalone Inlays for Classy Aesthetic",
+                "Quality Gotoh Tuners, Bone Nut, & Ebony Bridge",
+                "Hardshell Case Included"
+            ]
+        },
+        "description": "The Ibanez AF200 Artstar Prestige 2018 in Brown Sunburst is a hollow body guitar designed to take you back to the sounds and the styles of a by-gone era. It combines the design features of a vintage guitar with Ibanez's own Super 58 pickups for a vintage-inspired bite and smooth sound, depending on your control adjustments. The hollow body gives a lovely warmth and resonance; it is crafted from spruce and flamed maple for a quick response to every input from the player. A mahogany/maple neck is glued into the body to give optimum vibration transfer and a wonderfully ergonomic left-hand feel. The AF200's 22 medium frets are finished with the Artstar Fret Edge Treatment which gives them a rounded surface and a glass-like polish for a liquid-smooth fingering action. The AF200 is completed with a range of design features to give you the authentic look of a vintage guitar, including classic abalone inlays, an ebony bridge with elegant AF Special tailpiece, a bone nut, and a tortoiseshell-coloured pickguard. Many other features also help enhance the professional playability of the AF200 including Sure Grip III control knobs and Gotoh tuners. The AF200 provides the aesthetics and the tones of a vintage guitar with the practicalities and reliability derived from modern construction methods and up-to-date hardware; this guitar will keep even the most discerning players happy.",
+        "price": 1799,
+        "inStock": 2,
+        "imageUrl": "https://d1aeri3ty3izns.cloudfront.net/media/33/335306/1200/preview.jpg",
         "type": "ELECTRIC"
     }
 ]
