@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import './index.css'
+//import './index.css'
 
 
 
-class FollowsListUserItem extends Component {
+
+class UserListItem extends Component {
     
     render() { 
         const { imgProfileUrl, username, id } = this.props
@@ -16,4 +17,4 @@ class FollowsListUserItem extends Component {
  
 
  
-export default FollowsListUserItem
+export default UserListItem

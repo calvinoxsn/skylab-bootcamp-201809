@@ -34,6 +34,8 @@ class NavbarComponent extends Component {
 
    goToProfile = () => this.props.history.push('/profile') 
 
+   goToSearchUsers = () => this.props.history.push('/users') 
+
    goToIndex = () => this.props.history.push('/index') 
     
    render() {
@@ -54,6 +56,12 @@ class NavbarComponent extends Component {
                <Collapse isOpen = { this.state.collapse } navbar>
 
                    <NavbarNav right>
+
+                        <NavItem onClick = { this.goToSearchUsers } >
+
+                            <a className="nav-link waves-effect waves-light search"  >search users</a>
+
+                            </NavItem >
 
                        <NavItem onClick = { this.goToProfile } >
 

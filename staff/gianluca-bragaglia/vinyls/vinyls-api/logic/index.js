@@ -60,36 +60,33 @@ const logic = {
 
             })
 
-            return _users
+            return console.log(_users)
 
         })()
     },
 
-    // retrieveUserFollows(id) {
+    retrieveUsers() {
 
-    //     if (typeof id !== 'string') throw TypeError(`${id} is not a string`)
-
-    //     if (!id.trim().length) throw new ValueError('id is empty or blank')
         
-    //     return (async () => {
-    //         const users = await User.find().lean()
+        return (async () => {
+            const users = await User.find().lean()
 
-    //         if (!users) throw new NotFoundError(`users not found`)
+            if (!users) throw new NotFoundError(`users not found`)
 
-    //         const _users = users.filter( _index => _index._id != id )
 
-    //         _users.forEach(user => {
+            users.forEach(user => {
 
-    //             //delete user._id
-    //             delete user.__v
-    //             delete user.password
+                //delete user._id
+                delete user.__v
+                delete user.password
 
-    //         })
+            })
 
-    //         return _users
+            return users
 
-    //     })()
-    // },
+        })()
+    },
+
 
     retrieveUser(id) {
         if (typeof id !== 'string') throw TypeError(`${id} is not a string`)
@@ -243,6 +240,93 @@ const logic = {
             const follows = user.follows
             
             return follows
+            
+
+
+        })()
+
+    },
+
+    retrieveListFollows(id) {
+ 
+        
+        if (typeof id !== 'string') throw TypeError(`${id} is not a string`)
+        if (id != null && typeof id !== 'string') throw TypeError(`${id} is not a string`)
+
+        if (!id.trim().length) throw new ValueError('id is empty or blank')
+
+
+        return (async () => {
+            const user = await User.findById(id)
+
+            if (!user) throw new NotFoundError(`user with id ${id} not found`)
+
+            const follows = user.follows
+            
+            const users = await User.find().lean()
+
+            if (!users) throw new NotFoundError(`users not found`)
+
+            const _users = users.filter( _index => _index._id != id )
+
+            const listFollows = _users.filter(function(el){ 
+                return ~follows.indexOf(el._id)
+            })
+
+            listFollows.forEach(user => {
+
+                //delete user._id
+                delete user.__v
+                delete user.password
+                delete user.follows
+                delete user.followers
+            })
+            
+            return listFollows
+
+
+
+        })()
+
+    },
+
+    retrieveListFollowers(id) {
+ 
+        
+        if (typeof id !== 'string') throw TypeError(`${id} is not a string`)
+        if (id != null && typeof id !== 'string') throw TypeError(`${id} is not a string`)
+
+        if (!id.trim().length) throw new ValueError('id is empty or blank')
+
+
+        return (async () => {
+            const user = await User.findById(id)
+
+            if (!user) throw new NotFoundError(`user with id ${id} not found`)
+
+            const followers = user.followers
+            
+            const users = await User.find().lean()
+
+            if (!users) throw new NotFoundError(`users not found`)
+
+            const _users = users.filter( _index => _index._id != id )
+
+            const listFollowers = _users.filter(function(el){ 
+                return ~followers.indexOf(el._id)
+            })
+
+            listFollowers.forEach(user => {
+
+                //delete user._id
+                delete user.__v
+                delete user.password
+                delete user.follows
+                delete user.followers
+            })
+            
+            return listFollowers
+
 
 
         })()

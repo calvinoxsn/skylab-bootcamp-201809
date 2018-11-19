@@ -24,6 +24,30 @@
     margin: 10px 0;
 }
 
+.follow-btn-profile{
+    color:white;
+    background-color: #298f9b;
+    padding: 5px 10px;
+    border: 1px solid white;
+    font-size: 13px;
+    width: 100px;
+    text-align: center;
+    margin: 20px auto;
+
+}
+
+.followers-btn-profile{
+    color:white;
+    background-color: #298f9b;
+    padding: 5px 10px;
+    border: 1px solid white;
+    font-size: 13px;
+    width: 100px;
+    text-align: center;
+    margin: 20px auto;
+
+}
+
 
 @media screen and (max-width: 600px) {
 

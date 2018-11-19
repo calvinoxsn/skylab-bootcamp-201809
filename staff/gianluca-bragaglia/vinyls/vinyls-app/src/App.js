@@ -11,7 +11,9 @@ import Error from './components/Error'
 import Profile from './components/Profile'
 import EditProfile from './components/EditProfile'
 import PublicProfile from './components/PublicProfile'
-import FollowListUser  from './components/FollowsListUser'
+import FollowsListUser  from './components/FollowsListUser'
+import FollowersListUser  from './components/FollowersListUser'
+import SearchListUsers from './components/SearchListUsers'
 
 
 
@@ -87,7 +89,9 @@ class App extends Component {
                   <Route path="/edit-profile" render={() => logic.loggedIn ? <EditProfile onEditProfile={this.handleEditProfile} /> : <Redirect to="/login" />} />
                   <Route exact path="/profile" render={() => logic.loggedIn ? <Profile /> : <Redirect to="/login" />} />
                   <Route exact path="/profile/:id" render={(props) => logic.loggedIn ? <PublicProfile id={props.match.params.id}/> : <Redirect to="/login" />} />
-                  <Route exact path="/follows" render={() => logic.loggedIn ? <FollowListUser /> : <Redirect to="/login" />} />
+                  <Route exact path="/follows" render={() => logic.loggedIn ? <FollowsListUser /> : <Redirect to="/login" />} />
+                  <Route exact path="/followers" render={() => logic.loggedIn ? <FollowersListUser /> : <Redirect to="/login" />} />
+                  <Route exact path="/users" render={() => logic.loggedIn ? <SearchListUsers /> : <Redirect to="/login" />} />
                 </div> 
 
            

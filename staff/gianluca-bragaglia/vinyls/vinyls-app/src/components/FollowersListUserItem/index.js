@@ -4,7 +4,8 @@ import './index.css'
 
 
 
-class FollowsListUserItem extends Component {
+
+class FollowersListUserItem extends Component {
     
     render() { 
         const { imgProfileUrl, username, id } = this.props
@@ -16,4 +17,4 @@ class FollowsListUserItem extends Component {
  
 
  
-export default FollowsListUserItem
+export default FollowersListUserItem

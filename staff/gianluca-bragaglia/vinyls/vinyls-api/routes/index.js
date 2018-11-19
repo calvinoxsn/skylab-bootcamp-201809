@@ -74,6 +74,19 @@ router.get('/users/:id', [bearerTokenParser, jwtVerifier], (req, res) => {
     }, res)
 })
 
+
+router.get('/users', [bearerTokenParser, jwtVerifier], (req, res) => {
+    routeHandler(() => {
+
+        return logic.retrieveUsers()
+            .then(users =>
+                res.json({
+                    data: users
+                })
+            )
+    }, res)
+})
+
 router.patch('/users/:id', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, res) => {
     routeHandler(() => {
         const { params: { id }, sub, body: { username, newPassword, password, imgProfileUrl, bio } } = req
@@ -128,6 +141,36 @@ router.get('/users/:id/follows', [bearerTokenParser, jwtVerifier, jsonBodyParser
         return logic.retrieveFollows(id)
             .then(follows => res.json({
                 data: follows
+            }))
+            
+    }, res)
+})
+
+router.get('/users/:id/followsList', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, res) => {
+    routeHandler(() => {
+        const { params: { id }, sub } = req
+
+        if (id !== sub) throw Error('token sub does not match user id')
+
+        return logic.retrieveListFollows(id)
+            .then(listFollows => res.json({
+
+                data: listFollows
+            }))
+            
+    }, res)
+})
+
+router.get('/users/:id/followersList', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, res) => {
+    routeHandler(() => {
+        const { params: { id }, sub } = req
+
+        if (id !== sub) throw Error('token sub does not match user id')
+
+        return logic.retrieveListFollowers(id)
+            .then(listFollowers => res.json({
+
+                data: listFollowers
             }))
             
     }, res)

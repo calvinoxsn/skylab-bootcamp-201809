@@ -16,10 +16,15 @@ class UsersGallery extends Component {
   }
 
   componentDidMount() {
+
     try {       
         
         logic.getUsers()
-        .then(res => { this.setState({ users: res  }) })
+        //.then(res => { this.setState({ users: res.slice(0, 8)  }) })
+        .then(res => { 
+          res.sort(function() {return 0.5 - Math.random()})
+          this.setState({ users: res.slice(0, 8) }) 
+        })
         .catch(err => this.setState({ error: err.message }))
     } catch (err) {
         this.setState({ error: err.message })

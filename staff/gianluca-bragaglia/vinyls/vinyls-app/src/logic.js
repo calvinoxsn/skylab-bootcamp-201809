@@ -127,14 +127,23 @@ const logic = {
             .then(res => {
                 
                 if (res.error) throw Error(res.error)
+
                 const users = res.data
-                // console.log(users + ' ' + this._userId);
+
+                const _usersGallery = users.filter( _index => _index._id != this._userId )
+
+                return _usersGallery
+            })
+    },
+
+    retrieveUsers() {
+
+        return fetch(`${this.url}/users`, {headers: { 'Authorization': `Bearer ${this._token}` } })
+            .then(res => res.json())
+            .then(res => {
                 
-                // const index = users.findIndex(_index => {
-                //     return _index !== this._userId
-                // })
-    
-                // users.splice(index,1)
+                if (res.error) throw Error(res.error)
+                const users = res.data
 
                 return users
             })
@@ -298,7 +307,7 @@ const logic = {
 
     retrieveFollowsListUser() {
 
-        return fetch(`${this.url}/users/${this._userId}/follows`, {
+        return fetch(`${this.url}/users/${this._userId}/followsList`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${this._token}`
@@ -308,9 +317,29 @@ const logic = {
             .then(res => {
                 if (res.error) throw Error(res.error)
                 
-                const follows = res.data
+                const followsList = res.data
                 
-                return follows
+                return followsList
+                                     
+            })
+
+    },
+
+    retrieveFollowersListUser() {
+
+        return fetch(`${this.url}/users/${this._userId}/followersList`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${this._token}`
+            }
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res.error) throw Error(res.error)
+                
+                const followersList = res.data
+                
+                return followersList
                                      
             })
 

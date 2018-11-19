@@ -1,20 +1,20 @@
 import React, { Component } from 'react'
-import FollowsListUserItem from '../FollowsListUserItem'
+import FollowersListUserItem from '../FollowersListUserItem'
 import logic from '../../logic'
 
 //import './index.css'
 
 
 
-class FollowsListUser extends Component {
+class FollowersListUser extends Component {
 
-    state = { username: '', imgProfileUrl: null, bio: '', error: null, followsListUser: [] }
+    state = { username: '', imgProfileUrl: null, bio: '', error: null, followersListUser: [] }
     
     componentDidMount() {
         try {       
-            logic.retrieveFollowsListUser()        
+            logic.retrieveFollowersListUser()        
             .then(res => {
-                this.setState ({ username: res.username, imgProfileUrl: res.imgProfileUrl, followsListUser: res })
+                this.setState ({ username: res.username, imgProfileUrl: res.imgProfileUrl, followersListUser: res })
             })
             .catch(err => this.setState({ error: err.message }))
         } catch (err) {
@@ -23,15 +23,15 @@ class FollowsListUser extends Component {
     }
     render() { 
 
-        const { followsListUser } = this.state
+        const { followersListUser } = this.state
         
         return ( 
             <React.Fragment>
                 {/* <p>followlistuser</p> */}
                 <div className='vinyls-list'>
                         <ul className='list-group-flush'>
-                        {followsListUser.map(follow => (
-                            <FollowsListUserItem key={follow.username} id={follow._id} username={follow.username} imgProfileUrl={follow.imgProfileUrl} />
+                        {followersListUser.map(follower => (
+                            <FollowersListUserItem key={follower.username} id={follower._id} username={follower.username} imgProfileUrl={follower.imgProfileUrl} />
                         ))}
                         </ul>
                 </div>
@@ -42,4 +42,4 @@ class FollowsListUser extends Component {
 }
 
  
-export default FollowsListUser
+export default FollowersListUser

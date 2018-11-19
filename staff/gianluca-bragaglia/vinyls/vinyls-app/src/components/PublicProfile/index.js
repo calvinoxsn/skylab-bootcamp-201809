@@ -30,7 +30,10 @@ class PublicProfile extends Component {
              try {       
             
                 logic.addFollow(this.state.username)
-                .then(() => this.setState({followSelected: true }))
+                .then(() => {
+                    logic.retrieveUserById(this.props.id)
+                    .then(user => { this.setState({ username: user.username, imgProfileUrl: user.imgProfileUrl, bio: user.bio, follows: user.follows, followers: user.followers, followSelected: true }) })
+                })
                 .catch(err => this.setState({ error: err.message }))
                 logic.retrieveUserById(this.props.id)
                 .then(user => { this.setState({ username: user.username, imgProfileUrl: user.imgProfileUrl, bio: user.bio, follows: user.follows, followers: user.followers }) })
@@ -45,7 +48,10 @@ class PublicProfile extends Component {
         try {       
        
            logic.removeFollow(this.state.username)
-           .then(() => this.setState({followSelected: false }))
+           .then(() => {
+                logic.retrieveUserById(this.props.id)
+                .then(user => { this.setState({ username: user.username, imgProfileUrl: user.imgProfileUrl, bio: user.bio, follows: user.follows, followers: user.followers, followSelected: false }) })
+            })
            .catch(err => this.setState({ error: err.message }))
            logic.retrieveUserById(this.props.id)
            .then(user => { this.setState({ username: user.username, imgProfileUrl: user.imgProfileUrl, bio: user.bio, follows: user.follows, followers: user.followers }) })
@@ -65,7 +71,7 @@ class PublicProfile extends Component {
 
                 <p className='profile-username'> {username}</p>
                 {error && <Error message={error} />}
-                <p className='profile-bio'>Follow: {follows.length}</p> <p className='profile-bio'>Followers: {followers.length}</p>
+                <p className='follows'>Follow: {follows.length}</p> <p className='follows'>Followers: {followers.length}</p>
 
                 <a href="#" onClick={followSelected ? this.handleDontFollowClick : this.handleFollowClick}> {followSelected ? <span className='dont-follow-btn'>stop follow {username}</span> : <span className='follow-btn'>Follow</span>}</a>
                 <br></br> <br></br>
