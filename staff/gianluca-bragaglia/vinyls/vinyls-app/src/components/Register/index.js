@@ -5,27 +5,27 @@ import  './index.css'
 class Register extends Component {
     state = { email: '', username: '', password: '' }
 
-    handleEmailChange = event => {
-        const email = event.target.value
+    handleEmailChange = e => {
+        const email = e.target.value
 
         this.setState({ email })
     }
 
-    handleUsernameChange = event => {
-        const username = event.target.value
+    handleUsernameChange = e => {
+        const username = e.target.value
 
         this.setState({ username })
     }
 
-    handlePasswordChange = event => {
-        const password = event.target.value
+    handlePasswordChange = e => {
+        const password = e.target.value
 
         this.setState({ password })
     }
 
 
-    handleSubmit = event => {
-        event.preventDefault()
+    handleSubmit = e => {
+        e.preventDefault()
 
         const {  email, username, password } = this.state
 

@@ -4,7 +4,7 @@ require('isomorphic-fetch')
 
 global.sessionStorage = require('sessionstorage')
 
-const logic = require('./logic')
+//const logic = require('./logic')
 
 logic.url = 'http://localhost:5000/api'
 // logic.url = 'http://192.168.0.82:5000' // DEV server!

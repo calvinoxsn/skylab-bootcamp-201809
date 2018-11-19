@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import VinylsList from '../VinylsList'
 import UsersGallery from '../UsersGallery'
 import { Link } from 'react-router-dom'
+import { Button } from 'mdbreact'
+import './index.css'
 
 
 class Index extends Component {
@@ -10,7 +12,9 @@ class Index extends Component {
         return (  <div>
 
                     <UsersGallery></UsersGallery>
-                    <Link to='/add-vinyl'><button>add vinyl</button></Link>
+                    <div className='container-btn'>
+                        <Link to='/add-vinyl'> <section><Button color='black'>ADD VINYL</Button></section></Link>
+                    </div>
                     <VinylsList></VinylsList>
                   </div>
            

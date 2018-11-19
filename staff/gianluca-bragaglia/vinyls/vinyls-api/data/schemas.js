@@ -29,12 +29,16 @@ const Vinyl = new Schema({
     },
 
     year: {
-        type: String,
+        type: Number,
         required: true
     },
 
+    imgVinylUrl: {
+        type: String,
+    },
+
     info: {
-        type: String
+        type: String,
     },
 
     comments: [Comment],
@@ -42,12 +46,8 @@ const Vinyl = new Schema({
     likes: {
         type: ObjectId,
         ref: 'User'
-    },
-
-    imgVinylUrl: {
-        type: String
-
     }
+   
 
 })
 

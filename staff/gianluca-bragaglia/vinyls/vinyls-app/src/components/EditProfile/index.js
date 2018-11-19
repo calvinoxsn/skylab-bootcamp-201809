@@ -20,38 +20,38 @@ class EditProfile extends Component {
         }
     }
 
-    handleNameChange = event => {
-        const name = event.target.value
+    handleNameChange = e => {
+        const name = e.target.value
 
         this.setState({ name })
     }
 
-    handleSurnameChange = event => {
-        const surname = event.target.value
+    handleSurnameChange = e => {
+        const surname = e.target.value
 
         this.setState({ surname })
     }
 
-    handleUsernameChange = event => {
-        const username = event.target.value
+    handleUsernameChange = e => {
+        const username = e.target.value
 
         this.setState({ username })
     }
 
-    handlePasswordChange = event => {
-        const password = event.target.value
+    handlePasswordChange = e => {
+        const password = e.target.value
 
         this.setState({ password })
     }
 
-    handleNewPasswordChange = event => {
-        const newPassword = event.target.value
+    handleNewPasswordChange = e => {
+        const newPassword = e.target.value
 
         this.setState({ newPassword })
     }
 
-    handleBioChange = event => {
-        const bio = event.target.value
+    handleBioChange = e => {
+        const bio = e.target.value
 
         this.setState({ bio })
     }

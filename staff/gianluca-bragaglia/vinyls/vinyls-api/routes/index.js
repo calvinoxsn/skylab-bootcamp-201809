@@ -193,7 +193,7 @@ router.get('/users/:id/followersList', [bearerTokenParser, jwtVerifier, jsonBody
 router.post('/vinyls', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, res) => {
     routeHandler(() => {
 
-        const  { id, title, artist, year, info, imgVinylUrl }  = req.body
+        const  { id, title, artist, year, imgVinylUrl, info }  = req.body
 
         return logic.addVinyl( id, title, artist, year, imgVinylUrl, info )
             .then(() => res.json({

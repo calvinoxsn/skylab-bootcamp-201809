@@ -16,13 +16,12 @@ import FollowersListUser  from './components/FollowersListUser'
 import SearchListUsers from './components/SearchListUsers'
 import AddVinyl from './components/AddVinyl'
 
-
+logic.url = 'http://localhost:5000/api'
 
 class App extends Component {
-  state = { error: null }
 
-
-    
+    state = { error: null }
+   
    
     handleRegister = ( email, username, password, bio ) => {
   

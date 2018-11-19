@@ -1,5 +1,5 @@
 //const { User, Postit } = require('../data')
-const { User } = require('../data')
+const { User, Vinyl } = require('../data')
 const { AlreadyExistsError, AuthError, NotFoundError, ValueError } = require('../errors')
 
 const logic = {
@@ -343,22 +343,22 @@ const logic = {
         console.log(id, title, artist, year, imgVinylUrl, info)
         
 
-        // if (typeof id !== 'string') throw TypeError(`${id} is not a string`)
-        // if (!id.trim().length) throw new ValueError('user id is empty or blank')
+        if (typeof id !== 'string') throw TypeError(`${id} is not a string`)
+        if (!id.trim().length) throw new ValueError('user id is empty or blank')
 
-        // if (typeof title !== 'string') throw TypeError(`${title} is not a string`)
-        // if (!title.trim().length) throw new ValueError('title is empty or blank')        
+        if (typeof title !== 'string') throw TypeError(`${title} is not a string`)
+        if (!title.trim().length) throw new ValueError('title is empty or blank')        
 
-        // if (typeof artist !== 'string') throw TypeError(`${artist} is not a string`)
-        // if (!artist.trim().length) throw new ValueError('artist is empty or blank')
+        if (typeof artist !== 'string') throw TypeError(`${artist} is not a string`)
+        if (!artist.trim().length) throw new ValueError('artist is empty or blank')
 
-        // if (typeof year !== 'string') throw TypeError(`${year} is not a string`)
-        // if (!year.trim().length) throw new ValueError('year is empty or blank')
+        if (year != null && typeof year !== 'number') throw TypeError(`${year} is not a number`)
+        if (!year.trim().length) throw new ValueError('year is empty or blank')
 
-        // if (info != null && typeof info !== 'string') throw TypeError(`${info} is not a string`)
-        // if (!info.trim().length) throw new ValueError('info is empty or blank')
+        if (info != null && typeof info !== 'string') throw TypeError(`${info} is not a string`)
+        if (!info.trim().length) throw new ValueError('info is empty or blank')
 
-        // if (imgVinylUrl != null && typeof imgVinylUrl !== 'string') throw TypeError(`${imgVinylUrl} is not a string`)
+        if (imgVinylUrl != null && typeof imgVinylUrl !== 'string') throw TypeError(`${imgVinylUrl} is not a string`)
 
         return (async () => {
             const user = await User.findById(id)
@@ -366,9 +366,6 @@ const logic = {
             if (!user) throw new NotFoundError(`user with id ${id} not found`)
 
             const vinyl = new Vinyl({ id: user.id, title, artist, year, imgVinylUrl, info })
-
-            console.log(vinyl)
-            
 
             await vinyl.save()
         })()

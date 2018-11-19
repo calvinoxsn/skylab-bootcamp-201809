@@ -5,20 +5,20 @@ import  './index.css'
 class Login extends Component {
     state = { username: '', password: '' }
 
-    handleUsernameChange = event => {
-        const username = event.target.value
+    handleUsernameChange = e => {
+        const username = e.target.value
 
         this.setState({ username })
     }
 
-    handlePasswordChange = event => {
-        const password = event.target.value
+    handlePasswordChange = e => {
+        const password = e.target.value
 
         this.setState({ password })
     }
 
-    handleSubmit = event => {
-        event.preventDefault()
+    handleSubmit = e => {
+        e.preventDefault()
 
         const { username, password } = this.state
 
