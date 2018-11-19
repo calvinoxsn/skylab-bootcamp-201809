@@ -4,12 +4,14 @@ const { AlreadyExistsError, AuthError, NotFoundError, ValueError } = require('..
 
 const logic = {
     registerUser(email, username, password) {
-        if (typeof email !== 'string') throw TypeError(`${email} is not a string`)
-        if (typeof username !== 'string') throw TypeError(`${username} is not a string`)
-        if (typeof password !== 'string') throw TypeError(`${password} is not a string`)
 
+        if (typeof email !== 'string') throw TypeError(`${email} is not a string`)
         if (!email.trim()) throw new ValueError('email is empty or blank')
+
+        if (typeof username !== 'string') throw TypeError(`${username} is not a string`)
         if (!username.trim()) throw new ValueError('username is empty or blank')
+
+        if (typeof password !== 'string') throw TypeError(`${password} is not a string`)  
         if (!password.trim()) throw new ValueError('password is empty or blank')
 
         return (async () => {
@@ -25,9 +27,9 @@ const logic = {
 
     authenticateUser(username, password) {
         if (typeof username !== 'string') throw TypeError(`${username} is not a string`)
-        if (typeof password !== 'string') throw TypeError(`${password} is not a string`)
-
         if (!username.trim()) throw new ValueError('username is empty or blank')
+
+        if (typeof password !== 'string') throw TypeError(`${password} is not a string`)      
         if (!password.trim()) throw new ValueError('password is empty or blank')
 
         return (async () => {
@@ -42,7 +44,6 @@ const logic = {
     retrieveUsers(id) {
 
         if (typeof id !== 'string') throw TypeError(`${id} is not a string`)
-
         if (!id.trim().length) throw new ValueError('id is empty or blank')
         
         return (async () => {
@@ -66,8 +67,7 @@ const logic = {
     },
 
     retrieveUsers() {
-
-        
+      
         return (async () => {
             const users = await User.find().lean()
 
@@ -89,8 +89,8 @@ const logic = {
 
 
     retrieveUser(id) {
-        if (typeof id !== 'string') throw TypeError(`${id} is not a string`)
 
+        if (typeof id !== 'string') throw TypeError(`${id} is not a string`)
         if (!id.trim().length) throw new ValueError('id is empty or blank')
 
         return (async () => {
@@ -105,17 +105,22 @@ const logic = {
     },
 
     updateUser(id,  username, newPassword, password, imgProfileUrl, bio) {
-        if (typeof id !== 'string') throw TypeError(`${id} is not a string`)
-        if (username != null && typeof username !== 'string') throw TypeError(`${username} is not a string`)
-        if (newPassword != null && typeof newPassword !== 'string') throw TypeError(`${newPassword} is not a string`)
-        if (typeof password !== 'string') throw TypeError(`${password} is not a string`)
-        if (imgProfileUrl != null && typeof imgProfileUrl !== 'string') throw TypeError(`${imgProfileUrl} is not a string`)
-        if (bio != null && typeof bio !== 'string') throw TypeError(`${bio} is not a string`)
 
+        if (typeof id !== 'string') throw TypeError(`${id} is not a string`)
         if (!id.trim().length) throw new ValueError('id is empty or blank')
+
+        if (username != null && typeof username !== 'string') throw TypeError(`${username} is not a string`)
         if (username != null && !username.trim().length) throw new ValueError('username is empty or blank')
+
+        if (newPassword != null && typeof newPassword !== 'string') throw TypeError(`${newPassword} is not a string`)
         if (newPassword != null && !newPassword.trim().length) throw new ValueError('newPassword is empty or blank')
+
+        if (typeof password !== 'string') throw TypeError(`${password} is not a string`)
         if (!password.trim().length) throw new ValueError('password is empty or blank')
+
+        if (imgProfileUrl != null && typeof imgProfileUrl !== 'string') throw TypeError(`${imgProfileUrl} is not a string`)
+
+        if (bio != null && typeof bio !== 'string') throw TypeError(`${bio} is not a string`)
         if (bio != null && !bio.trim().length) throw new ValueError('biography is empty or blank')
 
         return (async () => {
@@ -129,15 +134,12 @@ const logic = {
                 const _user = await User.findOne({ username })
 
                 if (_user && _user.username != user.username) throw new AlreadyExistsError(`username ${username} already exists`)
-
-    
+  
                 user.username = username
                 newPassword != null && (user.password = newPassword)
                 user.imgProfileUrl = imgProfileUrl
                 user.bio = bio
                
-                
-
                 await user.save()
             } else {
     
@@ -149,12 +151,10 @@ const logic = {
     },
 
     addFollow(id, followUsername) {
- 
-        
-        if (typeof id !== 'string') throw TypeError(`${id} is not a string`)
+    
         if (id != null && typeof id !== 'string') throw TypeError(`${id} is not a string`)
-
         if (!id.trim().length) throw new ValueError('id is empty or blank')
+
         if (followUsername != null && !followUsername.trim().length) throw new ValueError('followUsername is empty or blank')
 
         return (async () => {
@@ -189,8 +189,7 @@ const logic = {
     },
 
     removeFollow(id, followUsername) {
- 
-        
+    
         if (typeof id !== 'string') throw TypeError(`${id} is not a string`)
         if (id != null && typeof id !== 'string') throw TypeError(`${id} is not a string`)
 
@@ -225,13 +224,9 @@ const logic = {
 
     retrieveFollows(id) {
  
-        
-        // if (typeof id !== 'string') throw TypeError(`${id} is not a string`)
-        // if (id != null && typeof id !== 'string') throw TypeError(`${id} is not a string`)
-
-        // if (!id.trim().length) throw new ValueError('id is empty or blank')
-        // if (followUsername != null && !followUsername.trim().length) throw new ValueError('followUsername is empty or blank')
-
+        if (id != null && typeof id !== 'string') throw TypeError(`${id} is not a string`)
+        if (!id.trim().length) throw new ValueError('id is empty or blank')
+  
         return (async () => {
             const user = await User.findById(id)
 
@@ -241,15 +236,12 @@ const logic = {
             
             return follows
             
-
-
         })()
 
     },
 
     retrieveListFollows(id) {
- 
-        
+    
         if (typeof id !== 'string') throw TypeError(`${id} is not a string`)
         if (id != null && typeof id !== 'string') throw TypeError(`${id} is not a string`)
 
@@ -291,8 +283,7 @@ const logic = {
     },
 
     retrieveListFollowers(id) {
- 
-        
+       
         if (typeof id !== 'string') throw TypeError(`${id} is not a string`)
         if (id != null && typeof id !== 'string') throw TypeError(`${id} is not a string`)
 
@@ -300,6 +291,7 @@ const logic = {
 
 
         return (async () => {
+
             const user = await User.findById(id)
 
             if (!user) throw new NotFoundError(`user with id ${id} not found`)
@@ -327,42 +319,60 @@ const logic = {
             
             return listFollowers
 
-
-
         })()
 
     },
 
-    // /**
-    //  * Adds a postit
-    //  * 
-    //  * @param {string} id The user id
-    //  * @param {string} text The postit text
-    //  * 
-    //  * @throws {TypeError} On non-string user id, or non-string postit text
-    //  * @throws {Error} On empty or blank user id or postit text
-    //  * 
-    //  * @returns {Promise} Resolves on correct data, rejects on wrong user id
-    //  */
-    // addPostit(id, text, status) {
-    //     if (typeof id !== 'string') throw TypeError(`${id} is not a string`)
+    /**
+     * Adds a vinyl
+     * @param {string} id The user id
+     * @param {string} title The vinyl title
+     * @param {string} artist The vinyl artist
+     * @param {string} year The year of vinyl
+     * @param {string} info The vinyl info
+     * @param {string} imgVinylUrl The vinyl image url
+     *
+     * 
+     * @throws {TypeError} On non-string user id, or non-string postit text
+     * @throws {Error} On empty or blank user id or postit text
+     * 
+     * @returns {Promise} Resolves on correct data, rejects on wrong user id
+     */
+    addVinyl(id, title, artist, year, imgVinylUrl, info ) {
 
-    //     if (!id.trim().length) throw new ValueError('id is empty or blank')
+        console.log(id, title, artist, year, imgVinylUrl, info)
+        
 
-    //     if (typeof text !== 'string') throw TypeError(`${text} is not a string`)
+        // if (typeof id !== 'string') throw TypeError(`${id} is not a string`)
+        // if (!id.trim().length) throw new ValueError('user id is empty or blank')
 
-    //     if (!text.trim().length) throw new ValueError('text is empty or blank')
+        // if (typeof title !== 'string') throw TypeError(`${title} is not a string`)
+        // if (!title.trim().length) throw new ValueError('title is empty or blank')        
 
-    //     return (async () => {
-    //         const user = await User.findById(id)
+        // if (typeof artist !== 'string') throw TypeError(`${artist} is not a string`)
+        // if (!artist.trim().length) throw new ValueError('artist is empty or blank')
 
-    //         if (!user) throw new NotFoundError(`user with id ${id} not found`)
+        // if (typeof year !== 'string') throw TypeError(`${year} is not a string`)
+        // if (!year.trim().length) throw new ValueError('year is empty or blank')
 
-    //         const postit = new Postit({ text, user: user.id, status })
+        // if (info != null && typeof info !== 'string') throw TypeError(`${info} is not a string`)
+        // if (!info.trim().length) throw new ValueError('info is empty or blank')
 
-    //         await postit.save()
-    //     })()
-    // },
+        // if (imgVinylUrl != null && typeof imgVinylUrl !== 'string') throw TypeError(`${imgVinylUrl} is not a string`)
+
+        return (async () => {
+            const user = await User.findById(id)
+
+            if (!user) throw new NotFoundError(`user with id ${id} not found`)
+
+            const vinyl = new Vinyl({ id: user.id, title, artist, year, imgVinylUrl, info })
+
+            console.log(vinyl)
+            
+
+            await vinyl.save()
+        })()
+    },
 
     // listPostits(id) {
     //     if (typeof id !== 'string') throw TypeError(`${id} is not a string`)

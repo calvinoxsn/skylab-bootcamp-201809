@@ -176,27 +176,26 @@ router.get('/users/:id/followersList', [bearerTokenParser, jwtVerifier, jsonBody
     }, res)
 })
 
-router.post('/users/:id/postits', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, res) => {
-    routeHandler(() => {
-        const { sub, params: { id }, body: { text, status } } = req
+// router.post('/users/:id/postits', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, res) => {
+//     routeHandler(() => {
+//         const { sub, params: { id }, body: { text, status } } = req
 
-        if (id !== sub) throw Error('token sub does not match user id')
+//         if (id !== sub) throw Error('token sub does not match user id')
 
-        return logic.addPostit(id, text, status)
-            .then(() => res.json({
-                message: 'postit added'
-            }))
+//         return logic.addPostit(id, text, status)
+//             .then(() => res.json({
+//                 message: 'postit added'
+//             }))
 
-    }, res)
-})
+//     }, res)
+// })
 
 router.post('/vinyls', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, res) => {
     routeHandler(() => {
-        const {title, artist, year, info, comments, likes, imageUrl } = req.body
 
-        if (id !== sub) throw Error('token sub does not match user id')
+        const  { id, title, artist, year, info, imgVinylUrl }  = req.body
 
-        return logic.addVinyl( title, artist, year, info, comments, likes, imageUrl )
+        return logic.addVinyl( id, title, artist, year, imgVinylUrl, info )
             .then(() => res.json({
                 message: 'vinyl added'
             }))

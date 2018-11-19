@@ -12,6 +12,12 @@ const Comment = new Schema({
 
 
 const Vinyl = new Schema({
+
+    id: {
+        type: ObjectId,
+        ref: 'User'
+    },
+    
     title: {
         type: String,
         required: true
@@ -38,14 +44,9 @@ const Vinyl = new Schema({
         ref: 'User'
     },
 
-    imageVinylUrl: {
+    imgVinylUrl: {
         type: String
 
-    },
-
-    user: {
-        type: ObjectId,
-        ref: 'User'
     }
 
 })

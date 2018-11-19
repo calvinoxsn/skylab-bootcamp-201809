@@ -14,6 +14,7 @@ import PublicProfile from './components/PublicProfile'
 import FollowsListUser  from './components/FollowsListUser'
 import FollowersListUser  from './components/FollowersListUser'
 import SearchListUsers from './components/SearchListUsers'
+import AddVinyl from './components/AddVinyl'
 
 
 
@@ -21,20 +22,7 @@ class App extends Component {
   state = { error: null }
 
 
-    handleEditProfile = ( username,  newPassword, password, imgProfileUrl, bio ) => {
-        
-        try {
-            logic.modifyUser( username,  newPassword, password, imgProfileUrl, bio )
-                .then(() => {
-                    this.setState({ error: null }, () => this.props.history.push('/profile'))
-                    Event.$emit('change-profile-img', {image: imgProfileUrl})
-                    Event.$emit('change-profile-username', {username: username})
-                })
-                .catch(err => this.setState({ error: err.message }))
-        } catch (err) {
-            this.setState({ error: err.message })
-        }
-    }
+    
    
     handleRegister = ( email, username, password, bio ) => {
   
@@ -60,6 +48,21 @@ class App extends Component {
             this.setState({ error: err.message })
         }
     
+    }
+
+    handleEditProfile = ( username,  newPassword, password, imgProfileUrl, bio ) => {
+        
+        try {
+            logic.modifyUser( username,  newPassword, password, imgProfileUrl, bio )
+                .then(() => {
+                    this.setState({ error: null }, () => this.props.history.push('/profile'))
+                    Event.$emit('change-profile-img', {image: imgProfileUrl})
+                    Event.$emit('change-profile-username', {username: username})
+                })
+                .catch(err => this.setState({ error: err.message }))
+        } catch (err) {
+            this.setState({ error: err.message })
+        }
     }
     
     handleLogoutClick = () => {
@@ -92,6 +95,7 @@ class App extends Component {
                   <Route exact path="/follows" render={() => logic.loggedIn ? <FollowsListUser /> : <Redirect to="/login" />} />
                   <Route exact path="/followers" render={() => logic.loggedIn ? <FollowersListUser /> : <Redirect to="/login" />} />
                   <Route exact path="/users" render={() => logic.loggedIn ? <SearchListUsers /> : <Redirect to="/login" />} />
+                  <Route path="/add-vinyl" render={() => logic.loggedIn ? <AddVinyl /> : <Redirect to="/login" />} />
                 </div> 
 
            

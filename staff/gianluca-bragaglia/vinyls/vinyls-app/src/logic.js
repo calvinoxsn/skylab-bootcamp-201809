@@ -345,6 +345,42 @@ const logic = {
 
     },
 
+    addVinyl(title, artist, year, info, imgVinylUrl) {
+
+        
+        console.log('addvinylj')
+        
+
+        // if (typeof title !== 'string') throw TypeError(`${title} is not a string`)
+        // if (!title.trim().length) throw TypeError('title is empty or blank')        
+
+        // if (typeof artist !== 'string') throw TypeError(`${artist} is not a string`)
+        // if (!artist.trim().length) throw TypeError('artist is empty or blank')
+
+        // if (typeof year !== 'string') throw TypeError(`${year} is not a string`)
+        // if (!year.trim().length) throw TypeError('year is empty or blank')
+
+        // if (info != null && typeof info !== 'string') throw TypeError(`${info} is not a string`)
+        // if (!info.trim().length) throw TypeError('info is empty or blank')
+
+        // if (imgVinylUrl != null && typeof imgVinylUrl !== 'string') throw TypeError(`${imgVinylUrl} is not a string`)
+
+        const id = this._userId
+
+        return fetch(`${this.url}/vinyls`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8',
+                'Authorization': `Bearer ${this._token}`
+            },
+            body: JSON.stringify({ id, title, artist, year, info, imgVinylUrl })
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res.error) throw Error(res.error)
+            })
+    }
+
 
     
     
