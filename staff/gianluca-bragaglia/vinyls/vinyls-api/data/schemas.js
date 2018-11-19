@@ -1,7 +1,16 @@
 const { Schema, SchemaTypes: { ObjectId } } = require('mongoose')
 
+const Comment = new Schema({
+        user: {
+            type: ObjectId,
+            ref: 'User'
+        },
+        text: {
+            type: String
+        }
+    })
 
-/* 
+
 const Vinyl = new Schema({
     title: {
         type: String,
@@ -19,30 +28,27 @@ const Vinyl = new Schema({
     },
 
     info: {
-        type: String,
+        type: String
     },
 
-    comments: {
-        type: Array
-
-    },
+    comments: [Comment],
 
     likes: {
-        type: Number
+        type: ObjectId,
+        ref: 'User'
     },
 
-    imageUrl: {
-        type: String,
-        url: 'https://via.placeholder.com/300.png'
+    imageVinylUrl: {
+        type: String
+
     },
 
     user: {
         type: ObjectId,
-        ref: 'User',
-        required: true
+        ref: 'User'
     }
 
-}) */
+})
 
 const User = new Schema({
     email: {
@@ -75,15 +81,16 @@ const User = new Schema({
         type: ObjectId,
         ref: 'User'
     }]
-    
+
 
 })
 
-// module.exports = {
-//     Postit,
-//     User
-// }
+module.exports = {
+    Vinyl,
+    User,
+    Comment
+}
 
 
-module.exports = { User }
+//module.exports = { User }
 

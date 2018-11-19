@@ -1,14 +1,15 @@
 const mongoose = require('mongoose')
 
-// const { Postit, User } = require('./schemas')
+const { Vinyl, User, Comment } = require('./schemas')
 
-const { User } = require('./schemas')
-
-// module.exports = {
-//     Postit: mongoose.model('Postit', Postit),
-//     User: mongoose.model('User', User)
-// }
+//const { User } = require('./schemas')
 
 module.exports = {
-    User: mongoose.model('User', User)
+    Vinyl: mongoose.model('Vinyl', Vinyl),
+    User: mongoose.model('User', User),
+    Comment: mongoose.model('Comment', Comment)
 }
+
+// module.exports = {
+//     User: mongoose.model('User', User)
+// }
