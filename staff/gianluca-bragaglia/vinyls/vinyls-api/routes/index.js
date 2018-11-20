@@ -203,6 +203,17 @@ router.post('/vinyls', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, r
     }, res)
 })
 
+router.get('/vinyls', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, res) => {
+    routeHandler(() => {
+
+        return logic.retrieveVinyls()
+            .then(vinyls => res.json({
+                data: vinyls
+            }))
+
+    }, res)
+})
+
 router.get('/users/:id/postits', [bearerTokenParser, jwtVerifier], (req, res) => {
     routeHandler(() => {
         const { sub, params: { id } } = req

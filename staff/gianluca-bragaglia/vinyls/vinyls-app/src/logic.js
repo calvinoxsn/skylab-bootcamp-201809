@@ -130,7 +130,7 @@ const logic = {
 
                 const users = res.data
 
-                const _usersGallery = users.filter( _index => _index._id != this._userId )
+                const _usersGallery = users.filter( _index => _index.idUser != this._userId )
 
                 return _usersGallery
             })
@@ -144,6 +144,9 @@ const logic = {
                 
                 if (res.error) throw Error(res.error)
                 const users = res.data
+
+                console.log(users);
+                
 
                 return users
             })
@@ -355,14 +358,13 @@ const logic = {
         if (!artist.trim().length) throw TypeError('artist is empty or blank')
 
         if (typeof year !== 'number') throw TypeError(`${year} is not a number`)
-        if (!year.trim().length) throw TypeError('year is empty or blank')
+        if ( year == 0) throw TypeError(`year is not a number`)
 
         if (info != null && typeof info !== 'string') throw TypeError(`${info} is not a string`)
         if (!info.trim().length) throw TypeError('info is empty or blank')
 
         if (imgVinylUrl != null && typeof imgVinylUrl !== 'string') throw TypeError(`${imgVinylUrl} is not a string`)
 
-        console.log(title, artist, year, imgVinylUrl, info + 'logic')
         const id = this._userId
 
         return fetch(`${this.url}/vinyls`, {
@@ -377,7 +379,47 @@ const logic = {
             .then(res => {
                 if (res.error) throw Error(res.error)
             })
-    }
+    },
+
+    retrieveVinyls() {
+   
+        return fetch(`${this.url}/vinyls`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${this._token}`
+            }
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res.error) throw Error(res.error)
+                
+                return  res.data
+                                     
+            })
+
+    },
+
+    // retrieveVinyl(id) {
+
+    //     if (typeof id !== 'string') throw new TypeError(`${id} is not a string`)
+
+    //     if (!id.trim().length) throw Error('id is empty or blank')
+
+    //     return fetch(`${this.url}/vinyls/${id}`, {
+    //         method: 'GET',
+    //         headers: {
+    //             'Content-Type': 'application/json; charset=utf-8',
+    //             'Authorization': `Bearer ${this._token}`
+    //         }
+    //     })
+    //         .then(res => res.json())
+    //         .then(res => {
+                
+    //             if (res.error) throw Error(res.error)
+    //             return res.data
+                
+    //         })
+    // },
 
 
     

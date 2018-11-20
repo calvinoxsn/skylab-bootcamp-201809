@@ -55,13 +55,14 @@ const logic = {
 
             _users.forEach(user => {
 
-                //delete user._id
+                user.idUser = user._id.toString()
+                delete user._id
                 delete user.__v
                 delete user.password
 
-            })
+                return user
 
-            return console.log(_users)
+            })
 
         })()
     },
@@ -76,9 +77,12 @@ const logic = {
 
             users.forEach(user => {
 
-                //delete user._id
+                user.idUser = user._id.toString()
+                delete user._id
                 delete user.__v
                 delete user.password
+
+                return user
 
             })
 
@@ -98,7 +102,7 @@ const logic = {
 
             if (!user) throw new NotFoundError(`user with id ${id} not found`)
 
-            user.id = id
+            user.idUser = id
 
             return user
         })()
@@ -178,7 +182,7 @@ const logic = {
                 if (_followersId == id) throw new AlreadyExistsError(`already follow this user`)
             })
 
-            user.follows.push(follow._id)
+            user.follows.push(follow.id)
             follow.followers.push(id)
 
             await user.save()
@@ -267,11 +271,12 @@ const logic = {
 
             listFollows.forEach(user => {
 
-                //delete user._id
+                user.idUser = user._id.toString()
+                delete user._id
                 delete user.__v
                 delete user.password
-                delete user.follows
-                delete user.followers
+
+                return user
             })
             
             return listFollows
@@ -310,11 +315,12 @@ const logic = {
 
             listFollowers.forEach(user => {
 
-                //delete user._id
+                user.idUser = user._id.toString()
+                delete user._id
                 delete user.__v
                 delete user.password
-                delete user.follows
-                delete user.followers
+
+                return user
             })
             
             return listFollowers
@@ -339,10 +345,7 @@ const logic = {
      * @returns {Promise} Resolves on correct data, rejects on wrong user id
      */
     addVinyl(id, title, artist, year, imgVinylUrl, info ) {
-
-        console.log(id, title, artist, year, imgVinylUrl, info)
-        
-
+  
         if (typeof id !== 'string') throw TypeError(`${id} is not a string`)
         if (!id.trim().length) throw new ValueError('user id is empty or blank')
 
@@ -353,7 +356,6 @@ const logic = {
         if (!artist.trim().length) throw new ValueError('artist is empty or blank')
 
         if (year != null && typeof year !== 'number') throw TypeError(`${year} is not a number`)
-        if (!year.trim().length) throw new ValueError('year is empty or blank')
 
         if (info != null && typeof info !== 'string') throw TypeError(`${info} is not a string`)
         if (!info.trim().length) throw new ValueError('info is empty or blank')
@@ -368,6 +370,29 @@ const logic = {
             const vinyl = new Vinyl({ id: user.id, title, artist, year, imgVinylUrl, info })
 
             await vinyl.save()
+        })()
+    },
+
+    retrieveVinyls() {
+      
+        return (async () => {
+            const vinyls = await Vinyl.find().lean()
+           
+            if (!vinyls) throw new NotFoundError(`vinyls not found`)
+
+            vinyls.forEach(vinyl => {
+
+                vinyl.idVinyl = vinyl._id.toString()
+
+                delete vinyl._id
+                delete vinyl.__v
+
+                return vinyl
+
+            })
+
+            return vinyls
+
         })()
     },
 

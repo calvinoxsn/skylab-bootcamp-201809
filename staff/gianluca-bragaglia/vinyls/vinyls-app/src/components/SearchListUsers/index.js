@@ -15,7 +15,7 @@ class SearchListUsers extends Component {
        
         try {  
             
-            logic.retrieveUsers()
+            logic.getUsers()
             .then(res => { this.setState({ users: res  }) })
             .catch(err => this.setState({ error: err.message }))
         } catch (err) {
@@ -53,7 +53,7 @@ class SearchListUsers extends Component {
                 
                 <div className='list-group-flush'>
                         {filteredUsers.map(user => (
-                            <UserListItem key={user._id} id={user._id} username={user.username} imgProfileUrl={user.imgProfileUrl}/>
+                            <UserListItem key={user.idUser} id={user.idUser} username={user.username} imgProfileUrl={user.imgProfileUrl}/>
                         ))}
                 </div>
                

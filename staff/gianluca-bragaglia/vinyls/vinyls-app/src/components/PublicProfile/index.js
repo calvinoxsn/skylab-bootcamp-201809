@@ -7,7 +7,7 @@ import './index.css'
 
 class PublicProfile extends Component {
 
-    state = { username: '', imgProfileUrl: null, bio: '', error: null, follows: [], followers: [] }
+    state = { username: '', imgProfileUrl: null, bio: '', error: null, follows: [], followers: [], followSelected: false }
 
     componentDidMount() {
         try {       

@@ -1,36 +1,45 @@
 import React, { Component } from 'react'
 import VinylListItem from '../VinylListItem'
 import VinylListCardItem from '../VinylListCardItem'
+import logic from '../../logic'
 import './index.css'
 
 
 
 class VinylsList extends Component {
-    
-    // componentDidMount() {
-    //     this.props.showVinyls()
-    // }
 
+    state = { vinyls: [], error: null}
+    
+    componentDidMount() {
+
+        try {              
+            logic.retrieveVinyls()
+            .then(vinyls => { this.setState({ vinyls }) })
+            .catch(err => this.setState({ error: err.message }))
+        } catch (err) {
+            this.setState({ error: err.message })
+        }
+    }
     render() { 
 
-        const { vinyls } = this.props
+        const { vinyls } = this.state
         
         return ( 
             <React.Fragment>
-                {/* <h2 className='text-center my-5'>Vinyls</h2> */}
+                 <h2 className='text-center my-5'>Vinyls</h2> 
                 
                 {/* <div className='list-card'>
                         {vinyls.map(vinyl => (
                             <VinylListCardItem key={vinyl.id} info={vinyl}/>
                         ))}
-                </div>
+                </div>*/}
                 <div className='vinyls-list'>
                         <ul className='list-group-flush'>
                         {vinyls.map(vinyl => (
-                            <VinylListItem key={vinyl.id} info={vinyl}/>
+                            <VinylListItem key={vinyl.idVinyl} id={vinyl.idVinyl} userId={vinyl.id} title={vinyl.title} artist={vinyl.artist} img={vinyl.imgVinylUrl}/>
                         ))}
                         </ul>
-                </div> */}
+                </div> 
             </React.Fragment>
          )
     }

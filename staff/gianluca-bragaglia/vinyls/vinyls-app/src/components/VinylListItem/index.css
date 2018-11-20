@@ -6,3 +6,8 @@
 .artist{
     text-transform: capitalize;
 }
+
+.vinyl-img-small{
+    width: 50px;
+    border-radius: 50%;
+}

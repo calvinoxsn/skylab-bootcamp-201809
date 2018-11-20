@@ -43,10 +43,10 @@ const Vinyl = new Schema({
 
     comments: [Comment],
 
-    likes: {
+    likes: [{
         type: ObjectId,
         ref: 'User'
-    }
+    }]
    
 
 })

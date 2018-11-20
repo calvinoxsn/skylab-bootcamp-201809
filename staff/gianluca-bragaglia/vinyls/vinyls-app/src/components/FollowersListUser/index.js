@@ -31,7 +31,7 @@ class FollowersListUser extends Component {
                 <div className='vinyls-list'>
                         <ul className='list-group-flush'>
                         {followersListUser.map(follower => (
-                            <FollowersListUserItem key={follower.username} id={follower._id} username={follower.username} imgProfileUrl={follower.imgProfileUrl} />
+                            <FollowersListUserItem key={follower.username} id={follower.idUser} username={follower.username} imgProfileUrl={follower.imgProfileUrl} />
                         ))}
                         </ul>
                 </div>

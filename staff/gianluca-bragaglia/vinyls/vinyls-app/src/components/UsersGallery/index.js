@@ -35,7 +35,7 @@ class UsersGallery extends Component {
   galleryItems() {
     return (
       this.state.users.map((item, i) => (
-        <div key={`key-${i}`} className='users-gallery'><Link to={`/profile/${item._id}`}> <img className='users-gallery__img' src={item.imgProfileUrl ? item.imgProfileUrl : './img/icon-profile.png'} alt='users'></img></Link> <h4 className='users-gallery__username'>{item.username}</h4></div>
+        <div key={`key-${i}`} className='users-gallery'><Link to={`/profile/${item.idUser}`}> <img className='users-gallery__img' src={item.imgProfileUrl ? item.imgProfileUrl : './img/icon-profile.png'} alt='users'></img></Link> <h4 className='users-gallery__username'>{item.username}</h4></div>
       ))
     )
   };
