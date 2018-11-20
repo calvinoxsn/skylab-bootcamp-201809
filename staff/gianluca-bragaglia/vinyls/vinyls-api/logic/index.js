@@ -417,67 +417,48 @@ const logic = {
         })()
     },
 
-    // /**
-    //  * Removes a postit
-    //  * 
-    //  * @param {string} id The user id
-    //  * @param {string} postitId The postit id
-    //  * 
-    //  * @throws {TypeError} On non-string user id, or non-string postit id
-    //  * @throws {Error} On empty or blank user id or postit text
-    //  * 
-    //  * @returns {Promise} Resolves on correct data, rejects on wrong user id, or postit id
-    //  */
-    // removePostit(id, postitId) {
-    //     if (typeof id !== 'string') throw TypeError(`${id} is not a string`)
 
-    //     if (!id.trim().length) throw new ValueError('id is empty or blank')
+    retrieveVinylsByUserId(id) {
 
-    //     if (typeof postitId !== 'string') throw TypeError(`${postitId} is not a string`)
+        if (typeof id !== 'string') throw TypeError(`${id} is not a string`)
+        if (!id.trim().length) throw new ValueError('id is empty or blank')
 
-    //     if (!postitId.trim().length) throw new ValueError('postit id is empty or blank')
+        return (async () => {
 
-    //     return (async () => {
-    //         const user = await User.findById(id)
+            const vinyls = await Vinyl.find({id: id}).lean()
 
-    //         if (!user) throw new NotFoundError(`user with id ${id} not found`)
+            if (!vinyls) throw new NotFoundError(`vinyls with id ${id} not found`)
 
-    //         const postit = await Postit.findOne({ user: user._id, _id: postitId })
+            vinyls.forEach(vinyl => {
 
-    //         if (!postit) throw new NotFoundError(`postit with id ${postitId} not found`)
+                vinyl.idVinyl = vinyl._id
 
-    //         await postit.remove()
-    //     })()
-    // },
+                delete vinyl._id
+                delete vinyl.__v
 
-    // modifyPostit(id, postitId, text, status) {
-    //     if (typeof id !== 'string') throw TypeError(`${id} is not a string`)
+                return vinyl
 
-    //     if (!id.trim().length) throw new ValueError('id is empty or blank')
+            })
 
-    //     if (typeof postitId !== 'string') throw TypeError(`${postitId} is not a string`)
+            return vinyls
 
-    //     if (!postitId.trim().length) throw new ValueError('postit id is empty or blank')
+        })()
+    },
 
-    //     if (typeof text !== 'string') throw TypeError(`${text} is not a string`)
+    removeVinyl(id) {
+        
+        if (typeof id !== 'string') throw TypeError(`${id} is not a string`)
+        if (!id.trim().length) throw new ValueError('id is empty or blank')
 
-    //     if (!text.trim().length) throw new ValueError('text is empty or blank')
+        return (async () => {
+            const vinyl = await Vinyl.findById(id)
 
-    //     return (async () => {
-    //         const user = await User.findById(id)
+            if (!vinyl) throw new NotFoundError(`user with id ${id} not found`)
 
-    //         if (!user) throw new NotFoundError(`user with id ${id} not found`)
+            await vinyl.remove()
+        })()
+    }
 
-    //         const postit = await Postit.findOne({ user: user._id, _id: postitId })
-
-    //         if (!postit) throw new NotFoundError(`postit with id ${postitId} not found`)
-
-    //         postit.text = text
-    //         postit.status = status
-
-    //         await postit.save()
-    //     })()
-    // }
 }
 
 module.exports = logic

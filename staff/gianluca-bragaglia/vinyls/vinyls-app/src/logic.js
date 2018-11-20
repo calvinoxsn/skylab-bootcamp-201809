@@ -145,9 +145,6 @@ const logic = {
                 if (res.error) throw Error(res.error)
                 const users = res.data
 
-                console.log(users);
-                
-
                 return users
             })
     },
@@ -418,6 +415,59 @@ const logic = {
                 if (res.error) throw Error(res.error)
                 return res.data
                 
+            })
+    },
+
+    retrieveVinylsByUserId(id) {
+   
+        return fetch(`${this.url}/vinyls/user/${id}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${this._token}`
+            }
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res.error) throw Error(res.error)
+                
+                return res.data
+                                     
+            })
+
+    },
+
+    retrieveVinylsCurrentUser() {
+   
+        return fetch(`${this.url}/vinyls/user/${this._userId}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${this._token}`
+            }
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res.error) throw Error(res.error)
+                
+                return res.data
+                                     
+            })
+
+    },
+
+    removeVinyl(id) {
+
+        if (typeof id !== 'string') throw new TypeError(`${id} is not a string`)
+        if (!id.trim().length) throw Error('id is empty or blank')
+
+        return fetch(`${this.url}/vinyls/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${this._token}`
+            }
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res.error) throw Error(res.error)
             })
     },
 

@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom'
 import { Button } from 'mdbreact'
 import Error from '../Error'
 import logic from '../../logic'
-//import './index.css'
+import './index.css'
 
 
 
@@ -28,7 +28,7 @@ class Vinyl extends Component {
         const {error, imgVinylUrl, artist, title, year, info } = this.state
 
         return  <div className='vinyl-container'>
-                    <img className='profile-img'  src={imgVinylUrl ? imgVinylUrl : './img/vinyl.png'} ></img>
+                    <img className='vinyl-img'  src={imgVinylUrl ? imgVinylUrl : './img/vinyl.png'} ></img>
                     <br></br>
                     {error && <Error message={error} />}
                     <p className='vinyl-title'>{title}</p>

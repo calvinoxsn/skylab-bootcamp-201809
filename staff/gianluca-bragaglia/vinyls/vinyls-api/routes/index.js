@@ -132,7 +132,7 @@ router.delete('/users/:id/follows', [bearerTokenParser, jwtVerifier, jsonBodyPar
     }, res)
 })
 
-router.get('/users/:id/follows', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, res) => {
+router.get('/users/:id/follows', [bearerTokenParser, jwtVerifier], (req, res) => {
     routeHandler(() => {
         const { params: { id }, sub } = req
 
@@ -146,7 +146,7 @@ router.get('/users/:id/follows', [bearerTokenParser, jwtVerifier, jsonBodyParser
     }, res)
 })
 
-router.get('/users/:id/followsList', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, res) => {
+router.get('/users/:id/followsList', [bearerTokenParser, jwtVerifier], (req, res) => {
     routeHandler(() => {
         const { params: { id }, sub } = req
 
@@ -161,7 +161,7 @@ router.get('/users/:id/followsList', [bearerTokenParser, jwtVerifier, jsonBodyPa
     }, res)
 })
 
-router.get('/users/:id/followersList', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, res) => {
+router.get('/users/:id/followersList', [bearerTokenParser, jwtVerifier], (req, res) => {
     routeHandler(() => {
         const { params: { id }, sub } = req
 
@@ -176,19 +176,6 @@ router.get('/users/:id/followersList', [bearerTokenParser, jwtVerifier, jsonBody
     }, res)
 })
 
-// router.post('/users/:id/postits', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, res) => {
-//     routeHandler(() => {
-//         const { sub, params: { id }, body: { text, status } } = req
-
-//         if (id !== sub) throw Error('token sub does not match user id')
-
-//         return logic.addPostit(id, text, status)
-//             .then(() => res.json({
-//                 message: 'postit added'
-//             }))
-
-//     }, res)
-// })
 
 router.post('/vinyls', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, res) => {
     routeHandler(() => {
@@ -203,7 +190,7 @@ router.post('/vinyls', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, r
     }, res)
 })
 
-router.get('/vinyls', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, res) => {
+router.get('/vinyls', [bearerTokenParser, jwtVerifier], (req, res) => {
     routeHandler(() => {
 
         return logic.retrieveVinyls()
@@ -226,31 +213,30 @@ router.get('/vinyls/:id', [bearerTokenParser, jwtVerifier], (req, res) => {
     }, res)
 })
 
-router.put('/users/:id/postits/:postitId', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, res) => {
+router.get('/vinyls/user/:id', [bearerTokenParser, jwtVerifier], (req, res) => {
     routeHandler(() => {
-        const { sub, params: { id, postitId }, body: { text, status } } = req
+        
+        const { params: { id } } = req
 
-        if (id !== sub) throw Error('token sub does not match user id')
-
-        return logic.modifyPostit(id, postitId, text, status)
-            .then(() => res.json({
-                message: 'postit modified'
+        return logic.retrieveVinylsByUserId(id)
+            .then(vinyl => res.json({
+                data: vinyl
             }))
     }, res)
 })
 
-router.delete('/users/:id/postits/:postitId', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, res) => {
+router.delete('/vinyls/:id', [bearerTokenParser, jwtVerifier], (req, res) => {
     routeHandler(() => {
-        const { sub, params: { id, postitId } } = req
+        
+        const { params: { id } } = req
 
-        if (id !== sub) throw Error('token sub does not match user id')
-
-        return logic.removePostit(id, postitId)
+        return logic.removeVinyl(id)
             .then(() => res.json({
-                message: 'postit removed'
+                message: 'vinyl removed'
             }))
     }, res)
-
 })
+
+
 
 module.exports = router

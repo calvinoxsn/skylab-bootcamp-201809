@@ -3,6 +3,7 @@ import { withRouter } from 'react-router-dom'
 import logic from '../../logic'
 import Error from '../Error'
 import './index.css'
+import VinylsListProfilePublic from '../VinylsListProfilePublic'
 
 
 class PublicProfile extends Component {
@@ -25,8 +26,8 @@ class PublicProfile extends Component {
 
     
 
-    handleFollowClick = event => {
-        event.preventDefault()
+    handleFollowClick = e => {
+        e.preventDefault()
              try {       
             
                 logic.addFollow(this.state.username)
@@ -43,8 +44,8 @@ class PublicProfile extends Component {
             }
     }
 
-    handleDontFollowClick = event => {
-        event.preventDefault()
+    handleDontFollowClick = e => {
+        e.preventDefault()
         try {       
        
            logic.removeFollow(this.state.username)
@@ -76,6 +77,7 @@ class PublicProfile extends Component {
                 <a href="#" onClick={followSelected ? this.handleDontFollowClick : this.handleFollowClick}> {followSelected ? <span className='dont-follow-btn'>stop follow {username}</span> : <span className='follow-btn'>Follow</span>}</a>
                 <br></br> <br></br>
                 <p className='profile-bio'>{bio}</p>
+                <VinylsListProfilePublic id={this.props.id}/>
             
             
         </div>

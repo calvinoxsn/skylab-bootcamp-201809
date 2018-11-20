@@ -7,7 +7,7 @@
 
 .profile-username{
     color: #2B3E50;
-    font-size: 27px;
+    font-size: 32px;
     margin-top: 10px;
 
 }
@@ -53,6 +53,7 @@
 
     .profile-container {
         width: 97%;
+        
     }
 
     .profile-img{
