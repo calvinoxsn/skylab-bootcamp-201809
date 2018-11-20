@@ -17,16 +17,10 @@ const Product = new Schema({
         required: true
     },
 
-    keyFeatures: {
-        title: {
-            type: String,
-            required: true
-        },
-        content: {
-            type: Array,
-            required: true
-        }
-    },
+    features: [{
+        type: String,
+        required: true
+    }],
 
     description: {
         type: String,
@@ -44,6 +38,11 @@ const Product = new Schema({
         default: true
     },
 
+    underWarranty: {
+        type: Boolean,
+        required: true
+    },
+
     imageUrl: {
         type: String,
         required: true
@@ -53,9 +52,7 @@ const Product = new Schema({
         type: String,
         required: true,
         enum: ['ELECTRIC', 'ACOUSTIC', 'ELECTROACOUSTIC', 'CLASSICAL']
-
     }
-
 })
 
 const User = new Schema({
