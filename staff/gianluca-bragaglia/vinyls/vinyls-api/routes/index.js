@@ -214,15 +214,14 @@ router.get('/vinyls', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, re
     }, res)
 })
 
-router.get('/users/:id/postits', [bearerTokenParser, jwtVerifier], (req, res) => {
+router.get('/vinyls/:id', [bearerTokenParser, jwtVerifier], (req, res) => {
     routeHandler(() => {
-        const { sub, params: { id } } = req
+        
+        const { params: { id } } = req
 
-        if (id !== sub) throw Error('token sub does not match user id')
-
-        return logic.listPostits(id)
-            .then(postits => res.json({
-                data: postits
+        return logic.retrieveVinylById(id)
+            .then(vinyl => res.json({
+                data: vinyl
             }))
     }, res)
 })

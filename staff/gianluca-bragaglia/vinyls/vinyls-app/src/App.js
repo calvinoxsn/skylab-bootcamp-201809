@@ -98,7 +98,7 @@ class App extends Component {
                   <Route exact path="/users" render={() => logic.loggedIn ? <SearchListUsers /> : <Redirect to="/login" />} />
                   <Route path="/add-vinyl" render={() => logic.loggedIn ? <AddVinyl /> : <Redirect to="/login" />} />
                   <Route exact path="/vinyls" render={() => logic.loggedIn ? <VinylsList /> : <Redirect to="/login" />} />
-                  <Route exact path="/vinyl/:id" render={() => logic.loggedIn ? <Vinyl /> : <Redirect to="/login" />} />
+                  <Route exact path="/vinyl/:id" render={(props) => logic.loggedIn ? <Vinyl id={props.match.params.id}/> : <Redirect to="/login" />} />
                 </div> 
 
            

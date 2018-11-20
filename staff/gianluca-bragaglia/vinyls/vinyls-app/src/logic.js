@@ -399,27 +399,27 @@ const logic = {
 
     },
 
-    // retrieveVinyl(id) {
+    retrieveVinylById(id) {
 
-    //     if (typeof id !== 'string') throw new TypeError(`${id} is not a string`)
+        if (typeof id !== 'string') throw new TypeError(`${id} is not a string`)
 
-    //     if (!id.trim().length) throw Error('id is empty or blank')
+        if (!id.trim().length) throw Error('id is empty or blank')
 
-    //     return fetch(`${this.url}/vinyls/${id}`, {
-    //         method: 'GET',
-    //         headers: {
-    //             'Content-Type': 'application/json; charset=utf-8',
-    //             'Authorization': `Bearer ${this._token}`
-    //         }
-    //     })
-    //         .then(res => res.json())
-    //         .then(res => {
+        return fetch(`${this.url}/vinyls/${id}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8',
+                'Authorization': `Bearer ${this._token}`
+            }
+        })
+            .then(res => res.json())
+            .then(res => {
                 
-    //             if (res.error) throw Error(res.error)
-    //             return res.data
+                if (res.error) throw Error(res.error)
+                return res.data
                 
-    //         })
-    // },
+            })
+    },
 
 
     

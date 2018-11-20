@@ -55,7 +55,7 @@ const logic = {
 
             _users.forEach(user => {
 
-                user.idUser = user._id.toString()
+                user.idUser = user._id
                 delete user._id
                 delete user.__v
                 delete user.password
@@ -77,7 +77,7 @@ const logic = {
 
             users.forEach(user => {
 
-                user.idUser = user._id.toString()
+                user.idUser = user._id
                 delete user._id
                 delete user.__v
                 delete user.password
@@ -271,7 +271,7 @@ const logic = {
 
             listFollows.forEach(user => {
 
-                user.idUser = user._id.toString()
+                user.idUser = user._id
                 delete user._id
                 delete user.__v
                 delete user.password
@@ -315,7 +315,7 @@ const logic = {
 
             listFollowers.forEach(user => {
 
-                user.idUser = user._id.toString()
+                user.idUser = user._id
                 delete user._id
                 delete user.__v
                 delete user.password
@@ -382,7 +382,7 @@ const logic = {
 
             vinyls.forEach(vinyl => {
 
-                vinyl.idVinyl = vinyl._id.toString()
+                vinyl.idVinyl = vinyl._id
 
                 delete vinyl._id
                 delete vinyl.__v
@@ -396,32 +396,26 @@ const logic = {
         })()
     },
 
-    // listPostits(id) {
-    //     if (typeof id !== 'string') throw TypeError(`${id} is not a string`)
+    retrieveVinylById(id) {
+        if (typeof id !== 'string') throw TypeError(`${id} is not a string`)
 
-    //     if (!id.trim().length) throw new ValueError('id is empty or blank')
+        if (!id.trim().length) throw new ValueError('id is empty or blank')
 
-    //     return (async () => {
-    //         const user = await User.findById(id).lean()
+        return (async () => {
 
-    //         if (!user) throw new NotFoundError(`user with id ${id} not found`)
+            const vinyl = await Vinyl.findById(id, { '_id': 0,  __v: 0 }).lean()
 
-    //         const postits = await Postit.find({ user: user._id })
-    //             .lean()
+            if (!vinyl) throw new NotFoundError(`vinyl with id ${id} not found`)
 
-    //         postits.forEach(postit => {
-    //             postit.id = postit._id.toString()
+            vinyl.idVinyl = vinyl._id
 
-    //             delete postit._id
+            delete vinyl._id
+            delete vinyl.__v
 
-    //             postit.user = postit.user.toString()
+            return vinyl
 
-    //             return postit
-    //         })
-
-    //         return postits
-    //     })()
-    // },
+        })()
+    },
 
     // /**
     //  * Removes a postit
