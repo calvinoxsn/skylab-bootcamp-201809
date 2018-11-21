@@ -119,7 +119,7 @@ const logic = {
     //     return res
     // },
 
-    getUsers() {
+    retrieveGalleryUsers() {
 
         return fetch(`${this.url}/users/user/${this._userId}`, {headers: { 'Authorization': `Bearer ${this._token}` } })
             .then(res => res.json())
@@ -129,9 +129,7 @@ const logic = {
 
                 const users = res.data
 
-                const _usersGallery = users.filter( _index => _index.idUser != this._userId )
-
-                return _usersGallery
+                return users
             })
     },
 
@@ -212,7 +210,9 @@ const logic = {
     modifyUser(username, newPassword, password, imgProfileUrl, bio,) {
 
         if (typeof username !== 'string') throw TypeError(`${username} is not a string`)
+        if (!username.trim().length) throw Error('username is empty or blank')
         if (typeof password !== 'string') throw TypeError(`${password} is not a string`)
+        if (!password.trim().length) throw Error('password is empty or blank')
         if (typeof newPassword !== 'string') throw TypeError(`${newPassword} is not a string`)
         if (bio != null && typeof bio !== 'string') throw TypeError(`${bio} is not a string`)
 

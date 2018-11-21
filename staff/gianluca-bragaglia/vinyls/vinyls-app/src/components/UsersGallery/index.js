@@ -19,12 +19,9 @@ class UsersGallery extends Component {
 
     try {       
         
-        logic.getUsers()
+        logic.retrieveGalleryUsers()
         //.then(res => { this.setState({ users: res.slice(0, 8)  }) })
-        .then(res => { 
-          res.sort(function() {return 0.5 - Math.random()})
-          this.setState({ users: res.slice(0, 8) }) 
-        })
+        .then(res =>  this.setState({ users: res }))
         .catch(err => this.setState({ error: err.message }))
     } catch (err) {
         this.setState({ error: err.message })

@@ -180,7 +180,7 @@ describe('logic', () => {
         })
 
 
-        describe('retrieve users without user', () => {
+        describe('retrieve gallery Users', () => {
             let user
             
             beforeEach(async () => {
@@ -193,23 +193,23 @@ describe('logic', () => {
             
 
             it('should succeed on valid id', async () => {
-                const _users = await logic.retrieveUsers(user.id)
+                const _users = await logic.retrieveGalleryUsers(user.id)
 
                 expect(_users.length).to.equal(1)
 
             })
 
             it('should fail on undefined id', () => {
-                expect(() => logic.retrieveUsers(undefined)).to.throw(TypeError, 'undefined is not a string')
+                expect(() => logic.retrieveGalleryUsers(undefined)).to.throw(TypeError, 'undefined is not a string')
                 
             })
 
             it('should fail on empty id', () => {
-                expect(() => logic.retrieveUsers('')).to.throw(ValueError, 'id is empty or blank')
+                expect(() => logic.retrieveGalleryUsers('')).to.throw(ValueError, 'id is empty or blank')
             })
 
             it('should fail on blank id', () => {
-                expect(() => logic.retrieveUsers('   \t\n')).to.throw(ValueError, 'id is empty or blank')
+                expect(() => logic.retrieveGalleryUsers('   \t\n')).to.throw(ValueError, 'id is empty or blank')
             })
 
         })
@@ -221,13 +221,14 @@ describe('logic', () => {
                 user = new User({ email: 'John@jon.com', username: 'jd', password: '123' })
                 user2 = new User({ email: 'Joh2n@jon.com', username: 'jd2', password: '1232' })
 
+
                 await user.save()
                 await user2.save()
             })
             
 
             it('should succeed on correct data', async () => {
-                const _users = await logic.retrieveUsersAll()
+                const _users = await logic.retrieveUsers()
 
                 expect(_users.length).to.equal(2)
 
@@ -376,6 +377,32 @@ describe('logic', () => {
                 expect(newImgProfileUrl).to.be.a('string')
                 expect(_user.username).to.equal(username)
                 expect(_user.password).to.equal(password)
+                expect(_user.imgProfileUrl).to.equal(newImgProfileUrl)
+                expect(_user.bio).to.equal(newBio)
+            })
+
+            it('should update on correct id, username and password, adding new password, bio and photo profile', async () => {
+                const { id, username, password, imgProfileUrl, bio  } = user
+
+                const newBio = `${bio}-${Math.random()}`
+                const newImgProfileUrl = `${imgProfileUrl}-${Math.random()}`
+                const newPassword = `${password}-${Math.random()}`
+
+                const res = await logic.updateUser(id, username, password, newPassword, newImgProfileUrl, newBio)
+
+                expect(res).to.be.undefined
+
+                const _users = await User.find()
+
+                const [_user] = _users
+
+                expect(_user.id).to.equal(id)
+
+                expect(newBio).to.be.a('string')
+                expect(newImgProfileUrl).to.be.a('string')
+                expect(newPassword).to.be.a('string')
+                expect(_user.username).to.equal(username)
+                expect(_user.password).to.equal(newPassword)
                 expect(_user.imgProfileUrl).to.equal(newImgProfileUrl)
                 expect(_user.bio).to.equal(newBio)
             })

@@ -63,7 +63,7 @@ router.get('/users/:id', [bearerTokenParser, jwtVerifier], (req, res) => {
 router.get('/users', [bearerTokenParser, jwtVerifier], (req, res) => {
     routeHandler(() => {
 
-        return logic.retrieveUsersAll()
+        return logic.retrieveUsers()
             .then(users =>
                 res.json({
                     data: users
@@ -77,7 +77,7 @@ router.get('/users/user/:id', [bearerTokenParser, jwtVerifier], (req, res) => {
 
         const { params: { id }, sub } = req
 
-        return logic.retrieveUsers(id)
+        return logic.retrieveGalleryUsers(id)
             .then(users =>
                 res.json({
                     data: users

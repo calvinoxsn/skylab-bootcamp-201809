@@ -15,7 +15,7 @@ class SearchListUsers extends Component {
        
         try {  
             
-            logic.getUsers()
+            logic.retrieveUsers()
             .then(res => { this.setState({ users: res, error: null  }) })
             .catch(err => this.setState({ error: err.message }))
         } catch (err) {
