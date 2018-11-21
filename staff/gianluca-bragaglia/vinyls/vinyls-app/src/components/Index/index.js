@@ -8,6 +8,8 @@ import './index.css'
 
 class Index extends Component {
 
+    state = { error: null }
+
     render() { 
         return (  <div>
 

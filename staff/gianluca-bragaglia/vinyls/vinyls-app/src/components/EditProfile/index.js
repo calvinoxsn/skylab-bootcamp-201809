@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
 import { Button } from 'mdbreact'
 import logic from '../../logic'
+import Error from '../Error'
 import './index.css'
 
 
@@ -13,7 +14,7 @@ class EditProfile extends Component {
     componentDidMount() {
         try {
             logic.getCurrentUser()
-            .then(user => { this.setState({ username: user.username, imgProfileUrl: user.imgProfileUrl, bio: user.bio  }) })
+            .then(user => { this.setState({ username: user.username, imgProfileUrl: user.imgProfileUrl, bio: user.bio, error: null  }) })
             .catch(err => this.setState({ error: err.message }))
         } catch (err) {
             this.setState({ error: err.message })
@@ -90,7 +91,7 @@ class EditProfile extends Component {
 
     render() {
 
-        const { imgProfileUrl, username, bio } = this.state
+        const { imgProfileUrl, username, bio, error } = this.state
 
         return <div className='edit-profile-container'>
                 <img className='profile-img' src={ imgProfileUrl ? imgProfileUrl : './img/icon-profile.png'} ></img>
@@ -106,6 +107,7 @@ class EditProfile extends Component {
                     <br></br>
                     <textarea className='textarea' type='text' value={bio} onChange={this.handleBioChange}></textarea>
                     <br></br>
+                    {error && <Error message={error} />}
                     <Button type='submit'color='black' >Save</Button> 
                 </form>
         </div>

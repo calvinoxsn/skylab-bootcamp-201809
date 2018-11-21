@@ -214,7 +214,7 @@ const logic = {
         if (typeof username !== 'string') throw TypeError(`${username} is not a string`)
         if (typeof password !== 'string') throw TypeError(`${password} is not a string`)
         if (typeof newPassword !== 'string') throw TypeError(`${newPassword} is not a string`)
-        if (typeof bio !== 'string') throw TypeError(`${bio} is not a string`)
+        if (bio != null && typeof bio !== 'string') throw TypeError(`${bio} is not a string`)
 
 
         return fetch(`${this.url}/users/${this._userId}`, {
@@ -223,7 +223,7 @@ const logic = {
                 'Content-Type': 'application/json; charset=utf-8',
                 'Authorization': `Bearer ${this._token}`
             },
-            body: JSON.stringify({username, newPassword, password, bio, imgProfileUrl })
+            body: JSON.stringify({username, password, bio, newPassword, imgProfileUrl })
         })
             .then(res => res.json())
             .then(res => {

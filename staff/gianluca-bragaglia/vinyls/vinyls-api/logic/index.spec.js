@@ -185,25 +185,23 @@ describe('logic', () => {
             
             beforeEach(async () => {
                 user = new User({ email: 'John@jon.com', username: 'jd', password: '123' })
+                user2 = new User({ email: 'Joh2n@jon.com', username: 'jd2', password: '1232' })
 
                 await user.save()
+                await user2.save()
             })
             
 
             it('should succeed on valid id', async () => {
-                const _user = await logic.retrieveUsers(user.id)
+                const _users = await logic.retrieveUsers(user.id)
 
-                const { email, username, id } = _user
+                expect(_users.length).to.equal(1)
 
-                expect(_user).not.to.be.instanceof(User)
-
-                expect(_user.id).to.equal(id)
-                expect(_user.email).to.equal(email)
-                expect(_user.username).to.equal(username)
             })
 
             it('should fail on undefined id', () => {
                 expect(() => logic.retrieveUsers(undefined)).to.throw(TypeError, 'undefined is not a string')
+                
             })
 
             it('should fail on empty id', () => {
@@ -242,40 +240,38 @@ describe('logic', () => {
         describe('update', () => {
             let user
 
-            beforeEach(() => (user = new User({ email: 'gio@jio.com', username: 'jd', password: '123', imgProfileUrl: '1234', bio: 'hhh' })).save())
+            beforeEach(() => (user = new User({ email:'joe@joe.com', username: 'jd', password: '123', imgProfileUrl: null, bio: null, follows: [], followers: [], comments: [] })).save())
 
-            // it('should update on correct data and password', async () => {
-            //     const {id, username, imgProfileUrl, bio, password } = user
+            it('should update on correct data and password', async () => {
+                const {id, username, password, newPassword, imgProfileUrl, bio} = user
 
-            //     debugger
+                const newUsername = `${username}-${Math.random()}`
+                const newImgProfileUrl = `${imgProfileUrl}-${Math.random()}`
+                const newBio = `${bio}-${Math.random()}`
 
-            //     const newUsername = `${username}-${Math.random()}`
-            //     const newImgProfileUrl = `${imgProfileUrl}-${Math.random()}`
-            //     const newBio = `${bio}-${Math.random()}`
-            //     const newPassword = `${password}-${Math.random()}`
 
-            //     const res = await logic.updateUser(id, email, newUsername, newPassword, newImgProfileUrl, newBio, password)
+                const res = await logic.updateUser(id, newUsername, password, newPassword, newImgProfileUrl, newBio)
 
-            //     expect(res).to.be.undefined
+                expect(res).to.be.undefined
 
-            //     const _users = await User.find()
+                const _users = await User.find()
 
-            //     const [_user] = _users
+                const [_user] = _users
 
-            //     expect(_user.id).to.equal(id)
+                expect(_user.id).to.equal(id)
 
-            //     expect(_user.imgProfileUrl).to.equal(newImgProfileUrl)
-            //     expect(_user.newBio).to.equal(newBio)
-            //     expect(_user.username).to.equal(newUsername)
-            //     expect(_user.password).to.equal(newPassword)
-            // })
+                expect(_user.imgProfileUrl).to.equal(newImgProfileUrl)
+                expect(_user.bio).to.equal(newBio)
+                expect(_user.username).to.equal(newUsername)
+                expect(_user.newPassword).to.equal(newPassword)
+            })
 
-            it('should update on correct id, email and password(other fields null)', async () => {
-                const { id, email, username, password, imgProfileUrl, bio } = user
+            it('should update on correct id and password, change username (other fields null)', async () => {
+                const { id, username, password, imgProfileUrl, bio } = user
 
                 const newUsername = `${username}-${Math.random()}`
 
-                const res = await logic.updateUser(id, email, newUsername, password, null, null)
+                const res = await logic.updateUser(id, newUsername, password, null, null, null)
 
                 debugger
 
@@ -287,19 +283,18 @@ describe('logic', () => {
 
                 expect(_user.id).to.equal(id)
 
-                expect(_user.email).to.equal(email)
                 expect(_user.username).to.equal(newUsername)
                 expect(_user.password).to.equal(password)
                 expect(_user.imgProfileUrl).to.equal(imgProfileUrl)
                 expect(_user.bio).to.equal(bio)
             })
 
-            false &&  it('should update on correct id, surname and password (other fields null)', async () => {
-                const { id, name, surname, username, password } = user
+            it('should update on correct id and username, change password (other fields null)', async () => {
+                const { id, username, password, imgProfileUrl, bio } = user
 
-                const newSurname = `${surname}-${Math.random()}`
+                const newPassword = `${password}-${Math.random()}`
 
-                const res = await logic.updateUser(id, null, newSurname, null, null, password)
+                const res = await logic.updateUser(id, username, password, newPassword, null, null)
 
                 expect(res).to.be.undefined
 
@@ -309,10 +304,80 @@ describe('logic', () => {
 
                 expect(_user.id).to.equal(id)
 
-                expect(_user.name).to.equal(name)
-                expect(_user.surname).to.equal(newSurname)
+                expect(newPassword).to.be.a('string')
+                expect(_user.username).to.equal(username)
+                expect(_user.password).to.equal(newPassword)
+                expect(_user.imgProfileUrl).to.equal(imgProfileUrl)
+                expect(_user.bio).to.equal(bio)
+            })
+
+            it('should update on correct id, username and password, adding profile photo (other fields null)', async () => {
+                const { id, username, password, imgProfileUrl, bio  } = user
+
+                const newImgProfileUrl = `${imgProfileUrl}-${Math.random()}`
+
+                const res = await logic.updateUser(id, username, password, null, newImgProfileUrl, null)
+
+                expect(res).to.be.undefined
+
+                const _users = await User.find()
+
+                const [_user] = _users
+
+                expect(_user.id).to.equal(id)
+
+                expect(newImgProfileUrl).to.be.a('string')
                 expect(_user.username).to.equal(username)
                 expect(_user.password).to.equal(password)
+                expect(_user.imgProfileUrl).to.equal(newImgProfileUrl)
+                expect(_user.bio).to.equal(bio)
+            })
+
+            it('should update on correct id, username and password, adding bio (other fields null)', async () => {
+                const { id, username, password, imgProfileUrl, bio  } = user
+
+                const newBio = `${bio}-${Math.random()}`
+
+                const res = await logic.updateUser(id, username, password, null, null, newBio)
+
+                expect(res).to.be.undefined
+
+                const _users = await User.find()
+
+                const [_user] = _users
+
+                expect(_user.id).to.equal(id)
+
+                expect(newBio).to.be.a('string')
+                expect(_user.username).to.equal(username)
+                expect(_user.password).to.equal(password)
+                expect(_user.imgProfileUrl).to.equal(imgProfileUrl)
+                expect(_user.bio).to.equal(newBio)
+            })
+
+
+            it('should update on correct id, username and password, adding bio and photo profile', async () => {
+                const { id, username, password, imgProfileUrl, bio  } = user
+
+                const newBio = `${bio}-${Math.random()}`
+                const newImgProfileUrl = `${imgProfileUrl}-${Math.random()}`
+
+                const res = await logic.updateUser(id, username, password, null, newImgProfileUrl, newBio)
+
+                expect(res).to.be.undefined
+
+                const _users = await User.find()
+
+                const [_user] = _users
+
+                expect(_user.id).to.equal(id)
+
+                expect(newBio).to.be.a('string')
+                expect(newImgProfileUrl).to.be.a('string')
+                expect(_user.username).to.equal(username)
+                expect(_user.password).to.equal(password)
+                expect(_user.imgProfileUrl).to.equal(newImgProfileUrl)
+                expect(_user.bio).to.equal(newBio)
             })
 
             // TODO other combinations of valid updates

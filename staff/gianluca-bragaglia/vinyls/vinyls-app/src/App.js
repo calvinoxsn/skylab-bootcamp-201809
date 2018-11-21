@@ -67,6 +67,7 @@ class App extends Component {
     }
     
     handleLogoutClick = () => {
+        this.setState({error: null})
         logic.logout()
         this.props.history.push('/')
     }

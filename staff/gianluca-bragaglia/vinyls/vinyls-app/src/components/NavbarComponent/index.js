@@ -12,14 +12,14 @@ import Event from '../../plugins/bus'
 
 class NavbarComponent extends Component {
 
-    state = {collapse: false, isWideEnough: false, username: '', imgProfileUrl: null, bio: ''}
+    state = {collapse: false, isWideEnough: false, username: '', imgProfileUrl: null, error:null}
 
 
     componentDidMount() {
         try {       
             
             logic.getCurrentUser()
-            .then(user => { this.setState({ username: user.username, imgProfileUrl: user.imgProfileUrl, bio: user.bio  }) })
+            .then(user => { this.setState({ username: user.username, imgProfileUrl: user.imgProfileUrl  }) })
             .catch(err => this.setState({ error: err.message }))
         } catch (err) {
             this.setState({ error: err.message })
@@ -30,13 +30,22 @@ class NavbarComponent extends Component {
     }
 
 
-   onClickNav = () => this.setState({ collapse: !this.state.collapse })
+   onClickNav = () => this.setState({ collapse: !this.state.collapse, error: null })
 
-   goToProfile = () => this.props.history.push('/profile') 
+   goToProfile = () => {
+        this.setState({error: null})
+        this.props.history.push('/profile')
+    }
 
-   goToSearchUsers = () => this.props.history.push('/users') 
+   goToSearchUsers = () => {
+        this.setState({error: null})
+        this.props.history.push('/users')
+    } 
 
-   goToIndex = () => this.props.history.push('/index') 
+   goToIndex = () => {
+        this.setState({error: null})
+       this.props.history.push('/index')
+    } 
     
    render() {
        const { username, imgProfileUrl } = this.state

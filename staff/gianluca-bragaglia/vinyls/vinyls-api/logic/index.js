@@ -67,7 +67,7 @@ const logic = {
 
         if (typeof id !== 'string') throw TypeError(`${id} is not a string`)
         if (!id.trim().length) throw new ValueError('id is empty or blank')
-        console.log('retrive users')
+
         return (async () => {
             const users = await User.find().lean()
 
@@ -115,7 +115,7 @@ const logic = {
         })()
     },
 
-    updateUser(id, email, username, newPassword, password, imgProfileUrl, bio) {
+    updateUser(id, username, password, newPassword, imgProfileUrl, bio) {
 
         if (typeof id !== 'string') throw TypeError(`${id} is not a string`)
         if (!id.trim().length) throw new ValueError('id is empty or blank')
@@ -144,21 +144,17 @@ const logic = {
             if (username) {
                 const _user = await User.findOne({ username })
 
-                if (_user) throw new AlreadyExistsError(`username ${username} already exists`)
-
-                user.email = email
+                if (_user && _user.username != user.username) throw new AlreadyExistsError(`username ${username} already exists`)
+  
                 user.username = username
                 newPassword != null && (user.password = newPassword)
-                imgProfileUrl != null && (user.imgProfileUrl = imgProfileUrl)
-                bio != null && (user.bio = bio)
+                user.imgProfileUrl = imgProfileUrl
+                user.bio = bio
                
                 await user.save()
             } else {
-
-                imgProfileUrl != null && (user.imgProfileUrl = imgProfileUrl)
-                bio != null && (user.bio = bio)
+    
                 newPassword != null && (user.password = newPassword)
-                
 
                 await user.save()
             }
