@@ -1,9 +1,5 @@
-
-const { models: { User, Comment, Vinyl } } = require('vinyls-data')
-const fs = require('fs')
-const path = require('path')
-const { env: { PORT } } = process
-
+//const { User, Postit } = require('../data')
+const { User, Vinyl } = require('../data')
 const { AlreadyExistsError, AuthError, NotFoundError, ValueError } = require('../errors')
 
 const logic = {
@@ -45,29 +41,11 @@ const logic = {
         })()
     },
 
-
-    retrieveUser(id) {
-
-        if (typeof id !== 'string') throw TypeError(`${id} is not a string`)
-        if (!id.trim().length) throw new ValueError('id is empty or blank')
-
-        return (async () => {
-            const user = await User.findById(id, { '_id': 0, password: 0, __v: 0 }).lean()
-
-            if (!user) throw new NotFoundError(`user with id ${id} not found`)
-
-            user.idUser = id
-
-            return user
-        })()
-    },
-
-
     retrieveUsers(id) {
 
         if (typeof id !== 'string') throw TypeError(`${id} is not a string`)
         if (!id.trim().length) throw new ValueError('id is empty or blank')
-        console.log('retrive users')
+        
         return (async () => {
             const users = await User.find().lean()
 
@@ -86,12 +64,10 @@ const logic = {
 
             })
 
-            return _users
-
         })()
     },
 
-    retrieveUsersAll() {
+    retrieveUsers() {
       
         return (async () => {
             const users = await User.find().lean()
@@ -115,7 +91,24 @@ const logic = {
         })()
     },
 
-    updateUser(id, email, username, newPassword, password, imgProfileUrl, bio) {
+
+    retrieveUser(id) {
+
+        if (typeof id !== 'string') throw TypeError(`${id} is not a string`)
+        if (!id.trim().length) throw new ValueError('id is empty or blank')
+
+        return (async () => {
+            const user = await User.findById(id, { '_id': 0, password: 0, __v: 0 }).lean()
+
+            if (!user) throw new NotFoundError(`user with id ${id} not found`)
+
+            user.idUser = id
+
+            return user
+        })()
+    },
+
+    updateUser(id,  username, newPassword, password, imgProfileUrl, bio) {
 
         if (typeof id !== 'string') throw TypeError(`${id} is not a string`)
         if (!id.trim().length) throw new ValueError('id is empty or blank')
@@ -144,21 +137,17 @@ const logic = {
             if (username) {
                 const _user = await User.findOne({ username })
 
-                if (_user) throw new AlreadyExistsError(`username ${username} already exists`)
-
-                user.email = email
+                if (_user && _user.username != user.username) throw new AlreadyExistsError(`username ${username} already exists`)
+  
                 user.username = username
                 newPassword != null && (user.password = newPassword)
-                imgProfileUrl != null && (user.imgProfileUrl = imgProfileUrl)
-                bio != null && (user.bio = bio)
+                user.imgProfileUrl = imgProfileUrl
+                user.bio = bio
                
                 await user.save()
             } else {
-
-                imgProfileUrl != null && (user.imgProfileUrl = imgProfileUrl)
-                bio != null && (user.bio = bio)
+    
                 newPassword != null && (user.password = newPassword)
-                
 
                 await user.save()
             }

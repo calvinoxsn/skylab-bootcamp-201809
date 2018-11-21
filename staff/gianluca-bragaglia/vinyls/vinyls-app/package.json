@@ -27,9 +27,10 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "react-alice-carousel": "^1.13.0",
     "chai": "^4.2.0",
     "isomorphic-fetch": "^2.2.1",
-    "sessionstorage": "^0.1.0"
+    "react-alice-carousel": "^1.13.0",
+    "sessionstorage": "^0.1.0",
+    "vinyls-data": "file:../vinyls-data"
   }
 }

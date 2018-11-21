@@ -1,15 +1,17 @@
-import logic from './logic'
+//import logic from './logic'
+
+const logic = require('./logic')
+const { mongoose, models: { User, Vinyl, Comment } } = require('vinyls-data')
 
 require('isomorphic-fetch')
-
 global.sessionStorage = require('sessionstorage')
-
-//const logic = require('./logic')
+const { expect } = require('chai')
 
 logic.url = 'http://localhost:5000/api'
 // logic.url = 'http://192.168.0.82:5000' // DEV server!
 
-const { expect } = require('chai')
+
+//const { AlreadyExistsError, AuthError, NotFoundError, ValueError } = require('./errors')
 
 // running test from CLI
 // normal -> $ mocha src/logic.spec.js --timeout 10000
