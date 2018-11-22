@@ -75,12 +75,28 @@ router.patch('/users/:id', [bearerTokenParser, jwtVerifier, jsonBodyParser], (re
     }, res)
 })
 
-router.post('/products/find', [jsonBodyParser], (req, res) => {
+// router.post('/products/find', [jsonBodyParser], (req, res) => {
+
+//     routeHandler(() => {
+//         const { sub, body: { customSearch} } = req
+
+//         return logic.searchProduct(customSearch)
+//             .then(product =>
+//                 res.json({
+//                     data: product
+//                 })
+//             )
+//     }, res)
+// })
+
+// SEARCH AND FILTER PRODUCTS 
+
+router.get('/products/:search', [jsonBodyParser], (req, res) => {
 
     routeHandler(() => {
-        const { sub, body: { customSearch} } = req
+        const { sub, params: { search } } = req
 
-        return logic.searchProduct(customSearch)
+        return logic.searchProducts(search)
             .then(product =>
                 res.json({
                     data: product
@@ -92,7 +108,7 @@ router.post('/products/find', [jsonBodyParser], (req, res) => {
 router.post('/products/filter', [jsonBodyParser], (req, res) => {
 
     routeHandler(() => {
-        const { sub, body: { instrument, type} } = req
+        const { sub, body: { instrument, type } } = req
 
         return logic.filterProduct(instrument, type)
             .then(product =>
@@ -103,18 +119,35 @@ router.post('/products/filter', [jsonBodyParser], (req, res) => {
     }, res)
 })
 
-router.post('/user/add-item-to-wishlist', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, res) => {
+router.post('/users/:id/add-item-to-wishlist', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, res) => {
 
     routeHandler(() => {
-        const { sub, body: { productId} } = req
+        const { params: { id }, body: { productId } } = req
 
-        return logic.addProductToWishlist(sub, productId)
-        .then(wish =>
-            res.json({
-                wish
-            })
-        )
+        if (id !== sub ) throw Error('token sub does not math user id')
+
+        return logic.addProductToWishlist(id, productId)
+            .then(() =>
+                res.json({
+                    message: "Item added to wishlist"
+                })
+            )
     }, res)
 })
+
+router.get('/users/:id/show-wishlist', [bearerTokenParser, jwtVerifier], (req, res) => {
+
+    routeHandler(() => {
+        const { sub, params: { id } } = req
+
+        return logic.showWishlist(id)
+            .then(wish =>
+                res.json({
+                    wish
+                })
+            )
+    }, res)
+})
+
 
 module.exports = router

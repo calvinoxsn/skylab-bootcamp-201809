@@ -89,25 +89,26 @@ const logic = {
 
     // QUERY PRODUCTS
 
-    searchProduct(query) {
+    searchProducts(search) {
 
-        validate([{ key: 'query', value: query, type: String }])
+        validate([{ key: 'search', value: search, type: String }])
 
         
         return (async () => {
             
-            if (!(query.trim().length)) throw new ValueError('You must enter at least one search term')
+            if (!(search.trim().length)) throw new ValueError('You must enter at least one search term')
 
             const result = await Product.find(
-                { $or: [{ instrument: { $regex: query, $options: 'i' } },
-                { brand: { $regex: query, $options: 'i' } },
-                { features: { $regex: query, $options: 'i' } },
-                { description: { $regex: query, $options: 'i' } }] },
+                { $or: [{ instrument: { $regex: search, $options: 'i' } },
+                { brand: { $regex: search, $options: 'i' } },
+                { features: { $regex: search, $options: 'i' } },
+            ] },
                 (err, data) => {
                     if (err) return
                     return data
                 }
-            ) 
+            )
+            if(!result.length) throw new NotFoundError('Nothing found')
             return result
         })()
 
@@ -138,7 +139,7 @@ const logic = {
 
     },
 
-    // ADD ITEMS TO WISHLIST
+    // WISHLIST
 
     addProductToWishlist(userId, productId) {
 
@@ -147,15 +148,51 @@ const logic = {
             let user = await User.findById(userId)
 
             user.wishlist.push(productId)
+
             await user.save()
 
-            return user.wishlist
-
         })()
+    },
+
+    showWishlist(userId) {
+        validate([
+            { key: 'id', value: id, type: String }
+        ])
+
+        return (async () => {
+            const user = await User.findById(userId).lean()
+
+            if (!user) throw new NotFoundError(`user with id ${id} not found`)
+
+            const items = Product.find()
+            const _items = user.wishlist
+
+            const filtered = _items.filter((el)=> {
+                return ~items.indexOf(el._id)
+            })
+
+            return filtered
+
+
+
+
+            // // const items = await Product.find({ $or: [{ user: user._id }, { assignedTo: user._id }] })
+            //     .lean()
+
+            // postits.forEach(postit => {
+            //     postit.id = postit._id.toString()
+
+            //     delete postit._id
+
+            //     postit.user = postit.user.toString()
+
+            // })
+
+            // return postits
+        })()
+
+
     }
-
-
-
 }
 
 module.exports = logic

@@ -79,7 +79,15 @@ const User = new Schema({
         required: true
     },
     
-    wishlist: []
+    wishlist: [{
+        type: ObjectId,
+        ref: 'Product'    
+    }],
+
+    shoppingCart: [{
+        type: ObjectId,
+        ref: 'Product'
+    }]
 })
 
 module.exports = {
