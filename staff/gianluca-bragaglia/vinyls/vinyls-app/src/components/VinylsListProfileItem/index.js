@@ -38,7 +38,7 @@ class vinylsListProfileItem extends Component {
                             </li>
                         </Link>
                         <button onClick={this.handleRemoveVinyl}>delete</button>
-                        <button>edit</button>
+                        <Link to={`/vinyl/${id}/edit`}><button>edit</button></Link>
                     </section> : null}
                 </div>
             

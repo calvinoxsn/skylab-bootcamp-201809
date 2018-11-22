@@ -231,6 +231,30 @@ const logic = {
             })
     },
 
+
+    searchUsers(query) {
+
+        return fetch(`${this.url}/users/search/${query}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${this._token}`
+            }
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res.error) throw Error(res.error)
+                
+                const users = res.data
+
+                console.log(users)
+                
+                
+                return users
+                                     
+            })
+
+    },
+
     addFollow(followUsername) {
 
         
@@ -357,7 +381,6 @@ const logic = {
         if ( year == 0) throw TypeError(`year is not a number`)
 
         if (info != null && typeof info !== 'string') throw TypeError(`${info} is not a string`)
-        if (!info.trim().length) throw TypeError('info is empty or blank')
 
         if (imgVinylUrl != null && typeof imgVinylUrl !== 'string') throw TypeError(`${imgVinylUrl} is not a string`)
 
@@ -463,6 +486,37 @@ const logic = {
             headers: {
                 'Authorization': `Bearer ${this._token}`
             }
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res.error) throw Error(res.error)
+            })
+    },
+
+    editVinyl(id, title, artist, year, imgVinylUrl, info) {
+
+        
+        if (typeof title !== 'string') throw TypeError(`${title} is not a string`)
+        if (!title.trim().length) throw TypeError('title is empty or blank')        
+
+        if (typeof artist !== 'string') throw TypeError(`${artist} is not a string`)
+        if (!artist.trim().length) throw TypeError('artist is empty or blank')
+
+        if (typeof year !== 'number') throw TypeError(`${year} is not a number`)
+        if ( year == 0) throw TypeError(`year is not a number`)
+
+        if (info != null && typeof info !== 'string') throw TypeError(`${info} is not a string`)
+
+        if (imgVinylUrl != null && typeof imgVinylUrl !== 'string') throw TypeError(`${imgVinylUrl} is not a string`)
+
+
+        return fetch(`${this.url}/vinyls/${id}/edit`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8',
+                'Authorization': `Bearer ${this._token}`
+            },
+            body: JSON.stringify({ id, title, artist, year, imgVinylUrl, info })
         })
             .then(res => res.json())
             .then(res => {

@@ -3,23 +3,23 @@ import { withRouter } from 'react-router-dom'
 import { Button } from 'mdbreact'
 import Error from '../Error'
 import logic from '../../logic'
-import './index.css'
+//import './index.css'
 
 
 
-class AddVinyl extends Component {
+class EditVinyl extends Component {
     state = { title: '', artist: '', year: 0, info: null, imgVinylUrl: null, error: null }
 
 
-    // componentDidMount() {
-    //     try {
-    //         logic.retrieveVinyl()
-    //         .then(vinyl => { this.setState({ title: vinyl.title, artist: vinyl.artist, year: vinyl.year, info: vinyl.info, imgVinylUrl: vinyl.imgVinylUrl  }) })
-    //         .catch(err => this.setState({ error: err.message }))
-    //     } catch (err) {
-    //         this.setState({ error: err.message })
-    //     }
-    // }
+    componentDidMount() {
+        try {
+            logic.retrieveVinylById(this.props.id)
+            .then(vinyl => { this.setState({ title: vinyl.title, artist: vinyl.artist, year: vinyl.year, info: vinyl.info, imgVinylUrl: vinyl.imgVinylUrl  }) })
+            .catch(err => this.setState({ error: err.message }))
+        } catch (err) {
+            this.setState({ error: err.message })
+        }
+    }
 
     handleTitleChange = e => {
         const title = e.target.value
@@ -79,11 +79,12 @@ class AddVinyl extends Component {
 
         const { title, artist, year, imgVinylUrl, info } = this.state
 
+        const id = this.props.id
 
         try {
-            logic.addVinyl( title, artist, year, imgVinylUrl, info )
+            logic.editVinyl( id, title, artist, year, imgVinylUrl, info )
                 .then(() => {
-                    this.setState({ error: null }, () => this.props.history.push('/index'))
+                    this.setState({ error: null }, () => this.props.history.push('/profile'))
                 })
                 .catch(err => this.setState({ error: err.message }))
         } catch (err) {
@@ -94,7 +95,7 @@ class AddVinyl extends Component {
 
     render() {
 
-        const {error, imgVinylUrl, info } = this.state
+        const {error, imgVinylUrl, info, title, artist } = this.state
 
         return <div className='edit-profile-container'>
                 <img className='profile-img'  src={imgVinylUrl ? imgVinylUrl : './img/vinyl.png'} ></img>
@@ -103,9 +104,9 @@ class AddVinyl extends Component {
                 <Button type='button' onClick={this.uploadWidget} color='black' >Upload Image</Button>
                 <form className='form-edit-profile' onSubmit={this.handleSubmit}>
                     <br></br>
-                    <input className='input' type='text'  id='title' placeholder='title' onChange={this.handleTitleChange} />
+                    <input className='input' type='text'  id='title' value={title} placeholder='title' onChange={this.handleTitleChange} />
                     <br></br>
-                    <input className='input' type='text'  id='artist' placeholder='artist' onChange={this.handleArtistChange} />
+                    <input className='input' type='text'  id='artist' value={artist} placeholder='artist' onChange={this.handleArtistChange} />
                     <br></br>
                     {/* <input className='input' type='text'  placeholder='year' onChange={this.handleYearChange} /> */}
                     <select className='dropdown-year' onChange={this.dropDownHandleYear}  >
@@ -237,4 +238,4 @@ class AddVinyl extends Component {
     }
 }
 
-export default withRouter(AddVinyl)
+export default withRouter(EditVinyl)

@@ -17,6 +17,7 @@ import SearchListUsers from './components/SearchListUsers'
 import AddVinyl from './components/AddVinyl'
 import VinylsList from './components/VinylsList'
 import Vinyl from './components/Vinyl'
+import EditVinyl from './components/EditVinyl'
 
 logic.url = 'http://localhost:5000/api'
 
@@ -100,6 +101,7 @@ class App extends Component {
                   <Route path="/add-vinyl" render={() => logic.loggedIn ? <AddVinyl /> : <Redirect to="/login" />} />
                   <Route exact path="/vinyls" render={() => logic.loggedIn ? <VinylsList /> : <Redirect to="/login" />} />
                   <Route exact path="/vinyl/:id" render={(props) => logic.loggedIn ? <Vinyl id={props.match.params.id}/> : <Redirect to="/login" />} />
+                  <Route exact path="/vinyl/:id/edit" render={(props) => logic.loggedIn ? <EditVinyl id={props.match.params.id}/> : <Redirect to="/login" />} />
                 </div> 
 
            

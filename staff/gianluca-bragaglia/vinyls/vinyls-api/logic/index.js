@@ -116,23 +116,6 @@ const logic = {
             { key: 'bio', value: password, type: String, optional: true }            
         ])
 
-        // if (typeof id !== 'string') throw TypeError(`${id} is not a string`)
-        // if (!id.trim().length) throw new ValueError('id is empty or blank')
-
-        // if (username != null && typeof username !== 'string') throw TypeError(`${username} is not a string`)
-        // if (username != null && !username.trim().length) throw new ValueError('username is empty or blank')
-
-        // if (newPassword != null && typeof newPassword !== 'string') throw TypeError(`${newPassword} is not a string`)
-        // if (newPassword != null && !newPassword.trim().length) throw new ValueError('newPassword is empty or blank')
-
-        // if (typeof password !== 'string') throw TypeError(`${password} is not a string`)
-        // if (!password.trim().length) throw new ValueError('password is empty or blank')
-
-        // if (imgProfileUrl != null && typeof imgProfileUrl !== 'string') throw TypeError(`${imgProfileUrl} is not a string`)
-
-        // if (bio != null && typeof bio !== 'string') throw TypeError(`${bio} is not a string`)
-        // if (bio != null && !bio.trim().length) throw new ValueError('biography is empty or blank')
-
         return (async () => {
             const user = await User.findById(id)
 
@@ -160,12 +143,38 @@ const logic = {
         })()
     },
 
+    searchUsers(query) {
+
+        validate([{ key: 'query', value: query, type: String }])
+
+        
+        return (async () => {
+            
+            if (!(query.trim().length)) throw new ValueError('You must enter at least one search term')
+
+            const users = await User.find({ username: { $regex: query, $options: 'i' } }).lean()
+
+            users.forEach(user => {
+
+                user.idUser = user._id
+                delete user._id
+                delete user.__v
+                delete user.password
+
+                return user
+
+            })
+            
+            return users
+
+            
+        })()
+
+    },
+
     addFollow(id, followUsername) {
 
         validate([{ key: 'id', value: id, type: String }])
-    
-        // if (id != null && typeof id !== 'string') throw TypeError(`${id} is not a string`)
-        // if (!id.trim().length) throw new ValueError('id is empty or blank')
 
         if (followUsername != null && !followUsername.trim().length) throw new ValueError('followUsername is empty or blank')
 
@@ -204,12 +213,6 @@ const logic = {
 
         validate([{ key: 'id', value: id, type: String }, { key: 'followUsername', value: followUsername, type: String }])
     
-        // if (typeof id !== 'string') throw TypeError(`${id} is not a string`)
-        // if (id != null && typeof id !== 'string') throw TypeError(`${id} is not a string`)
-
-        // if (!id.trim().length) throw new ValueError('id is empty or blank')
-        // if (followUsername != null && !followUsername.trim().length) throw new ValueError('followUsername is empty or blank')
-
         return (async () => {
             const user = await User.findById(id)
 
@@ -240,9 +243,6 @@ const logic = {
 
         validate([{ key: 'id', value: id, type: String }])
  
-        // if (id != null && typeof id !== 'string') throw TypeError(`${id} is not a string`)
-        // if (!id.trim().length) throw new ValueError('id is empty or blank')
-  
         return (async () => {
             const user = await User.findById(id)
 
@@ -259,11 +259,6 @@ const logic = {
     retrieveListFollows(id) {
 
         validate([{ key: 'id', value: id, type: String }])
-    
-        // if (typeof id !== 'string') throw TypeError(`${id} is not a string`)
-        // if (id != null && typeof id !== 'string') throw TypeError(`${id} is not a string`)
-
-        // if (!id.trim().length) throw new ValueError('id is empty or blank')
 
 
         return (async () => {
@@ -273,15 +268,21 @@ const logic = {
 
             const follows = user.follows
             
-            const users = await User.find().lean()
+            // const users = await User.find().lean()
 
-            if (!users) throw new NotFoundError(`users not found`)
+            // if (!users) throw new NotFoundError(`users not found`)
 
-            const _users = users.filter( _index => _index._id != id )
+            // const _users = users.filter( _index => _index._id != id )
 
-            const listFollows = _users.filter(function(el){ 
-                return ~follows.indexOf(el._id)
-            })
+            // const listFollows = _users.filter(function(el){ 
+            //     return ~follows.indexOf(el._id)
+            // })
+
+            const listFollows = await User.find({
+                '_id': { $in: follows}
+            }, function(err, docs){
+                return docs
+            }).lean()
 
             listFollows.forEach(user => {
 
@@ -304,9 +305,6 @@ const logic = {
     retrieveListFollowers(id) {
 
         validate([{ key: 'id', value: id, type: String }])
-       
-        // if (typeof id !== 'string') throw TypeError(`${id} is not a string`)
-        // if (id != null && typeof id !== 'string') throw TypeError(`${id} is not a string`)
 
         if (!id.trim().length) throw new ValueError('id is empty or blank')
 
@@ -319,15 +317,21 @@ const logic = {
 
             const followers = user.followers
             
-            const users = await User.find().lean()
+            // const users = await User.find().lean()
 
-            if (!users) throw new NotFoundError(`users not found`)
+            // if (!users) throw new NotFoundError(`users not found`)
 
-            const _users = users.filter( _index => _index._id != id )
+            // const _users = users.filter( _index => _index._id != id )
 
-            const listFollowers = _users.filter(function(el){ 
-                return ~followers.indexOf(el._id)
-            })
+            // const listFollowers = _users.filter(function(el){ 
+            //     return ~followers.indexOf(el._id)
+            // })
+
+            const listFollowers = await User.find({
+                '_id': { $in: followers}
+            }, function(err, docs){
+                return docs
+            }).lean()
 
             listFollowers.forEach(user => {
 
@@ -371,21 +375,6 @@ const logic = {
             { key: 'info', value: info, type: String, optional: true }            
         ])
   
-        // if (typeof id !== 'string') throw TypeError(`${id} is not a string`)
-        // if (!id.trim().length) throw new ValueError('user id is empty or blank')
-
-        // if (typeof title !== 'string') throw TypeError(`${title} is not a string`)
-        // if (!title.trim().length) throw new ValueError('title is empty or blank')        
-
-        // if (typeof artist !== 'string') throw TypeError(`${artist} is not a string`)
-        // if (!artist.trim().length) throw new ValueError('artist is empty or blank')
-
-        // if (year != null && typeof year !== 'number') throw TypeError(`${year} is not a number`)
-
-        // if (info != null && typeof info !== 'string') throw TypeError(`${info} is not a string`)
-        // if (!info.trim().length) throw new ValueError('info is empty or blank')
-
-        // if (imgVinylUrl != null && typeof imgVinylUrl !== 'string') throw TypeError(`${imgVinylUrl} is not a string`)
 
         return (async () => {
             const user = await User.findById(id)
@@ -425,10 +414,6 @@ const logic = {
 
         validate([{ key: 'id', value: id, type: String }])
 
-        // if (typeof id !== 'string') throw TypeError(`${id} is not a string`)
-
-        // if (!id.trim().length) throw new ValueError('id is empty or blank')
-
         return (async () => {
 
             const vinyl = await Vinyl.findById(id, { '_id': 0,  __v: 0 }).lean()
@@ -449,9 +434,6 @@ const logic = {
     retrieveVinylsByUserId(id) {
 
         validate([{ key: 'id', value: id, type: String }])
-
-        // if (typeof id !== 'string') throw TypeError(`${id} is not a string`)
-        // if (!id.trim().length) throw new ValueError('id is empty or blank')
 
         return (async () => {
 
@@ -478,9 +460,6 @@ const logic = {
     removeVinyl(id) {
 
         validate([{ key: 'id', value: id, type: String }])
-        
-        // if (typeof id !== 'string') throw TypeError(`${id} is not a string`)
-        // if (!id.trim().length) throw new ValueError('id is empty or blank')
 
         return (async () => {
             const vinyl = await Vinyl.findById(id)
@@ -489,7 +468,41 @@ const logic = {
 
             await vinyl.remove()
         })()
-    }
+    },
+
+    editVinyl(id, title, artist, year, imgVinylUrl, info ) {
+
+        console.log(id, title, artist, year, imgVinylUrl, info)
+        
+
+        validate([
+            { key: 'id', value: id, type: String },
+            { key: 'title', value: title, type: String },
+            { key: 'artist', value: artist, type: String },
+            { key: 'year', value: year, type: Number },
+            { key: 'imgVinylUrl', value: imgVinylUrl, type: String, optional: true },
+            { key: 'info', value: info, type: String, optional: true }            
+        ])
+  
+
+        return (async () => {
+
+            const vinyl = await Vinyl.findById(id)
+
+            if (!vinyl) throw new NotFoundError(`vinyl with id ${id} not found`)
+
+            vinyl.title = title
+            vinyl.artist = artist
+            vinyl.year = year
+            vinyl.imgVinylUrl = imgVinylUrl
+            vinyl.info = info
+
+            console.log(vinyl);
+            
+
+            await vinyl.save()
+        })()
+    },
 
 }
 

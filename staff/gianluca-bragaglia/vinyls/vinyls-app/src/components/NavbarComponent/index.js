@@ -19,7 +19,7 @@ class NavbarComponent extends Component {
         try {       
             
             logic.getCurrentUser()
-            .then(user => { this.setState({ username: user.username, imgProfileUrl: user.imgProfileUrl  }) })
+            .then(user => { this.setState({ username: user.username, imgProfileUrl: user.imgProfileUrl, error:null  }) })
             .catch(err => this.setState({ error: err.message }))
         } catch (err) {
             this.setState({ error: err.message })

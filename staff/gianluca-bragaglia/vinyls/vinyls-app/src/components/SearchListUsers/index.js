@@ -11,11 +11,32 @@ class SearchListUsers extends Component {
 
     state = {users: [], error: null, search: ''}
     
-    componentDidMount() {
+    // componentDidMount() {
        
+    //     try {  
+            
+    //         logic.retrieveUsers()
+    //         .then(res => { this.setState({ users: res, error: null  }) })
+    //         .catch(err => this.setState({ error: err.message }))
+    //     } catch (err) {
+    //         this.setState({ error: err.message })
+    //     }
+    // }
+
+    // searchUserChange = event => {
+
+    //     const search = event.target.value
+
+    //     this.setState({ search })
+    // }
+
+    searchUserChange = event => {
+
+        const query = event.target.value
+
         try {  
             
-            logic.retrieveUsers()
+            logic.searchUsers(query)
             .then(res => { this.setState({ users: res, error: null  }) })
             .catch(err => this.setState({ error: err.message }))
         } catch (err) {
@@ -23,24 +44,22 @@ class SearchListUsers extends Component {
         }
     }
 
-    searchUserChange = event => {
-
-        const search = event.target.value
-
-        this.setState({ search })
-    }
+       
+    
 
     render() { 
 
-        const { users, search } = this.state
+        // const { users, search } = this.state
 
-        let filteredUsers = users.filter(
+        // let filteredUsers = users.filter(
 
-            (user) => {
+        //     (user) => {
 
-                return user.username.indexOf(search) !== -1
-            }
-        )
+        //         return user.username.indexOf(search) !== -1
+        //     }
+        // )
+
+        const { users } = this.state
 
         return ( 
 
@@ -52,13 +71,13 @@ class SearchListUsers extends Component {
                 </div>
                 
                 <div className='list-group-flush'>
-                        {filteredUsers.map(user => (
+                        {users.map(user => (
                             <UserListItem key={user.idUser} id={user.idUser} username={user.username} imgProfileUrl={user.imgProfileUrl}/>
                         ))}
                 </div>
                
             </React.Fragment>
-         )
+        )
     }
 }
 

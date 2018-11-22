@@ -175,6 +175,20 @@ router.get('/users/:id/followersList', [bearerTokenParser, jwtVerifier], (req, r
     }, res)
 })
 
+router.get(`/users/search/:query`, [bearerTokenParser, jwtVerifier], (req, res) => {
+
+    routeHandler(() => {
+        const { params: { query }, sub } = req
+
+        return logic.searchUsers(query)
+            .then(users =>
+                res.json({
+                    data: users
+                })
+            )
+    }, res)
+})
+
 
 router.post('/vinyls', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, res) => {
     routeHandler(() => {
@@ -233,6 +247,19 @@ router.delete('/vinyls/:id', [bearerTokenParser, jwtVerifier], (req, res) => {
             .then(() => res.json({
                 message: 'vinyl removed'
             }))
+    }, res)
+})
+
+router.patch('/vinyls/:id/edit', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, res) => {
+    routeHandler(() => {
+
+        const { params: { id }, sub, body: { title, artist, year, imgVinylUrl, info}} = req
+
+        return logic.editVinyl( id, title, artist, year, imgVinylUrl, info )
+            .then(() => res.json({
+                message: 'vinyl updated'
+            }))
+
     }, res)
 })
 
