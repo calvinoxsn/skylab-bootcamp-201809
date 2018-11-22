@@ -185,5 +185,73 @@
         "inStock": 3,
         "imageUrl": "https://d1aeri3ty3izns.cloudfront.net/media/26/268960/1200/preview.jpg",
         "type": "ELECTRIC"
+    },
+    {
+        "instrument": "keyboard",
+        "brand": "Minster",
+        "model": "Upright Acoustic Piano, Gloss Black",
+        "features": [
+            "120cm High Soundboard",
+            "Chromed Metal Parts",
+            "Balanced Key Bed and Hammer Weight",
+            "Contemporary Body Design",
+            "Beautiful and Diverse Tone"
+        ],
+        "description": "The Minster Upright piano features a beautiful tone and stunning looks that makes it suitable for home, rehearsal and concert spaces. The keybed and hammer action is balanced and accurate, which is suitable for the most advanced piano players. The high quality strings create a diverse tone that is warm and delicate, as well as broad and bold at louder dynamics. The elegant gloss black finish looks the part in any venue, from the home to the concert stage.",
+        "price": 1899,
+        "inStock": 1,
+        "imageUrl": "https://d1aeri3ty3izns.cloudfront.net/media/21/210372/1200/preview.jpg",
+        "type": "ACOUSTIC"
+    },
+    {
+        "instrument": "keyboard",
+        "brand": "Casio",
+        "model": "PX 760 Digital Piano",
+        "features": [
+            "Fully customise your tone",
+            "Precise sensor hammer action",
+            "Play along with live orchestral recordings",
+            "Compact, minimalistic design",
+            "Beautiful and Diverse Tone"
+        ],
+        "description": "Bring an orchestra into your home. The Casio Privia PX760 Digital Piano includes a Concert Play feature that allows you to enjoy the feeling of playing along to live orchestral recordings, and feeling as though you're part of the orchestra. Fully customise your tone with the new high-resolution AiR sound source (Acoustic Intelligent Resonator), enabling you to improve your overall sound. With the Tri-Sensor Hammer Action you can produce a sound continuously, assuring excellent playability when the same note is struck repeatedly.",
+        "price": 499,
+        "inStock": 7,
+        "imageUrl": "https://d1aeri3ty3izns.cloudfront.net/media/11/112816/1200/preview.jpg",
+        "type": "ELECTRIC"
+    },
+    {
+        "instrument": "keyboard",
+        "brand": "Casio",
+        "model": "GP300 Grand Hybrid Digital Piano Satin Black",
+        "features": [
+            "Authentic touch and feel thanks to grand piano action and keys",
+            "Six speaker array delivers genuine room filling sound",
+            "Carefully designed alongside C. Bechstein",
+            "Built-in USB, MIDI, and TRS connectivity",
+            "Includes five year Casio UK warranty"
+        ],
+        "description": "Casio and C. Bechstein. They both know that the way a piano feels to play - it’s a deal breaker. So you’ll notice the subtle touches on the Casio GP-300 that make it a privilege to play. The 88 full sized keys are made from high grade Austrian Spruce. The very same you would find on the revered C. Bechstein concert grand pianos.",
+        "price": 999,
+        "inStock": 5,
+        "imageUrl": "https://d1aeri3ty3izns.cloudfront.net/media/14/149828/1200/preview.jpg",
+        "type": "ELECTROACOUSTIC"
+    },
+    {
+        "instrument": "keyboard",
+        "brand": "Nord",
+        "model": "Electro 6 HP 73-Note Hammer Action Keyboard",
+        "features": [
+            "73-Note Hammer Action Portable Keyboard",
+            "Electronic LED Drawbars",
+            "Range of New & Improved Features",
+            "Seamless Transitions When Switching Sounds or Programs",
+            "Split & Layer All 3 Sections"
+        ],
+        "description": "The Nord Electro 6 HP 73-Note Hammer Action Keyboard is a performance keyboard, fully loaded with new and improved features that offer flexibility and versatile functionality. Included are a range of piano, organ, and sampled synth sounds, with a range of high-quality effects and tweakable parameters for sound shaping. New features include a new simplified, streamlined user interface, advanced split functionality, refined program section and more. The Electro 6 now features seamless transitions when switching between sounds or programs, meaning no waiting times when performing. The Nord Electro 6 features 3 sounds sections that include high-quality, unique sounds from the Nord Piano, Organ, and Sample libraries. The Nord Electro 6 brings you the most powerful and flexible Electro ever, combining a range of high-quality sounds in a portable package.",
+        "price": 1899,
+        "inStock": 2,
+        "imageUrl": "https://d1aeri3ty3izns.cloudfront.net/media/38/385840/1200/preview.jpg",
+        "type": "ELECTRIC"
     }
 ]

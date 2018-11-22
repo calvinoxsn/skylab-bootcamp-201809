@@ -73,10 +73,13 @@ const User = new Schema({
         type: String,
         required: true
     },
-    wishlist: [{
-        type: ObjectId,
-        ref: 'Product'
-    }]
+
+    email: {
+        type: String,
+        required: true
+    },
+    
+    wishlist: []
 })
 
 module.exports = {
