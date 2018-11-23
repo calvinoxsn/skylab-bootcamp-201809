@@ -17,7 +17,6 @@ const User = new Schema({
     },
     imgProfileUrl: {
         type: String
-
     },
     bio: {
         type: String
@@ -42,7 +41,20 @@ const Comment = new Schema({
     },
     text: {
         type: String
+    },
+    // date: {
+    //     type: Date,
+    //     required: true,
+    //     default: Date.now()
+    // },
+    username:{
+        type: String,
+        required: true
+    },
+    imgProfileUrl: {
+        type: String
     }
+
 })
 
 

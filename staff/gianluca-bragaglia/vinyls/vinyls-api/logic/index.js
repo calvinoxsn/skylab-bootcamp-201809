@@ -479,7 +479,6 @@ const logic = {
     addLikeToVinyl(id, userId) {
 
         validate([{ key: 'id', value: id, type: String }])
-
         validate([{ key: 'userId', value: userId, type: String }])
 
         return (async () => {
@@ -507,7 +506,6 @@ const logic = {
     removeLikeToVinyl(id, userId) {
 
         validate([{ key: 'id', value: id, type: String }])
-
         validate([{ key: 'userId', value: userId, type: String }])
 
         return (async () => {
@@ -553,6 +551,62 @@ const logic = {
 
             return likes
             
+        })()
+
+    },
+
+    addCommentToVinyl(vinylId, userId, text) {
+
+        validate([
+            { key: 'vinylId', value: vinylId, type: String },
+            { key: 'text', value: text, type: String },
+            { key: 'userId', value: userId, type: String }         
+        ])
+  
+
+        return (async () => {
+            const user = await User.findById(userId).lean()
+
+            if (!user) throw new NotFoundError(`user with id ${userId} not found`)
+
+            const username = user.username
+            const imgProfileUrl = user.imgProfileUrl
+
+            const comment = new Comment({ id: user.id, text, username, imgProfileUrl })
+
+            const vinyl = await Vinyl.findById(vinylId)
+
+            vinyl.comments.push(comment)
+
+            await vinyl.save()
+        })()
+    },
+
+    retrieveVinylComments(id) {
+
+        validate([{ key: 'id', value: id, type: String }])
+
+        return (async () => {
+
+            const vinyl = await Vinyl.findById(id, { '_id': 0,  __v: 0 }).lean()
+
+            if (!vinyl) throw new NotFoundError(`vinyl with id ${id} not found`)
+
+            const comments = vinyl.comments
+
+            comments.forEach(comment => {
+
+                comment.idComment = comment._id
+
+                delete comment._id
+                delete comment.__v
+
+                return comment
+
+            })
+
+            return comments
+
         })()
 
     },

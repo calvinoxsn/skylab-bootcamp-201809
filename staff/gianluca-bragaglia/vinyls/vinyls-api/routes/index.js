@@ -314,6 +314,34 @@ router.get('/vinyls/:id/likes', [bearerTokenParser, jwtVerifier], (req, res) => 
     }, res)
 })
 
+router.patch('/vinyls/:id/comments', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, res) => {
+    routeHandler(() => {
+        const { params: { id }, sub, body: { userId, text } } = req
+
+        if (userId !== sub) throw Error('token sub does not match user id')
+
+        return logic.addCommentToVinyl(id, userId, text)
+            .then(() =>
+                res.json({
+                    message: 'comment added'
+                })
+            )
+    }, res)
+})
+
+
+router.get('/vinyls/:id/comments', [bearerTokenParser, jwtVerifier], (req, res) => {
+    routeHandler(() => {
+        
+        const { params: { id } } = req
+
+        return logic.retrieveVinylComments(id)
+            .then(comments => res.json({
+                data: comments
+            }))
+    }, res)
+})
+
 
 
 module.exports = router

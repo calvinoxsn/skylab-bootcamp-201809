@@ -1,0 +1,27 @@
+.img-profile-micro{
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+.comment-username{
+    font-size: 13px;
+    font-weight: bold;
+    margin-left: 5px;
+    margin-top: 5px;
+}
+
+.comment-user-container{
+    display: flex;
+    
+}
+
+.comment-text{
+    font-size: 13b px;
+}
+
+.comment-first-container{
+    margin-bottom: 10px;
+    background-color: #ebf0f6;
+    padding: 10px;
+}

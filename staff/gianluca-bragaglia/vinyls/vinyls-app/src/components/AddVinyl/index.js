@@ -11,16 +11,6 @@ class AddVinyl extends Component {
     state = { title: '', artist: '', year: 0, info: null, imgVinylUrl: null, error: null }
 
 
-    // componentDidMount() {
-    //     try {
-    //         logic.retrieveVinyl()
-    //         .then(vinyl => { this.setState({ title: vinyl.title, artist: vinyl.artist, year: vinyl.year, info: vinyl.info, imgVinylUrl: vinyl.imgVinylUrl  }) })
-    //         .catch(err => this.setState({ error: err.message }))
-    //     } catch (err) {
-    //         this.setState({ error: err.message })
-    //     }
-    // }
-
     handleTitleChange = e => {
         const title = e.target.value
 
@@ -107,7 +97,6 @@ class AddVinyl extends Component {
                     <br></br>
                     <input className='input' type='text'  id='artist' placeholder='artist' onChange={this.handleArtistChange} />
                     <br></br>
-                    {/* <input className='input' type='text'  placeholder='year' onChange={this.handleYearChange} /> */}
                     <select className='dropdown-year' onChange={this.dropDownHandleYear}  >
                         <option>year</option>
                         <option value="2021">2021</option>

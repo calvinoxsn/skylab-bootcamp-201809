@@ -416,7 +416,6 @@ const logic = {
     retrieveVinylById(id) {
 
         if (typeof id !== 'string') throw new TypeError(`${id} is not a string`)
-
         if (!id.trim().length) throw Error('id is empty or blank')
 
         return fetch(`${this.url}/vinyls/${id}`, {
@@ -520,7 +519,6 @@ const logic = {
     addLike(id) {
        
         if (typeof id !== 'string') throw TypeError(`${id} is not a string`)
-
         if (!id.trim()) throw Error('followUsername is empty or blank')
 
         const userId = this._userId
@@ -542,14 +540,10 @@ const logic = {
     removeLike(id) {
        
         if (typeof id !== 'string') throw TypeError(`${id} is not a string`)
-
         if (!id.trim()) throw Error('followUsername is empty or blank')
 
         const userId = this._userId
-
-        console.log(id, +' ' + userId)
-        
-
+      
         return fetch(`${this.url}/vinyls/${id}/likes`, {
             method: 'DELETE',
             headers: {
@@ -595,6 +589,51 @@ const logic = {
                 // return true
             })
     },
+
+    addComment(id, text) {
+       
+        if (typeof id !== 'string') throw TypeError(`${id} is not a string`)
+        if (!id.trim()) throw Error('id is empty or blank')
+
+        if (typeof text !== 'string') throw TypeError(`${text} is not a string`)
+        if (!text.trim()) throw Error('text is empty or blank')
+
+        const userId = this._userId
+
+        return fetch(`${this.url}/vinyls/${id}/comments`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8',
+                'Authorization': `Bearer ${this._token}`
+            },
+            body: JSON.stringify({ userId, text })
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res.error) throw Error(res.error)
+            })
+    },
+
+    retrieveComments(id) {
+
+        if (typeof id !== 'string') throw TypeError(`${id} is not a string`)
+        if (!id.trim()) throw Error('id is empty or blank')
+   
+        return fetch(`${this.url}/vinyls/${id}/comments`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${this._token}`
+            }
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res.error) throw Error(res.error)
+                
+                return  res.data
+                                     
+            })
+
+    }
    
     
 }
