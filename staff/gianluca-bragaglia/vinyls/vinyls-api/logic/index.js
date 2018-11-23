@@ -166,7 +166,6 @@ const logic = {
             })
             
             return users
-
             
         })()
 
@@ -239,7 +238,7 @@ const logic = {
 
     },
 
-    retrieveFollows(id) {
+    isFollows(id) {
 
         validate([{ key: 'id', value: id, type: String }])
  
@@ -267,16 +266,6 @@ const logic = {
             if (!user) throw new NotFoundError(`user with id ${id} not found`)
 
             const follows = user.follows
-            
-            // const users = await User.find().lean()
-
-            // if (!users) throw new NotFoundError(`users not found`)
-
-            // const _users = users.filter( _index => _index._id != id )
-
-            // const listFollows = _users.filter(function(el){ 
-            //     return ~follows.indexOf(el._id)
-            // })
 
             const listFollows = await User.find({
                 '_id': { $in: follows}
@@ -316,16 +305,6 @@ const logic = {
             if (!user) throw new NotFoundError(`user with id ${id} not found`)
 
             const followers = user.followers
-            
-            // const users = await User.find().lean()
-
-            // if (!users) throw new NotFoundError(`users not found`)
-
-            // const _users = users.filter( _index => _index._id != id )
-
-            // const listFollowers = _users.filter(function(el){ 
-            //     return ~followers.indexOf(el._id)
-            // })
 
             const listFollowers = await User.find({
                 '_id': { $in: followers}
@@ -472,9 +451,6 @@ const logic = {
 
     editVinyl(id, title, artist, year, imgVinylUrl, info ) {
 
-        console.log(id, title, artist, year, imgVinylUrl, info)
-        
-
         validate([
             { key: 'id', value: id, type: String },
             { key: 'title', value: title, type: String },
@@ -484,7 +460,6 @@ const logic = {
             { key: 'info', value: info, type: String, optional: true }            
         ])
   
-
         return (async () => {
 
             const vinyl = await Vinyl.findById(id)
@@ -496,12 +471,90 @@ const logic = {
             vinyl.year = year
             vinyl.imgVinylUrl = imgVinylUrl
             vinyl.info = info
-
-            console.log(vinyl);
-            
-
+        
             await vinyl.save()
         })()
+    },
+
+    addLikeToVinyl(id, userId) {
+
+        validate([{ key: 'id', value: id, type: String }])
+
+        validate([{ key: 'userId', value: userId, type: String }])
+
+        return (async () => {
+
+            const vinyl = await Vinyl.findById(id)
+
+            if (!vinyl) throw new NotFoundError(`vinyl with id ${id} not found`)
+
+            if (!userId) throw new NotFoundError(`user with id ${userId} not found`)
+            
+            vinyl.likes.forEach(_id => {
+                
+                if (_id == userId) throw new AlreadyExistsError(`already likes this vinyl`)
+            })
+
+            vinyl.likes.push(userId)
+
+            await vinyl.save()
+
+        })()
+
+    },
+
+
+    removeLikeToVinyl(id, userId) {
+
+        validate([{ key: 'id', value: id, type: String }])
+
+        validate([{ key: 'userId', value: userId, type: String }])
+
+        return (async () => {
+
+            const vinyl = await Vinyl.findById(id)
+
+            if (!vinyl) throw new NotFoundError(`vinyl with id ${id} not found`)
+
+            if (!userId) throw new NotFoundError(`user with id ${userId} not found`)
+
+            let _likes = vinyl.likes
+
+            const __likes = _likes.filter(el => {
+                return el != userId
+                })
+                
+            vinyl.likes = __likes
+
+            await vinyl.save()
+
+        })()
+
+    },
+
+    isLikes(id) {
+
+        validate([{ key: 'id', value: id, type: String }])
+ 
+        return (async () => {
+            const vinyl = await Vinyl.findById(id)
+
+            if (!vinyl) throw new NotFoundError(`vinyl with id ${id} not found`)
+
+            const likes = vinyl.likes
+
+            // const isLike = 'FALSE'
+
+            // if(likes.includes(userId) )
+
+            // isLike = 'TRUE'
+            
+            // return isLike
+
+            return likes
+            
+        })()
+
     },
 
 }

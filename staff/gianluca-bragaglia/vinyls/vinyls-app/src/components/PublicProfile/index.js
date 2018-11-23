@@ -16,7 +16,7 @@ class PublicProfile extends Component {
             logic.retrieveUserById(this.props.id)
             .then(user => { this.setState({ username: user.username, imgProfileUrl: user.imgProfileUrl, bio: user.bio, follows: user.follows, followers: user.followers }) })
             .catch(err => this.setState({ error: err.message }))
-            logic.retrieveFollows(this.props.id)        
+            logic.itsInFollows(this.props.id)        
             .then(res => {this.setState ({ followSelected: res })})
             .catch(err => this.setState({ error: err.message }))
         } catch (err) {
@@ -38,7 +38,7 @@ class PublicProfile extends Component {
                 .catch(err => this.setState({ error: err.message }))
                 logic.retrieveUserById(this.props.id)
                 .then(user => { this.setState({ username: user.username, imgProfileUrl: user.imgProfileUrl, bio: user.bio, follows: user.follows, followers: user.followers }) })
-            .catch(err => this.setState({ error: err.message }))
+                .catch(err => this.setState({ error: err.message }))
             } catch (err) {
                 this.setState({ error: err.message })
             }

@@ -12,12 +12,9 @@ class vinylsListProfileItem extends Component {
        
         try {       
             
-            logic.removeVinyl(this.props.id)
+            logic.deleteVinyl(this.props.id)
             .then(() => this.setState({ deleted: true, error: null }))
             .catch(err => this.setState({ error: err.message }))
-            // logic. retrieveVinylsCurrentUser()        
-            // .then(vinyls => {this.setState ({ vinyls })})
-            // .catch(err => this.setState({ error: err.message }))
         } catch (err) {
             this.setState({ error: err.message })
         }

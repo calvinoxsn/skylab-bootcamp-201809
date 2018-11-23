@@ -12,6 +12,9 @@ const router = express.Router()
 
 const { env: { JWT_SECRET } } = process
 
+
+// USERS
+
 router.post('/users', jsonBodyParser, (req, res) => {
     routeHandler(() => {
         const { email, username, password } = req.body
@@ -137,7 +140,7 @@ router.get('/users/:id/follows', [bearerTokenParser, jwtVerifier], (req, res) =>
 
         if (id !== sub) throw Error('token sub does not match user id')
 
-        return logic.retrieveFollows(id)
+        return logic.isFollows(id)
             .then(follows => res.json({
                 data: follows
             }))
@@ -190,6 +193,9 @@ router.get(`/users/search/:query`, [bearerTokenParser, jwtVerifier], (req, res) 
 })
 
 
+
+// VINYLS
+
 router.post('/vinyls', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, res) => {
     routeHandler(() => {
 
@@ -232,8 +238,8 @@ router.get('/vinyls/user/:id', [bearerTokenParser, jwtVerifier], (req, res) => {
         const { params: { id } } = req
 
         return logic.retrieveVinylsByUserId(id)
-            .then(vinyl => res.json({
-                data: vinyl
+            .then(vinyls => res.json({
+                data: vinyls
             }))
     }, res)
 })
@@ -260,6 +266,51 @@ router.patch('/vinyls/:id/edit', [bearerTokenParser, jwtVerifier, jsonBodyParser
                 message: 'vinyl updated'
             }))
 
+    }, res)
+})
+
+router.patch('/vinyls/:id/likes', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, res) => {
+    routeHandler(() => {
+        const { params: { id }, sub, body: { userId } } = req
+
+        if (userId !== sub) throw Error('token sub does not match user id')
+
+        return logic.addLikeToVinyl(id, userId)
+            .then(() =>
+                res.json({
+                    message: 'like added'
+                })
+            )
+    }, res)
+})
+
+
+router.delete('/vinyls/:id/likes', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, res) => {
+    routeHandler(() => {
+        
+        const { params: { id }, sub, body: { userId } } = req
+
+        console.log(id)
+        
+        if (userId !== sub) throw Error('token sub does not match user id')
+
+        return logic.removeLikeToVinyl(id, userId)
+            .then(() => res.json({
+                message: 'like removed'
+            }))
+    }, res)
+})
+
+
+router.get('/vinyls/:id/likes', [bearerTokenParser, jwtVerifier], (req, res) => {
+    routeHandler(() => {
+        
+        const { params: { id } } = req
+
+        return logic.isLikes(id)
+            .then(likes => res.json({
+                data: likes
+            }))
     }, res)
 })
 

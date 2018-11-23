@@ -82,7 +82,7 @@ class EditVinyl extends Component {
         const id = this.props.id
 
         try {
-            logic.editVinyl( id, title, artist, year, imgVinylUrl, info )
+            logic.modifyVinyl( id, title, artist, year, imgVinylUrl, info )
                 .then(() => {
                     this.setState({ error: null }, () => this.props.history.push('/profile'))
                 })
