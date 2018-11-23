@@ -12,6 +12,8 @@ const router = express.Router()
 
 const { env: { JWT_SECRET } } = process
 
+// USER REGISTRATION AND AUTHENTICATION
+
 router.post('/register', jsonBodyParser, (req, res) => {
     routeHandler(() => {
         const { name, surname, username, email, password } = req.body
@@ -75,21 +77,7 @@ router.patch('/users/:id', [bearerTokenParser, jwtVerifier, jsonBodyParser], (re
     }, res)
 })
 
-// router.post('/products/find', [jsonBodyParser], (req, res) => {
-
-//     routeHandler(() => {
-//         const { sub, body: { customSearch} } = req
-
-//         return logic.searchProduct(customSearch)
-//             .then(product =>
-//                 res.json({
-//                     data: product
-//                 })
-//             )
-//     }, res)
-// })
-
-// SEARCH AND FILTER PRODUCTS 
+// SEARCHING AND FILTERING PRODUCTS 
 
 router.get('/products/:search', [jsonBodyParser], (req, res) => {
 
@@ -119,35 +107,97 @@ router.post('/products/filter', [jsonBodyParser], (req, res) => {
     }, res)
 })
 
-router.post('/users/:id/add-item-to-wishlist', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, res) => {
+// WISHLIST
+
+router.post('/users/:id/wishlist', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, res) => {
 
     routeHandler(() => {
-        const { params: { id }, body: { productId } } = req
 
-        if (id !== sub ) throw Error('token sub does not math user id')
+        const { sub, params: { id }, body: { productId } } = req
 
-        return logic.addProductToWishlist(id, productId)
+        if (id !== sub) throw Error('token sub does not match user id')
+
+
+        return logic.addItemToWishlist(id, productId)
             .then(() =>
                 res.json({
-                    message: "Item added to wishlist"
+                    message: `Item ${productId} succesfully added to wishlist`
                 })
             )
     }, res)
 })
 
-router.get('/users/:id/show-wishlist', [bearerTokenParser, jwtVerifier], (req, res) => {
+router.get('/users/:id/wishlist', [bearerTokenParser, jwtVerifier], (req, res) => {
 
     routeHandler(() => {
         const { sub, params: { id } } = req
 
+        if (id !== sub) throw Error('token sub does not match user id')
+
         return logic.showWishlist(id)
-            .then(wish =>
+            .then(wishlist =>
+                res.json({ wishlist })
+            )
+    }, res)
+})
+
+router.delete('/users/:id/wishlist/:productId', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, res) => {
+    routeHandler(() => {
+        const { sub, params: { id, productId } } = req
+
+        if (id !== sub) throw Error('token sub does not match user id')
+
+        return logic.removeItemInWishlist(id, productId)
+            .then(() => res.json({
+                message: 'Item succesfully removed from wishlist'
+            }))
+    }, res)
+})
+
+// SHOPPING CART
+
+router.post('/users/:id/shopping', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, res) => {
+
+    routeHandler(() => {
+
+        const { sub, params: { id }, body: { productId } } = req
+
+        if (id !== sub) throw Error('token sub does not match user id')
+
+
+        return logic.addItemToCart(id, productId)
+            .then(() =>
                 res.json({
-                    wish
+                    message: "Item successfully added to shopping cart"
                 })
             )
     }, res)
 })
 
+router.get('/users/:id/shopping', [bearerTokenParser, jwtVerifier], (req, res) => {
 
+    routeHandler(() => {
+        const { sub, params: { id } } = req
+
+        if (id !== sub) throw Error('token sub does not match user id')
+
+        return logic.showCart(id)
+            .then(shoppingCart =>
+                res.json({ shoppingCart })
+            )
+    }, res)
+})
+
+router.delete('/users/:id/shopping/:productId', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, res) => {
+    routeHandler(() => {
+        const { sub, params: { id, productId } } = req
+
+        if (id !== sub) throw Error('token sub does not match user id')
+
+        return logic.removeItemInCart(id, productId)
+            .then(() => res.json({
+                message: 'Item succesfully removed from shopping cart'
+            }))
+    }, res)
+})
 module.exports = router

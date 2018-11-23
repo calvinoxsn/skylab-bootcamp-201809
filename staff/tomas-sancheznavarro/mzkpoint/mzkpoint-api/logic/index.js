@@ -1,12 +1,16 @@
 const { User, Product } = require('../data')
 const { AlreadyExistsError, AuthError, NotAllowedError, NotFoundError, ValueError } = require('../errors')
 const validate = require('../utils/validate')
-const fs = require('fs')
-const path = require('path')
+// const fs = require('fs')
+// const path = require('path')
 
 const logic = {
     registerUser(name, surname, username, email, password) {
-        validate([{ key: 'name', value: name, type: String }, { key: 'surname', value: surname, type: String }, { key: 'username', value: username, type: String }, { key: 'password', value: password, type: String }])
+        validate([{ key: 'name', value: name, type: String },
+        { key: 'surname', value: surname, type: String },
+        { key: 'username', value: username, type: String },
+        { key: 'email', value: username, type: String },
+        { key: 'password', value: password, type: String }])
 
         return (async () => {
             let user = await User.findOne({ username })
@@ -20,7 +24,8 @@ const logic = {
     },
 
     authenticateUser(username, password) {
-        validate([{ key: 'username', value: username, type: String }, { key: 'password', value: password, type: String }])
+        validate([{ key: 'username', value: username, type: String },
+        { key: 'password', value: password, type: String }])
 
         return (async () => {
             const user = await User.findOne({ username })
@@ -93,22 +98,24 @@ const logic = {
 
         validate([{ key: 'search', value: search, type: String }])
 
-        
+
         return (async () => {
-            
+
             if (!(search.trim().length)) throw new ValueError('You must enter at least one search term')
 
             const result = await Product.find(
-                { $or: [{ instrument: { $regex: search, $options: 'i' } },
-                { brand: { $regex: search, $options: 'i' } },
-                { features: { $regex: search, $options: 'i' } },
-            ] },
+                {
+                    $or: [{ instrument: { $regex: search, $options: 'i' } },
+                    { brand: { $regex: search, $options: 'i' } },
+                    { features: { $regex: search, $options: 'i' } },
+                    ]
+                },
                 (err, data) => {
                     if (err) return
                     return data
                 }
             )
-            if(!result.length) throw new NotFoundError('Nothing found')
+            if (!result.length) throw new NotFoundError('Nothing found')
             return result
         })()
 
@@ -117,23 +124,23 @@ const logic = {
     filterProduct(instrument, type) {
 
         // validate([
-            // { key: 'query', value: query, type: String }])
+        // { key: 'query', value: query, type: String }])
 
-        
+
         return (async () => {
-            
+
             // if (query === "/") throw new ValueError(`You must enter at least one search term`)
 
             const result = await Product.find(
                 { $and: [{ instrument: { $regex: instrument, $options: 'i' } }, { type: { $regex: type, $options: 'i' } }] },
                 function (err, data) {
-                    
+
                     if (err) return
-                    
+
                     return data
                 }
-            ) 
-            if(!result.length) throw new NotFoundError('Nothing found')
+            )
+            if (!result.length) throw new NotFoundError('Nothing found')
             return result
         })()
 
@@ -141,7 +148,7 @@ const logic = {
 
     // WISHLIST
 
-    addProductToWishlist(userId, productId) {
+    addItemToWishlist(userId, productId) {
 
         return (async () => {
 
@@ -155,44 +162,50 @@ const logic = {
     },
 
     showWishlist(userId) {
-        validate([
-            { key: 'id', value: id, type: String }
-        ])
+
+        // validate([
+        //     { key: 'id', value: id, type: String }
+        // ])
 
         return (async () => {
+
             const user = await User.findById(userId).lean()
 
-            if (!user) throw new NotFoundError(`user with id ${id} not found`)
+            debugger
 
-            const items = Product.find()
+
+            if (!user) throw new NotFoundError(`user with id number ${id} not found`)
+            // const items = await Product.find().lean()
             const _items = user.wishlist
 
-            const filtered = _items.filter((el)=> {
-                return ~items.indexOf(el._id)
-            })
+            const result = await Product.find({
+                '_id': { $in: _items }
+            }, function (err, items) {
+                return items
+            });
 
-            return filtered
+            return result
 
-
-
-
-            // // const items = await Product.find({ $or: [{ user: user._id }, { assignedTo: user._id }] })
-            //     .lean()
-
-            // postits.forEach(postit => {
-            //     postit.id = postit._id.toString()
-
-            //     delete postit._id
-
-            //     postit.user = postit.user.toString()
-
-            // })
-
-            // return postits
         })()
+    },
 
+    removeItemInWishlist(userId, productId) {
+        // validate([
+        //     { key: 'id', value: id, type: String },
+        //     { key: 'postitId', value: postitId, type: String }
+        // ])
 
-    }
+        return (async () => {
+            const user = await User.findById(userId)
+
+            if (!user) throw new NotFoundError(`user with id ${userId} not found`)
+
+            const wishlist = await Product.findById(productId)
+            if (!wishlist) throw new NotFoundError(`product with id number ${productId} not found`)
+
+            return User.updateOne({ _id : userId }, { $pull: { wishlist: productId } })
+        })()
+    },
 }
 
 module.exports = logic

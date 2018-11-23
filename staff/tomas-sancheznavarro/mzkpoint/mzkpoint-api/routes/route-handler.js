@@ -1,8 +1,10 @@
 const { AlreadyExistsError, AuthError, NotFoundError, ValueError } = require('../errors')
 
 function routeHandler(callback, res) {
+ 
     try {
         callback()
+        
             .catch(err => {
                 const { message } = err
 
