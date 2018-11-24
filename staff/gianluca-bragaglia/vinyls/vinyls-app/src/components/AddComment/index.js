@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { Button } from 'mdbreact'
 import './index.css'
 
 
@@ -19,7 +18,9 @@ class AddComment extends Component {
         
         const { text } = this.state
 
-        this.props.onAddComment( text )  
+        this.props.onAddComment( text ) 
+        
+        this.setState({ text: '' })
     }
 
     render() {
@@ -27,9 +28,8 @@ class AddComment extends Component {
         return <div className='add-comment-container'>
 
                 <form className='form-add-comment' onSubmit={this.handleSubmit}>
-                    <input className='input' type='text'  id='comment-text' placeholder='write a comment...' onChange={this.handleTextChange} />
-                    <br></br>
-                    <button type='submit' className='comment-btn' >submit</button>
+                    <textarea className='textarea' type='text'  id='comment-text' value={this.state.text} onChange={this.handleTextChange} />
+                    <button type='submit'id='comment-btn' >send</button>
                 </form>
         </div>
     }

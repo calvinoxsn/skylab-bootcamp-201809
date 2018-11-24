@@ -8,11 +8,14 @@ class Comment extends Component {
     const {username, imgProfile, text} = this.props
         
     return (<div className='comment-first-container'>
-                <div className='comment-user-container'>
-                    <img className='img-profile-micro' src={imgProfile ? imgProfile : './img/icon-profile.png'}/>
-                    <p className='comment-username'>{username}</p>
+                <div>
+                  <img className='img-profile-micro' src={imgProfile ? imgProfile : './img/icon-profile.png'}/>
                 </div>
-                <p className='comment-text'>{text}</p>
+                <div className='comment-user-container'>                
+                    <p className='comment-username'>{username}</p>
+                    <p className='comment-text'>{text}</p>
+                </div>
+
             </div>
         
       
