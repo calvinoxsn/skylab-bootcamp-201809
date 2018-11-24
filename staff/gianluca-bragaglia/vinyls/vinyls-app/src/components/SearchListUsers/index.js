@@ -11,24 +11,6 @@ class SearchListUsers extends Component {
 
     state = {users: [], error: null, search: ''}
     
-    // componentDidMount() {
-       
-    //     try {  
-            
-    //         logic.retrieveUsers()
-    //         .then(res => { this.setState({ users: res, error: null  }) })
-    //         .catch(err => this.setState({ error: err.message }))
-    //     } catch (err) {
-    //         this.setState({ error: err.message })
-    //     }
-    // }
-
-    // searchUserChange = event => {
-
-    //     const search = event.target.value
-
-    //     this.setState({ search })
-    // }
 
     searchUserChange = event => {
 
@@ -49,17 +31,7 @@ class SearchListUsers extends Component {
 
     render() { 
 
-        // const { users, search } = this.state
-
-        // let filteredUsers = users.filter(
-
-        //     (user) => {
-
-        //         return user.username.indexOf(search) !== -1
-        //     }
-        // )
-
-        const { users } = this.state
+        const { users, error } = this.state
 
         return ( 
 
@@ -69,7 +41,7 @@ class SearchListUsers extends Component {
                 <div className='search-user'>
                     <Input label='search' icon='search' type='text' onChange={this.searchUserChange} /> 
                 </div>
-                
+                {error && <Error message={error} />}
                 <div className='list-group-flush'>
                         {users.map(user => (
                             <UserListItem key={user.idUser} id={user.idUser} username={user.username} imgProfileUrl={user.imgProfileUrl}/>

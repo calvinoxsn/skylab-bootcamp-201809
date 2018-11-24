@@ -8,7 +8,7 @@ import './index.css'
 
 
 class AddVinyl extends Component {
-    state = { title: '', artist: '', year: 0, info: null, imgVinylUrl: null, error: null }
+    state = { title: '', artist: '', year: 0, info: '', imgVinylUrl: null, error: null }
 
 
     handleTitleChange = e => {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
 import AddComment from  '../AddComment'
-import ListComments from  '../ListComments'
+import CommentsList from  '../CommentsList'
 import Error from '../Error'
 import logic from '../../logic'
 import './index.css'
@@ -9,7 +9,7 @@ import './index.css'
 
 
 class Vinyl extends Component {
-    state = { title: '', artist: '', year: 0, info:'', imgVinylUrl: null, comments:[], likes:[], likeSelected: false, text:'', error: null, addComment: null }
+    state = { title: '', artist: '', year: 0, info:'', imgVinylUrl: null, comments:[], likes:[], likeSelected: false, text:'', error: null, addComment: false }
 
 
     componentDidMount() {
@@ -65,10 +65,8 @@ class Vinyl extends Component {
             
             logic.addComment(this.props.id, text)
             .then(() => {
-                logic.retrieveVinylById(this.props.id)
-                .then(vinyl => { this.setState({ title: vinyl.title, artist: vinyl.artist, year: vinyl.year, info: vinyl.info, imgVinylUrl: vinyl.imgVinylUrl, comments: vinyl.comments, likes: vinyl.likes, addComment: null}) })
                 logic.retrieveComments(this.props.id)
-                    .then(comments => { this.setState({ comments }) })
+                    .then(comments => { this.setState({ comments, addComment: false }) })
                     .catch(err => this.setState({ error: err.message }))
             })
             .catch(err => this.setState({ error: err.message }))
@@ -79,7 +77,7 @@ class Vinyl extends Component {
 
 
     handleaddCmtBtn = () => {
-
+  
         if(this.state.addComment == false) {
             
             this.setState({ addComment: true })
@@ -117,7 +115,7 @@ class Vinyl extends Component {
                         <a onClick={this.handleaddCmtBtn}><p className='add-comment-icon-text'>Add Comment</p></a>
                     </div>
                     {addComment ? <AddComment onAddComment={this.handleAddComment} /> : null }
-                    <ListComments id={this.props.id} />   
+                    <CommentsList id={this.props.id} />   
                 </div>
     }
 }

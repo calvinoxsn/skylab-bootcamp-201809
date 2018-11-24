@@ -112,8 +112,7 @@ const logic = {
             { key: 'username', value: username, type: String },
             { key: 'password', value: password, type: String },
             { key: 'newPassword', value: password, type: String, optional: true },
-            { key: 'imgProfileUrl', value: password, type: String, optional: true },
-            { key: 'bio', value: password, type: String, optional: true }            
+            { key: 'imgProfileUrl', value: password, type: String, optional: true }           
         ])
 
         return (async () => {
@@ -131,7 +130,7 @@ const logic = {
                 user.username = username
                 newPassword != null && (user.password = newPassword)
                 user.imgProfileUrl = imgProfileUrl
-                user.bio = bio
+                user.bio = bio || ''
                
                 await user.save()
             } else {
@@ -145,7 +144,7 @@ const logic = {
 
     searchUsers(query) {
 
-        validate([{ key: 'query', value: query, type: String }])
+        validate([{ key: 'query', value: query, type: String, optional: true  }])
 
         
         return (async () => {
@@ -350,8 +349,7 @@ const logic = {
             { key: 'title', value: title, type: String },
             { key: 'artist', value: artist, type: String },
             { key: 'year', value: year, type: Number },
-            { key: 'imgVinylUrl', value: imgVinylUrl, type: String, optional: true },
-            { key: 'info', value: info, type: String, optional: true }            
+            { key: 'imgVinylUrl', value: imgVinylUrl, type: String, optional: true }           
         ])
   
 
@@ -360,7 +358,9 @@ const logic = {
 
             if (!user) throw new NotFoundError(`user with id ${id} not found`)
 
-            const vinyl = new Vinyl({ id: user.id, title, artist, year, imgVinylUrl, info })
+            const vinyl = new Vinyl({ id: user.id, title, artist, year, imgVinylUrl, info  })
+
+            vinyl.info = info || ''
 
             await vinyl.save()
         })()
@@ -436,6 +436,33 @@ const logic = {
         })()
     },
 
+    searchVinyls(query) {
+
+        validate([{ key: 'query', value: query, type: String, optional: true }])
+
+        
+        return (async () => {
+            
+            if (!(query.trim().length)) throw new ValueError('You must enter at least one search term')
+
+            const vinyls = await Vinyl.find({ title: { $regex: query, $options: 'i' } }).lean()
+
+            vinyls.forEach(vinyl => {
+
+                vinyl.idVinyl = vinyl._id
+                delete vinyl._id
+                delete vinyl.__v
+
+                return vinyl
+
+            })
+            
+            return vinyls
+            
+        })()
+
+    },
+
     removeVinyl(id) {
 
         validate([{ key: 'id', value: id, type: String }])
@@ -456,8 +483,7 @@ const logic = {
             { key: 'title', value: title, type: String },
             { key: 'artist', value: artist, type: String },
             { key: 'year', value: year, type: Number },
-            { key: 'imgVinylUrl', value: imgVinylUrl, type: String, optional: true },
-            { key: 'info', value: info, type: String, optional: true }            
+            { key: 'imgVinylUrl', value: imgVinylUrl, type: String, optional: true }           
         ])
   
         return (async () => {
@@ -470,7 +496,7 @@ const logic = {
             vinyl.artist = artist
             vinyl.year = year
             vinyl.imgVinylUrl = imgVinylUrl
-            vinyl.info = info
+            vinyl.info = info || ''
         
             await vinyl.save()
         })()

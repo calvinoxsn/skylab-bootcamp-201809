@@ -1,28 +1,28 @@
 
-.title{
+.title-card{
     font-weight: bold;
     color: black;
-    font-size: 20px;
+    font-size: 15px;
     margin-left: 23px;
     margin-top: -15px;
     text-transform: capitalize;
 }
 .card {
-    margin-top: 20px;
     width: 300px;
-    margin-bottom: 20px;
+    margin: 20px auto;
     
 }
 
-.artist {
+.artist-card {
     font-family: 'Roboto', sans-serif;
     font-weight: 300;
     margin-top: 10px;
     margin-left: 23px;
+    font-size: 15px;
     text-transform: capitalize;
 }
 
-.year {
+.year-card {
     font-family: 'Roboto', sans-serif;
     font-weight: 300;
     margin-left: 23px;
@@ -38,7 +38,7 @@
 	position: absolute;;
 	width:60px;
 	height:60px;
-	bottom:150px;
+	bottom:50px;
 	right:20px;
 	background-color:#509aaf;
 	color:#FFF;
@@ -50,4 +50,14 @@
 .my-float{
     color: white;
 	margin-top:22px;
+}
+
+@media screen and (max-width: 400px) {
+
+    /* .card {
+        width: 100%;
+        margin: 20px auto;
+        
+    } */
+   
 }

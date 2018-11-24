@@ -8,3 +8,15 @@
     color: white;
     margin-top: 10px;
 }
+
+.icon-users{
+    margin-top: 3px;
+}
+
+.icon-logout{
+    margin-top: 3px;
+}
+
+.user-name-navbar{
+    font-size: 13px;
+}

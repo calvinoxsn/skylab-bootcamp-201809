@@ -5,7 +5,7 @@ import './index.css'
 
 
 
-class VinylsList extends Component {
+class CommentsList extends Component {
 
     state = { comments: [] }
     
@@ -22,7 +22,6 @@ class VinylsList extends Component {
     render() { 
 
         const { comments } = this.state
-        console.log(comments)
         
         return ( 
             <React.Fragment>
@@ -39,4 +38,4 @@ class VinylsList extends Component {
 }
 
  
-export default VinylsList
+export default CommentsList

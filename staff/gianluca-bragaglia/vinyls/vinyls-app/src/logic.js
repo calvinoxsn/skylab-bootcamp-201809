@@ -246,9 +246,6 @@ const logic = {
                 
                 const users = res.data
 
-                console.log(users)
-                
-                
                 return users
                                      
             })
@@ -359,6 +356,26 @@ const logic = {
                 const followersList = res.data
                 
                 return followersList
+                                     
+            })
+
+    },
+
+    searchListVinyls(query) {
+
+        return fetch(`${this.url}/vinyls/search/${query}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${this._token}`
+            }
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res.error) throw Error(res.error)
+                
+                const vinyls = res.data
+
+                return vinyls
                                      
             })
 

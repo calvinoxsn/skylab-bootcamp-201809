@@ -244,6 +244,20 @@ router.get('/vinyls/user/:id', [bearerTokenParser, jwtVerifier], (req, res) => {
     }, res)
 })
 
+router.get(`/vinyls/search/:query`, [bearerTokenParser, jwtVerifier], (req, res) => {
+
+    routeHandler(() => {
+        const { params: { query }, sub } = req
+
+        return logic.searchVinyls(query)
+            .then(vinyls =>
+                res.json({
+                    data: vinyls
+                })
+            )
+    }, res)
+})
+
 router.delete('/vinyls/:id', [bearerTokenParser, jwtVerifier], (req, res) => {
     routeHandler(() => {
         
@@ -289,8 +303,6 @@ router.delete('/vinyls/:id/likes', [bearerTokenParser, jwtVerifier, jsonBodyPars
     routeHandler(() => {
         
         const { params: { id }, sub, body: { userId } } = req
-
-        console.log(id)
         
         if (userId !== sub) throw Error('token sub does not match user id')
 

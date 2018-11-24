@@ -2,9 +2,9 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import Error from '../Error'
 import logic from '../../logic'
-//import './index.css'
+import './index.css'
 
-class vinylsListProfileItem extends Component {
+class VinylsListProfileItem extends Component {
 
     state = { deleted: false, error: null}
 
@@ -24,23 +24,29 @@ class vinylsListProfileItem extends Component {
         const { title, artist, img, id } = this.props
 
         const { deleted, error } = this.state
+
         return ( <div>
                     {error && <Error message={error} />}
-                    { !deleted ? <section>
+                    { !deleted ? <div className='vinyl-item'>
+                        <div>
                         <Link to={`/vinyl/${id}`}>
-                            <li className='list-group-item'>
-                                <span><img className='vinyl-img-small' src={img ? img : './img/vinyl.png'}></img></span> 
+                            <li className='list-group-item profile'>
+                                <span><img className='vinyl-img-small' src={img ? img : './img/vinyl.png'} alt={title}></img></span> 
                                 <span className='title' >{title}</span>
-                                <span className='artist'>{artist}</span>
+                                {/* <span className='artist'>{artist}</span> */}
                             </li>
                         </Link>
-                        <button onClick={this.handleRemoveVinyl}>delete</button>
-                        <Link to={`/vinyl/${id}/edit`}><button>edit</button></Link>
-                    </section> : null}
+                        </div>
+                        <div>
+                            <Link to={`/vinyl/${id}/edit`}><span className='edit-btn' >edit</span></Link>
+                            <a onClick={this.handleRemoveVinyl}><span className='delete-btn' >delete</span></a>
+                        </div>
+                        
+                    </div> : null}
                 </div>
             
          )
     }
 }
  
-export default vinylsListProfileItem
+export default VinylsListProfileItem

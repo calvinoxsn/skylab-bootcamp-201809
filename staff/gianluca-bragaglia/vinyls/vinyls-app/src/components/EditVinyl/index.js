@@ -3,12 +3,12 @@ import { withRouter } from 'react-router-dom'
 import { Button } from 'mdbreact'
 import Error from '../Error'
 import logic from '../../logic'
-//import './index.css'
+import './index.css'
 
 
 
 class EditVinyl extends Component {
-    state = { title: '', artist: '', year: 0, info: null, imgVinylUrl: null, error: null }
+    state = { title: '', artist: '', year: 0, info: '', imgVinylUrl: null, error: null }
 
 
     componentDidMount() {
@@ -95,21 +95,18 @@ class EditVinyl extends Component {
 
     render() {
 
-        const {error, imgVinylUrl, info, title, artist } = this.state
+        const {error, imgVinylUrl, info, title, artist, year } = this.state
 
-        return <div className='edit-profile-container'>
-                <img className='profile-img'  src={imgVinylUrl ? imgVinylUrl : './img/vinyl.png'} ></img>
-                <br></br>
+        return <div className='edit-vinyl-container'>
+                <img className='edit-vinyl-img'  src={imgVinylUrl ? imgVinylUrl : './img/vinyl.png'} alt={title}></img>
                 {error && <Error message={error} />}
+                <br></br>
                 <Button type='button' onClick={this.uploadWidget} color='black' >Upload Image</Button>
-                <form className='form-edit-profile' onSubmit={this.handleSubmit}>
-                    <br></br>
+                <form className='form-edit-vinyl' onSubmit={this.handleSubmit}>
                     <input className='input' type='text'  id='title' value={title} placeholder='title' onChange={this.handleTitleChange} />
-                    <br></br>
                     <input className='input' type='text'  id='artist' value={artist} placeholder='artist' onChange={this.handleArtistChange} />
                     <br></br>
-                    {/* <input className='input' type='text'  placeholder='year' onChange={this.handleYearChange} /> */}
-                    <select className='dropdown-year' onChange={this.dropDownHandleYear}  >
+                    <select className='dropdown-year'  value={year} onChange={this.dropDownHandleYear}  >
                         <option>year</option>
                         <option value="2021">2021</option>
                         <option value="2020">2020</option>
@@ -230,8 +227,8 @@ class EditVinyl extends Component {
                         <option value="1905">1905</option>
                     </select>
                     <br></br>
-                    <textarea className='textarea' type='text' value={info} placeholder='info' onChange={this.handleInfoChange} />                   
-                    <br></br>
+                    <textarea className='textarea' type='text' value={info} placeholder='info' onChange={this.handleInfoChange} />  
+                                     
                     <Button type='submit'color='black' >Save</Button> 
                 </form>
         </div>

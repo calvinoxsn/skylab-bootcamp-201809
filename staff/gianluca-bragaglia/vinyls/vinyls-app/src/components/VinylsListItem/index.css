@@ -1,13 +1,20 @@
-.title{
-    font-weight: bold;
-    text-transform: capitalize;
+
+.vinyl-item-p{
+    text-align: center;
+    border-top: 1px solid #efecec;
+    /* border-bottom: 1px solid #efecec; */
+    padding-bottom: 15px;
+    padding-top: 15px;
 }
 
-/* .artist{
-    text-transform: capitalize;
-} */
 
-.vinyl-img-small{
+.title{
+    font-weight: bold;
+
+}
+
+
+.vinyl-img-small-p{
     width: 50px;
     border-radius: 50%;
 }
@@ -20,7 +27,17 @@
     }
     
     .artist{
-        font-size: 14px;
+        display: none;
+    }
+
+    .vinyl-item-p{
+        text-align: left;
+
+    }
+
+    .vinyl-img-small-p{
+        width: 30px;
+        border-radius: 50%;
     }
 
 }
