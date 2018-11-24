@@ -98,7 +98,6 @@ const logic = {
 
         validate([{ key: 'search', value: search, type: String }])
 
-
         return (async () => {
 
             if (!(search.trim().length)) throw new ValueError('You must enter at least one search term')
@@ -111,7 +110,7 @@ const logic = {
                     ]
                 },
                 (err, data) => {
-                    if (err) return
+                    if (err) return err
                     return data
                 }
             )
@@ -123,13 +122,14 @@ const logic = {
 
     filterProduct(instrument, type) {
 
-        // validate([
-        // { key: 'query', value: query, type: String }])
-
+        validate([
+            { key: 'instrument', value: instrument, type: String },
+            { key: 'type', value: type, type: String }
+        ])
 
         return (async () => {
 
-            // if (query === "/") throw new ValueError(`You must enter at least one search term`)
+            if (!query.length) throw new ValueError(`You must enter at least one search term`)
 
             const result = await Product.find(
                 { $and: [{ instrument: { $regex: instrument, $options: 'i' } }, { type: { $regex: type, $options: 'i' } }] },
@@ -163,16 +163,75 @@ const logic = {
 
     showWishlist(userId) {
 
-        // validate([
-        //     { key: 'id', value: id, type: String }
-        // ])
+        validate([
+            { key: 'userId', value: userId, type: String }
+        ])
 
         return (async () => {
 
             const user = await User.findById(userId).lean()
 
-            debugger
+            if (!user) throw new NotFoundError(`user with id number ${id} not found`)
 
+            const _items = user.wishlist
+
+            const result = await Product.find({
+                '_id': { $in: _items }
+            }, function (err, items) {
+                return items
+            });
+
+            return result
+
+        })()
+    },
+
+    removeItemInWishlist(userId, productId) {
+
+        validate([
+            { key: 'userId', value: userId, type: String },
+            { key: 'productId', value: productId, type: String }
+        ])
+
+        return (async () => {
+
+        const user = await User.findById(userId)
+
+        let wishlist = user.wishlist
+
+        let items = wishlist.filter(item => item !== productId)
+
+        user.wishlist = items
+
+        await user.save()
+
+        })()
+    },
+
+    // SHOPPING CART  
+
+    addItemToCart(userId, productId) {
+
+        return (async () => {
+
+            let user = await User.findById(userId)
+
+            user.shoppingCart.push(productId)
+
+            await user.save()
+
+        })()
+    },
+
+    showCart(userId) {
+
+        validate([
+            { key: 'userId', value: userId, type: String }
+        ])
+
+        return (async () => {
+
+            const user = await User.findById(userId).lean()
 
             if (!user) throw new NotFoundError(`user with id number ${id} not found`)
             // const items = await Product.find().lean()
@@ -189,23 +248,23 @@ const logic = {
         })()
     },
 
-    removeItemInWishlist(userId, productId) {
-        // validate([
-        //     { key: 'id', value: id, type: String },
-        //     { key: 'postitId', value: postitId, type: String }
-        // ])
+    removeItemInCart(userId, productId) {
+        validate([
+            { key: 'userId', value: userId, type: String },
+            { key: 'productId', value: productId, type: String }
+        ])
 
         return (async () => {
             const user = await User.findById(userId)
 
             if (!user) throw new NotFoundError(`user with id ${userId} not found`)
 
-            const wishlist = await Product.findById(productId)
-            if (!wishlist) throw new NotFoundError(`product with id number ${productId} not found`)
+            const shoppingCart = await Product.findById(productId)
+            if (!shoppingCart) throw new NotFoundError(`product with id number ${productId} not found`)
 
-            return User.updateOne({ _id : userId }, { $pull: { wishlist: productId } })
+            return User.updateOne({ _id: userId }, { $pull: { shoppingCart: productId } })
         })()
-    },
+    }
 }
 
 module.exports = logic

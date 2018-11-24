@@ -109,16 +109,16 @@ router.post('/products/filter', [jsonBodyParser], (req, res) => {
 
 // WISHLIST
 
-router.post('/users/:id/wishlist', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, res) => {
+router.post('/users/wishlist', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, res) => {
 
     routeHandler(() => {
 
-        const { sub, params: { id }, body: { productId } } = req
+        const { sub, body: { productId } } = req
 
-        if (id !== sub) throw Error('token sub does not match user id')
+        if (!sub) throw Error('Please enter valid token')
 
 
-        return logic.addItemToWishlist(id, productId)
+        return logic.addItemToWishlist(sub, productId)
             .then(() =>
                 res.json({
                     message: `Item ${productId} succesfully added to wishlist`
@@ -127,27 +127,27 @@ router.post('/users/:id/wishlist', [bearerTokenParser, jwtVerifier, jsonBodyPars
     }, res)
 })
 
-router.get('/users/:id/wishlist', [bearerTokenParser, jwtVerifier], (req, res) => {
+router.get('/users/wishlist', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, res) => {
 
     routeHandler(() => {
-        const { sub, params: { id } } = req
+        const { sub } = req
 
-        if (id !== sub) throw Error('token sub does not match user id')
+        if (!sub) throw Error('Please enter a valid token!')
 
-        return logic.showWishlist(id)
+        return logic.showWishlist(sub)
             .then(wishlist =>
                 res.json({ wishlist })
             )
     }, res)
 })
 
-router.delete('/users/:id/wishlist/:productId', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, res) => {
+router.delete('/users/wishlist/:productId', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, res) => {
     routeHandler(() => {
-        const { sub, params: { id, productId } } = req
+        const { sub, params: { productId } } = req
 
-        if (id !== sub) throw Error('token sub does not match user id')
+        if (!sub) throw Error('Invalid token')
 
-        return logic.removeItemInWishlist(id, productId)
+        return logic.removeItemInWishlist(sub, productId)
             .then(() => res.json({
                 message: 'Item succesfully removed from wishlist'
             }))
@@ -156,13 +156,13 @@ router.delete('/users/:id/wishlist/:productId', [bearerTokenParser, jwtVerifier,
 
 // SHOPPING CART
 
-router.post('/users/:id/shopping', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, res) => {
+router.post('/users/shopping-cart', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, res) => {
 
     routeHandler(() => {
 
-        const { sub, params: { id }, body: { productId } } = req
+        const { sub, body: { productId } } = req
 
-        if (id !== sub) throw Error('token sub does not match user id')
+        if (!sub) throw Error('Invalid token!')
 
 
         return logic.addItemToCart(id, productId)
@@ -174,8 +174,8 @@ router.post('/users/:id/shopping', [bearerTokenParser, jwtVerifier, jsonBodyPars
     }, res)
 })
 
-router.get('/users/:id/shopping', [bearerTokenParser, jwtVerifier], (req, res) => {
-
+router.get('/users/:id/shopping-cart', [bearerTokenParser, jwtVerifier], (req, res) => {
+    
     routeHandler(() => {
         const { sub, params: { id } } = req
 
@@ -188,7 +188,7 @@ router.get('/users/:id/shopping', [bearerTokenParser, jwtVerifier], (req, res) =
     }, res)
 })
 
-router.delete('/users/:id/shopping/:productId', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, res) => {
+router.delete('/users/:id/shopping-cart/:productId', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, res) => {
     routeHandler(() => {
         const { sub, params: { id, productId } } = req
 
