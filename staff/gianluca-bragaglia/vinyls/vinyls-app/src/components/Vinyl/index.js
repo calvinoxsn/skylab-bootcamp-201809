@@ -114,16 +114,18 @@ class Vinyl extends Component {
                     <p className='vinyl-title'>{title}</p>
                     <p className='vinyl-artist'>{artist}</p>
                     <p className='vinyl-year'>{year}</p>
-                    <Link to={`/profile/${id}`}><img className='profile-img-list' src={user.imgProfileUrl ? user.imgProfileUrl : './img/icon-profile.png'} ></img> <span className='profile-username-list'>{user.username}</span></Link>
-                    <br></br>
                     <a href="#" onClick={likeSelected ? this.handleDontLikeClick : this.handleLikeClick}> {likeSelected ? <span className='dont-like-btn'><i className='fa fa-star'><span className='likes-count'>{likes.length}</span></i></span> : <span className='like-btn'><i className='far fa-star'><span className='likes-count'>{likes.length}</span></i></span>}</a>
+                    <br></br>
+                    <div className='profile-vinyl'>
+                        <Link to={`/profile/${id}`}><img className='profile-img-list' src={user.imgProfileUrl ? user.imgProfileUrl : './img/icon-profile.png'} ></img> <span className='profile-username-list'>{user.username}</span></Link>
+                    </div>
                     <p className='vinyl-info'>{info}</p>
                     <div className='msg-button'>
                         <span><i className="far fa-comment-alt"></i></span>
                         <a onClick={this.handleaddCmtBtn}><p className='add-comment-icon-text'>Add Comment</p></a>
                     </div>
                     {addComment ? <AddComment onAddComment={this.handleAddComment} /> : null }
-                    <CommentsList id={this.props.id} comments={comments} />   
+                    <CommentsList comments={comments} />   
                 </div>
     }
 }
