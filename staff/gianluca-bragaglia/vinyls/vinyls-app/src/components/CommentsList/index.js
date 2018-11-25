@@ -10,7 +10,7 @@ class CommentsList extends Component {
     render() { 
 
         const { comments } = this.props
-        
+     
         return ( 
             <React.Fragment>
                 <div className='comments-list'>

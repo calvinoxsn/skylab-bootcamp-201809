@@ -4,7 +4,7 @@ const fs = require('fs')
 const path = require('path')
 const { env: { PORT } } = process
 const validate = require('../utils/validate')
-const { AlreadyExistsError, AuthError, NotFoundError, ValueError } = require('../errors')
+const { AlreadyExistsError, AuthError, NotFoundError, ValueError, NotAllowedError } = require('../errors')
 
 const logic = {
     registerUser(email, username, password) {
@@ -398,6 +398,19 @@ const logic = {
             const vinyl = await Vinyl.findById(id, { '_id': 0,  __v: 0 }).lean()
 
             if (!vinyl) throw new NotFoundError(`vinyl with id ${id} not found`)
+
+            const comments = vinyl.comments
+
+            comments.forEach(comment => {
+
+                comment.idComment = comment._id
+
+                delete comment._id
+                delete comment.__v
+
+                return comment
+
+            })
 
             vinyl.idVinyl = vinyl._id
 

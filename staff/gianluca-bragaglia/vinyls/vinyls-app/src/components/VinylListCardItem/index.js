@@ -31,10 +31,8 @@ class VinylListCardItem extends Component {
               </div>
                 <div className='card-image'>
                   <img src={img ? img : './img/vinyl.png'} alt='vinyls'/>
-                  <Link to={`/vinyl/${id}`}>
-                    <a className="float">
-                      <i className="fa fa-plus my-float"></i>
-                    </a>
+                  <Link to={`/vinyl/${id}`}  className="float">      
+                    <i className="fa fa-plus my-float"></i>        
                   </Link>
                 </div>
                 <p className='artist-card'>{artist}</p>
