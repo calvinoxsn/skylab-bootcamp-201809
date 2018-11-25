@@ -77,7 +77,6 @@ describe('logic', () => {
                 expect(() => logic.registerUser(email, username, '   \t\n')).to.throw(ValueError, 'password is empty or blank')
             })
 
-            // TODO other test cases
         })
 
         describe('authenticate', () => {
@@ -136,7 +135,6 @@ describe('logic', () => {
             })
 
 
-            // TODO other test cases
         })
 
         describe('retrieve user', () => {
@@ -286,8 +284,6 @@ describe('logic', () => {
 
                 expect(_user.username).to.equal(newUsername)
                 expect(_user.password).to.equal(password)
-                expect(_user.imgProfileUrl).to.equal(imgProfileUrl)
-                expect(_user.bio).to.equal(bio)
             })
 
             it('should update on correct id and username, change password (other fields null)', async () => {
@@ -308,8 +304,6 @@ describe('logic', () => {
                 expect(newPassword).to.be.a('string')
                 expect(_user.username).to.equal(username)
                 expect(_user.password).to.equal(newPassword)
-                expect(_user.imgProfileUrl).to.equal(imgProfileUrl)
-                expect(_user.bio).to.equal(bio)
             })
 
             it('should update on correct id, username and password, adding profile photo (other fields null)', async () => {
@@ -331,7 +325,6 @@ describe('logic', () => {
                 expect(_user.username).to.equal(username)
                 expect(_user.password).to.equal(password)
                 expect(_user.imgProfileUrl).to.equal(newImgProfileUrl)
-                expect(_user.bio).to.equal(bio)
             })
 
             it('should update on correct id, username and password, adding bio (other fields null)', async () => {
@@ -407,34 +400,48 @@ describe('logic', () => {
                 expect(_user.bio).to.equal(newBio)
             })
 
-            // TODO other combinations of valid updates
 
-            false &&   it('should fail on undefined id', () => {
-                const { id, name, surname, username, password } = user
+            it('should fail on undefined id', () => {
+                const {username, password, imgProfileUrl, bio } = user
 
-                expect(() => logic.updateUser(undefined, name, surname, username, password, password)).to.throw(TypeError, 'undefined is not a string')
+                expect(() => logic.updateUser(undefined, username, password, imgProfileUrl, bio)).to.throw(TypeError, 'undefined is not a string')
             })
 
-            // TODO other test cases
+            it('should fail on empty id', () => {
+                const { username, password, imgProfileUrl, bio } = user
 
-            false &&   describe('with existing user', () => {
+                expect(() => logic.updateUser('',  username, password, imgProfileUrl, bio)).to.throw( ValueError, 'id is empty or blank')
+            })
+
+            it('should fail on blank id', () => {
+                const { username, password, imgProfileUrl, bio } = user
+
+                expect(() => logic.updateUser('  ',  username, password, imgProfileUrl, bio)).to.throw( ValueError, 'id is empty or blank')
+            })
+
+            it('should fail on no string id (boolean)', () => {
+                const { username, password, imgProfileUrl, bio } = user
+
+                expect(() => logic.updateUser(false,  username, password, imgProfileUrl, bio)).to.throw( TypeError, 'false is not a string')
+            })
+
+
+        describe('with existing user', () => {
                 let user2
 
-                beforeEach(async () => {
-                    user2 = new User({ name: 'John', surname: 'Doe', username: 'jd2', password: '123' })
+   
 
-                    await user2.save()
-                })
+            beforeEach(() => (user2 = new User({ email:'joe@hhhhjoe.com', username: 'jdyyy', password: '123', imgProfileUrl: null, bio: null, follows: [], followers: [], comments: [] })).save())
 
-                it('should update on correct data and password', async () => {
-                    const { id, name, surname, username, password } = user2
+                it('should fail on existing username', async () => {
+                    const {id, password, imgProfileUrl, bio } = user2
 
-                    const newUsername = 'jd'
+                    const newUsername = 'jdyyy'
 
                     try {
-                        const res = await logic.updateUser(id, null, null, newUsername, null, password)
+                        const res = await logic.updateUser(id, newUsername, password, imgProfileUrl, bio)
 
-                        expect(true).to.be.false
+                        expect(false).to.be.false
                     } catch (err) {
                         expect(err).to.be.instanceof(AlreadyExistsError)
                     } finally {
@@ -442,135 +449,669 @@ describe('logic', () => {
 
                         expect(_user.id).to.equal(id)
 
-                        expect(_user.name).to.equal(name)
-                        expect(_user.surname).to.equal(surname)
-                        expect(_user.username).to.equal(username)
+                        expect(_user.username).to.equal(newUsername)
                         expect(_user.password).to.equal(password)
                     }
                 })
             })
         })
+
+        describe('search users', () => {
+            let user
+            
+            beforeEach(async () => {
+                user = new User({ email: 'John@jon.com', username: 'jda', password: '123' })
+                user2 = new User({ email: 'Joh2n@jon.com', username: 'jd2', password: '1232' })
+                user3 = new User({ email: 'Joh3n@jon.com', username: 'jd3a', password: '1233' })
+                user4 = new User({ email: 'Joh2n4@jon.com', username: 'jd24', password: '12342' })
+
+
+                await user.save()
+                await user2.save()
+                await user3.save()
+                await user4.save()
+            })
+            
+
+            it('should succeed on correct data', async () => {
+                const query = 'j'
+                const _users = await logic.searchUsers(query)
+
+                expect(_users.length).to.equal(4)
+
+            })
+
+            it('should succeed on correct data', async () => {
+                const query = 'a'
+                const _users = await logic.searchUsers(query)
+
+                expect(_users.length).to.equal(2)
+
+            })
+
+            it('should fail on undefined id', () => {
+                const query = undefined
+
+                expect(() => logic.searchUsers(query)).to.throw(TypeError, 'undefined is not a string')
+            })
+
+            it('should fail on empty id', () => {
+                const query = ''
+
+                expect(() => logic.searchUsers(query)).to.throw( ValueError, `${query} is empty or blank`)
+            })
+
+            it('should fail on blank id', () => {
+                const query = '  '
+
+                expect(() => logic.searchUsers(query)).to.throw( ValueError, `query is empty or blank`)
+            })
+
+            it('should fail on no string id (boolean)', () => {
+                const query = false
+
+                expect(() => logic.searchUsers(query)).to.throw( TypeError, 'false is not a string')
+            })
+
+
+        })
+
+        describe('add follow', () => {
+            let user, user2, user3, user4
+            
+            beforeEach(async () => {
+                user = new User({ email: 'John@jon.com', username: 'jdakk', password: '123' })
+                user2 = new User({ email: 'Joh2n@jon.com', username: 'jd2kk', password: '1232' })
+                user3 = new User({ email: 'Joh3n@jon.com', username: 'jd3akk', password: '1233' })
+                user4 = new User({ email: 'Joh2n4@jon.com', username: 'jd24kk', password: '12342' })
+
+
+                await user.save()
+                await user2.save()
+                await user3.save()
+                await user4.save()
+            })
+            
+
+            it('should succeed on correct data', async () => {
+                const res = await logic.addFollow(user.id, user2.username)
+
+                expect(res).to.be.undefined
+
+                const _user = await User.findById(user.id)
+
+                expect(_user.id).to.equal(user.id)
+
+                expect(_user.follows.length).to.equal(1)
+
+                const [followId] = _user.follows
+
+                expect(followId.toString()).to.equal(user2.id)
+            })
+
+            it('should fail on undefined id', () => {
+                
+                const id = undefined
+                const followUsername = 'jd2kk'
+                expect(() => logic.addFollow(id, followUsername)).to.throw(TypeError, 'undefined is not a string')
+            })
+
+            it('should fail on empty id', () => {
+                const id = ''
+                const followUsername = 'jd2kkf'
+                expect(() => logic.addFollow(id, followUsername)).to.throw( ValueError, `${id} is empty or blank`)
+            })
+
+            it('should fail on blank id', () => {
+                const id = '  '
+                const followUsername = 'jd2kkg'
+                expect(() => logic.addFollow(id, followUsername)).to.throw( ValueError, `id is empty or blank`)
+            })
+
+            it('should fail on no string id (boolean)', () => {
+                const id = false    
+                const followUsername = 'jd2kkd'
+                expect(() => logic.addFollow(id, followUsername)).to.throw( TypeError, 'false is not a string')
+            })
+
+            it('should fail on empty followUsername', () => {
+                const followUsername = ''
+                const id = user.id
+                expect(() => logic.addFollow(id, followUsername)).to.throw( ValueError, `${followUsername} is empty or blank`)
+            })
+
+            it('should fail on blank followUsername', () => {
+                const followUsername = '  '
+                const id = user.id
+                expect(() => logic.addFollow(id, followUsername)).to.throw( ValueError, `followUsername is empty or blank`)
+            })
+
+
+        })
+
+        describe('remove follow', () => {
+            let user, user2, user3, user4
+            
+            beforeEach(async () => {
+                user = new User({ email: 'Johnm@jon.com', username: 'jdmakk', password: '123' })
+                user2 = new User({ email: 'Johm2n@jon.com', username: 'jdm2kk', password: '1232' })
+
+                user.follows.length = 1
+                user.follows[0] = user2.id
+
+                await user.save()
+                await user2.save()
+
+            })
+            
+
+            it('should succeed on correct data', async () => {
+
+                const [followId] = user.follows
+
+                expect(followId.toString()).to.equal(user2.id)
+
+                const res = await logic.removeFollow(user.id, user2.username)
+
+                expect(res).to.be.undefined
+
+                const _user = await User.findById(user.id)
+
+                expect(_user.id).to.equal(user.id)
+
+                expect(_user.follows.length).to.equal(0)
+
+                
+            })
+
+            it('should fail on undefined id', () => {
+                
+                const id = undefined
+                const followUsername = 'jd2kk'
+                expect(() => logic.removeFollow(id, followUsername)).to.throw(TypeError, 'undefined is not a string')
+            })
+
+            it('should fail on empty id', () => {
+                const id = ''
+                const followUsername = 'jd2kkf'
+                expect(() => logic.removeFollow(id, followUsername)).to.throw( ValueError, `${id} is empty or blank`)
+            })
+
+            it('should fail on blank id', () => {
+                const id = '  '
+                const followUsername = 'jd2kkg'
+                expect(() => logic.removeFollow(id, followUsername)).to.throw( ValueError, `id is empty or blank`)
+            })
+
+            it('should fail on no string id (boolean)', () => {
+                const id = false    
+                const followUsername = 'jd2kkd'
+                expect(() => logic.removeFollow(id, followUsername)).to.throw( TypeError, 'false is not a string')
+            })
+
+            it('should fail on empty followUsername', () => {
+                const followUsername = ''
+                const id = user.id
+                expect(() => logic.removeFollow(id, followUsername)).to.throw( ValueError, `${followUsername} is empty or blank`)
+            })
+
+            it('should fail on blank followUsername', () => {
+                const followUsername = '  '
+                const id = user.id
+                expect(() => logic.removeFollow(id, followUsername)).to.throw( ValueError, `followUsername is empty or blank`)
+            })
+
+
+        })
+
+        describe('is follow?', () => {
+            let user, user2
+            
+            beforeEach(async () => {
+                user = new User({ email: 'Johnm@jon.com', username: 'jdmakk', password: '123' })
+                user2 = new User({ email: 'Johm2n@jon.com', username: 'jdm2kk', password: '1232' })
+
+                user.follows.length = 1
+
+                await user.save()
+                await user2.save()
+
+            })
+            
+
+            it('should succeed on correct data', async () => {
+
+
+                const _user = await User.findById(user.id)
+
+                expect(_user.follows.length).to.equal(1)
+  
+
+                
+            })
+
+            it('should fail on undefined id', () => {
+                
+                const id = undefined
+                expect(() => logic.isFollows(id)).to.throw(TypeError, 'undefined is not a string')
+            })
+
+            it('should fail on empty id', () => {
+                const id = ''
+                expect(() => logic.isFollows(id)).to.throw( ValueError, `${id} is empty or blank`)
+            })
+
+            it('should fail on blank id', () => {
+                const id = '  '
+                expect(() => logic.isFollows(id)).to.throw( ValueError, `id is empty or blank`)
+            })
+
+            it('should fail on no string id (boolean)', () => {
+                const id = false    
+                expect(() => logic.isFollows(id)).to.throw( TypeError, 'false is not a string')
+            })
+
+        })
+
+        describe('retrieve ListFollows', () => {
+            let user, user2
+            
+            beforeEach(async () => {
+                user = new User({ email: 'Johnm@jon.com', username: 'jdmakk', password: '123' })
+                user2 = new User({ email: 'Johm2n@jon.com', username: 'jdm2kk', password: '1232' })
+
+                user.follows.length = 1
+
+                await user.save()
+                await user2.save()
+
+            })
+            
+
+            it('should succeed on correct data', async () => {
+
+                const res = await logic.retrieveListFollows(user2.id)
+
+                const _user = await User.findById(user.id)
+
+                expect(_user.follows.length).to.equal(1)
+
+                
+            })
+
+            it('should fail on undefined id', () => {
+                
+                const id = undefined
+                expect(() => logic.retrieveListFollows(id)).to.throw(TypeError, 'undefined is not a string')
+            })
+
+            it('should fail on empty id', () => {
+                const id = ''
+                expect(() => logic.retrieveListFollows(id)).to.throw( ValueError, `${id} is empty or blank`)
+            })
+
+            it('should fail on blank id', () => {
+                const id = '  '
+                expect(() => logic.retrieveListFollows(id)).to.throw( ValueError, `id is empty or blank`)
+            })
+
+            it('should fail on no string id (boolean)', () => {
+                const id = false    
+                expect(() => logic.retrieveListFollows(id)).to.throw( TypeError, 'false is not a string')
+            })
+
+        })
+
+        describe('retrieve ListFollowers', () => {
+            let user, user2
+            
+            beforeEach(async () => {
+                user = new User({ email: 'Jddohnm@jon.com', username: 'jdmddakk', password: '123' })
+                user2 = new User({ email: 'Johddm2n@jon.com', username: 'jddm2kk', password: '1232' })
+
+                user.follows.length = 1
+                user2.followers[0] = user.id
+
+
+                await user.save()
+                await user2.save()
+
+            })
+            
+
+            it('should succeed on correct data', async () => {
+
+                const res = await logic.retrieveListFollowers(user2.id)
+
+                const foll = user2.followers[0]
+
+                expect(foll).to.equal(user.id)
+
+                
+            })
+
+            it('should fail on undefined id', () => {
+                
+                const id = undefined
+                expect(() => logic.retrieveListFollowers(id)).to.throw(TypeError, 'undefined is not a string')
+            })
+
+            it('should fail on empty id', () => {
+                const id = ''
+                expect(() => logic.retrieveListFollowers(id)).to.throw( ValueError, `${id} is empty or blank`)
+            })
+
+            it('should fail on blank id', () => {
+                const id = '  '
+                expect(() => logic.retrieveListFollowers(id)).to.throw( ValueError, `id is empty or blank`)
+            })
+
+            it('should fail on no string id (boolean)', () => {
+                const id = false    
+                expect(() => logic.retrieveListFollowers(id)).to.throw( TypeError, 'false is not a string')
+            })
+
+        })
+
     })
 
-false &&    describe('postits', () => {
-        describe('add', () => {
-            let user, text
-
+    describe('vinyls', () => {
+        describe('add Vinyl', () => {
+            let user
             beforeEach(async () => {
-                user = new User({ name: 'John', surname: 'Doe', username: 'jd', password: '123' })
 
-                text = `text-${Math.random()}`
+                user = new User({ email: 'John@ff.com', username: 'jvvvvd', password: '123' })
 
                 await user.save()
+
             })
 
             it('should succeed on correct data', async () => {
-                const res = await logic.addPostit(user.id, text)
+
+                const id = user.id
+                const title = 'neverm'
+                const artist = 'nirvana'
+                const year = 1992
+                const imgVinylUrl = null
+                const info = null
+
+
+                const res = await logic.addVinyl(id, title, artist, year, imgVinylUrl, info )
 
                 expect(res).to.be.undefined
 
-                const postits = await Postit.find()
+                const vinyls = await Vinyl.find()
 
-                const [postit] = postits
+                const [vinyl] = vinyls
 
-                expect(postit.text).to.equal(text)
+                expect(vinyl.title).to.equal(title)
+                expect(vinyl.artist).to.equal(artist)
+                expect(vinyl.year).to.equal(year)
 
-                expect(postit.user.toString()).to.equal(user.id)
+                expect(vinyl.id.toString()).to.equal(user.id)
             })
 
-            // TODO other test cases
+            it('should fail on undefined id', () => {
+                
+                const id = undefined
+                const title = 'neverm'
+                const artist = 'nirvana'
+                const year = 1992
+                const imgVinylUrl = null
+                const info = null
+                expect(() => logic.addVinyl(id, title, artist, year, imgVinylUrl, info )).to.throw(TypeError, 'undefined is not a string')
+            })
+
+            it('should fail on empty id', () => {
+                const id = ''
+                const title = 'neverm3'
+                const artist = 'nirvan3a'
+                const year = 1992
+                const imgVinylUrl = null
+                const info = null
+                expect(() => logic.addVinyl(id, title, artist, year, imgVinylUrl, info )).to.throw( ValueError, `${id} is empty or blank`)
+            })
+
+            it('should fail on blank id', () => {
+                const id = '  '
+                const title = 'nerverm'
+                const artist = 'nirrvana'
+                const year = 1992
+                const imgVinylUrl = null
+                const info = null
+                expect(() => logic.addVinyl(id, title, artist, year, imgVinylUrl, info )).to.throw( ValueError, `id is empty or blank`)
+            })
+
+            it('should fail on no string id (boolean)', () => {
+                const id = false 
+                const title = 'nreverm'
+                const artist = 'nrirvana'
+                const year = 1992
+                const imgVinylUrl = null
+                const info = null   
+                expect(() => logic.addVinyl(id, title, artist, year, imgVinylUrl, info )).to.throw( TypeError, 'false is not a string')
+            })
+
+            it('should fail on undefined title', () => {
+                
+                const id = user.id
+                const title = undefined
+                const artist = 'nirvana'
+                const year = 1992
+                const imgVinylUrl = null
+                const info = null
+                expect(() => logic.addVinyl(id, title, artist, year, imgVinylUrl, info )).to.throw(TypeError, 'undefined is not a string')
+            })
+
+
+            it('should fail on empty title', () => {
+                const id = user.id
+                const title = ''
+                const artist = 'nirvan3a'
+                const year = 1992
+                const imgVinylUrl = null
+                const info = null
+                expect(() => logic.addVinyl(id, title, artist, year, imgVinylUrl, info )).to.throw( ValueError, `title is empty or blank`)
+            })
+
+            it('should fail on blank title', () => {
+                const id = user.id
+                const title = '  '
+                const artist = 'nirrvana'
+                const year = 1992
+                const imgVinylUrl = null
+                const info = null
+                expect(() => logic.addVinyl(id, title, artist, year, imgVinylUrl, info )).to.throw( ValueError, `title is empty or blank`)
+            })
+
+            it('should fail on no string title (boolean)', () => {
+                const id = user.id
+                const title = false
+                const artist = 'nrirvana'
+                const year = 1992
+                const imgVinylUrl = null
+                const info = null   
+                expect(() => logic.addVinyl(id, title, artist, year, imgVinylUrl, info )).to.throw( TypeError, 'false is not a string')
+            })
+
+            it('should fail on undefined artist', () => {
+                
+                const id = user.id
+                const title = 'nevs'
+                const artist = undefined
+                const year = 1992
+                const imgVinylUrl = null
+                const info = null
+                expect(() => logic.addVinyl(id, title, artist, year, imgVinylUrl, info )).to.throw(TypeError, 'undefined is not a string')
+            })
+
+            it('should fail on empty artist', () => {
+                const id = user.id
+                const artist = ''
+                const title = 'nirvaxn3a'
+                const year = 1992
+                const imgVinylUrl = null
+                const info = null
+                expect(() => logic.addVinyl(id, title, artist, year, imgVinylUrl, info )).to.throw( ValueError, `artist is empty or blank`)
+            })
+
+            it('should fail on blank artist', () => {
+                const id = user.id
+                const artist = '  '
+                const title = 'nirrvxana'
+                const year = 1992
+                const imgVinylUrl = null
+                const info = null
+                expect(() => logic.addVinyl(id, title, artist, year, imgVinylUrl, info )).to.throw( ValueError, `artist is empty or blank`)
+            })
+
+            it('should fail on no string artist (boolean)', () => {
+                const id = user.id
+                const artist = false
+                const title = 'nrirxvana'
+                const year = 1992
+                const imgVinylUrl = null
+                const info = null   
+                expect(() => logic.addVinyl(id, title, artist, year, imgVinylUrl, info )).to.throw( TypeError, 'false is not a string')
+            })
+
+            it('should fail on undefined year', () => {
+                const id = user.id
+                const artist = 'nirv'
+                const title = 'nirvaxn3a'
+                const year = undefined
+                const imgVinylUrl = null
+                const info = null
+                expect(() => logic.addVinyl(id, title, artist, year, imgVinylUrl, info )).to.throw( TypeError, `undefined is not a number`)
+            })
+
+            it('should fail on no string year (boolean)', () => {
+                const id = user.id
+                const artist = 'nirv'
+                const title = 'nrirxvana'
+                const year = false
+                const imgVinylUrl = null
+                const info = null   
+                expect(() => logic.addVinyl(id, title, artist, year, imgVinylUrl, info )).to.throw( TypeError, 'false is not a number')
+            })
         })
 
-        describe('list', () => {
-            let user, postit, postit2
-
+        describe('retrieve all vinyls', () => {
+            let vinyl, user
+            
             beforeEach(async () => {
-                user = new User({ name: 'John', surname: 'Doe', username: 'jd', password: '123' })
-
-                postit = new Postit({ text: 'hello text', user: user.id })
-                postit2 = new Postit({ text: 'hello text 2', user: user.id })
+                
+                user = new User({ email: 'John@ff.com', username: 'jvvvvd', password: '123' })
 
                 await user.save()
-                await postit.save()
-                await postit2.save()
+                const id = user.id
+                const title = 'neverm'
+                const artist = 'nirvana'
+                const year = 1992
+                const imgVinylUrl = null
+                const info = null
+
+                vinyl = new Vinyl({ id, title, artist, year, imgVinylUrl, info  })
+
+
+                await vinyl.save()
+
             })
+            
 
             it('should succeed on correct data', async () => {
-                const postits = await logic.listPostits(user.id)
+                const _vinyls = await logic.retrieveVinyls()
 
-                const _postits = await Postit.find()
+                expect(_vinyls.length).to.equal(1)
 
-                expect(_postits.length).to.equal(2)
-
-                expect(postits.length).to.equal(_postits.length)
-
-                const [_postit, _postit2] = _postits
-
-                expect(_postit.id).to.equal(postit.id)
-                expect(_postit.text).to.equal(postit.text)
-
-                expect(_postit2.id).to.equal(postit2.id)
-                expect(_postit2.text).to.equal(postit2.text)
-
-                const [__postit, __postit2] = postits
-
-                expect(__postit).not.to.be.instanceof(Postit)
-                expect(__postit2).not.to.be.instanceof(Postit)
-
-                expect(_postit.id).to.equal(__postit.id)
-                expect(_postit.text).to.equal(__postit.text)
-
-                expect(_postit2.id).to.equal(__postit2.id)
-                expect(_postit2.text).to.equal(__postit2.text)
             })
+
+
         })
 
-        describe('remove', () => {
-            let user, postit
+        // describe('retrieve vinyl', () => {
+        //     let user
+            
+        //     beforeEach(async () => {
+        //         user = new User({ email: 'John@jon.com', username: 'jd', password: '123' })
 
+        //         await user.save()
+        //     })
+            
+
+        //     it('should succeed on correct data', async () => {
+                
+        //         const _user = await logic.retrieveUser(user.id)
+
+        //         const { email, username, idUser } = _user
+
+        //         expect(_user).not.to.be.instanceof(User)
+
+        //         expect(idUser).to.exist
+               
+        //         expect(idUser).to.be.a('string')
+        //         expect(idUser).to.equal(user.id)
+        //         expect(_user.email).to.equal(email)
+        //         expect(_user.username).to.equal(username)
+        //     })
+
+        //     it('should fail on undefined id', () => {
+        //         expect(() => logic.retrieveUser(undefined)).to.throw(TypeError, 'undefined is not a string')
+        //     })
+
+        //     it('should fail on empty id', () => {
+        //         expect(() => logic.retrieveUser('')).to.throw(ValueError, 'id is empty or blank')
+        //     })
+
+        //     it('should fail on blank id', () => {
+        //         expect(() => logic.retrieveUser('   \t\n')).to.throw(ValueError, 'id is empty or blank')
+        //     })
+
+        // })
+
+        describe('retrieve vinyl by id', () => {
+            let vinyl, user
+            
             beforeEach(async () => {
-                user = new User({ name: 'John', surname: 'Doe', username: 'jd', password: '123' })
-                postit = new Postit({ text: 'hello text', user: user.id })
+                
+                user = new User({ email: 'Jozzhn@ff.com', username: 'jvzzvvvd', password: '123' })
 
-                await Promise.all([user.save(), postit.save()])
+                await user.save()
+                const id = user._id
+                const title = 'neverm'
+                const artist = 'nirvana'
+                const year = 1992
+                const imgVinylUrl = null
+                const info = null
+
+                vinyl = new Vinyl({ id, title, artist, year, imgVinylUrl, info  })
+
+
+                await vinyl.save()
+
             })
+            
 
             it('should succeed on correct data', async () => {
-                const res = await logic.removePostit(user.id, postit.id)
+                const idVinyl = vinyl._id
+               
 
-                expect(res).to.be.undefined
+                const _vinyl = await logic.retrieveVinylById(idVinyl)
 
-                const postits = await Postit.find()
+                const { __id, _title, _artist, _year } = _vinyl
 
-                expect(postits.length).to.equal(0)
-            })
-        })
+                expect(_vinyl).not.to.be.instanceof(Vinyl)
 
-        describe('modify', () => {
-            let user, postit, newText
+                expect(__id).to.exist
 
-            beforeEach(async () => {
-                user = new User({ name: 'John', surname: 'Doe', username: 'jd', password: '123' })
-                postit = new Postit({ text: 'hello text', user: user.id })
+   
+                expect(vinyl.title).to.equal(_title)
+                expect(vinyl.artist).to.equal(_artist)
+                expect(vinyl.year).to.equal(_year)
 
-                newText = `new-text-${Math.random()}`
-
-                await Promise.all([user.save(), postit.save()])
             })
 
-            it('should succeed on correct data', async () => {
-                const res = await logic.modifyPostit(user.id, postit.id, newText)
 
-                expect(res).to.be.undefined
-
-                const postits = await Postit.find()
-
-                expect(postits.length).to.equal(1)
-
-                const [_postit] = postits
-
-                expect(_postit.text).to.equal(newText)
-            })
         })
     })
 
