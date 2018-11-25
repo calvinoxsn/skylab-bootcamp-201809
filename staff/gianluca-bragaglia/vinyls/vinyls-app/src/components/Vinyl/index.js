@@ -18,14 +18,14 @@ class Vinyl extends Component {
         try {
             logic.retrieveVinylById(this.props.id)
             .then(vinyl => this.setState({ id: vinyl.id, title: vinyl.title, artist: vinyl.artist, year: vinyl.year, info: vinyl.info, imgVinylUrl: vinyl.imgVinylUrl, comments: vinyl.comments, likes: vinyl.likes  }))
-            .catch(err => this.setState({ error: err.message }))
-            logic.itsInLikes(this.props.id)        
-            .then(res => this.setState ({ likeSelected: res }))
             .then(() => {
                 logic.retrieveUserById(this.state.id)       
                 .then(user => this.setState ({ user }))
                 .catch(err => this.setState({ error: err.message }))
             })
+            .catch(err => this.setState({ error: err.message }))
+            logic.itsInLikes(this.props.id)        
+            .then(res => this.setState ({ likeSelected: res }))
             .catch(err => this.setState({ error: err.message }))
         } catch (err) {
             this.setState({ error: err.message })
@@ -105,7 +105,7 @@ class Vinyl extends Component {
 
     render() {
 
-        const {error, imgVinylUrl, artist, title, year, info, likeSelected, likes, addComment, id, user } = this.state
+        const {error, imgVinylUrl, artist, title, year, info, likeSelected, likes, comments, addComment, id, user } = this.state
 
 
         return  <div className='vinyl-container'>
@@ -123,7 +123,7 @@ class Vinyl extends Component {
                         <a onClick={this.handleaddCmtBtn}><p className='add-comment-icon-text'>Add Comment</p></a>
                     </div>
                     {addComment ? <AddComment onAddComment={this.handleAddComment} /> : null }
-                    <CommentsList id={this.props.id} />   
+                    <CommentsList id={this.props.id} comments={comments} />   
                 </div>
     }
 }

@@ -1,27 +1,15 @@
 import React, { Component } from 'react'
 import Comment from '../Comment'
-import logic from '../../logic'
 import './index.css'
 
 
 
 class CommentsList extends Component {
 
-    state = { comments: [] }
-    
-    componentDidMount() {
-
-        try {              
-            logic.retrieveComments(this.props.id)
-            .then(comments => { this.setState({ comments }) })
-            .catch(err => this.setState({ error: err.message }))
-        } catch (err) {
-            this.setState({ error: err.message })
-        }
-    }
+   
     render() { 
 
-        const { comments } = this.state
+        const { comments } = this.props
         
         return ( 
             <React.Fragment>
