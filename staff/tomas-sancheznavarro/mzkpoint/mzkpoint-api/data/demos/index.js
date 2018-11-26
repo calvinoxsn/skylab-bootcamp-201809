@@ -21,79 +21,104 @@ products.push({
     inStock: 25,
     imageUrl: 'https://images.static-thomann.de/pics/prod/402337.jpg',
     type: 'ELECTRIC'
-})
-
-products.push({
-    instrument: 'guitar',
-    brand: 'Gibson',
-    model: 'SG Faded 2018, Worn Bourbon',
-    features: [
-        'Versatile 490R & 490T Humbuckers Offer Rich, Vintage Tones',
-        'Iconic SG Shaped Mahogany Body Delivers Warm Characteristics',
-        'Slim Taper Neck Provides Comfortable Playing Experience',
-        'Tektoid Nut Increases Middle & Upper Harmonics',
-        'Includes Gibson Softshell Case for Transportation'
-    ],
-    description: 'The Gibson SG Faded Electric Guitar, Worn Bourbon (2018) provides players with the legendary SG performance with a worn-in aesthetic, creating the same feeling as a guitar that\'s seen many years of life. The lightweight mahogany body is finished in a stunning worn bourbon colour, delivering a beautiful look which reflect its warm, organic tones. The slim taper maple neck delivers an incredibly smooth performance, while the addition of a rosewood fingerboard helps warm the harsh tones of the maple for a beautiful tonality. The SG is also equipped with a set of 490 humbuckers, offering a stunning, vintage tone, with independent tone and volume control to dial in a range of powerful sounds. The guitar also features a tune-o-matic bridge, tektoid nut, and vintage-style keystone tuners to deliver incredible string stability and enhance sustain and resonance. Delivered with a softshell case, the Gibson SG Faded Guitar is perfect for players wanting high quality SG performance with a vintage aesthetic.',
-    price: 649,
-    inStock: 5,
-    imageUrl: 'https://d1aeri3ty3izns.cloudfront.net/media/36/367294/1200/preview.jpg',
-    type: 'ELECTRIC'
-})
-
-products.push({
-    instrument: 'guitar',
-    brand: 'Fender',
-    model: 'Fender American Original \'50s Telecaster MN, Butterscotch Blonde',
-    features: [
-        'Pure Vintage \'52 Tele Pickups Delivers Powerfully Authentic Tones',
-        'Iconic Telecaster Body For Signature Fender Style & Tone',
-        'Perfect For Upper Fingerboard Shredding Due To Cutaway Profile',
-        'Lacquer Finish Enables The Wood To Breath Naturally',
-        'Butterscotch Blonde Finish Offers Eye-Catching & Authentic Look'
-    ],
-    description: 'The Fender American Original \'50s Telecaster MN, Butterscotch Blonde recreates the sound and appearance of those 1950s Telecasters, combined with a modern feel for a classic Fender tone and style. Players who love the Telecaster\'s unique feel and style will truly appreciate the American Original Tele\'s tonal characteristics that take you soaring back to the 1950s. The Fender American Original Telecaster features Pure Vintage \'52 single-coil Tele pickups which were built to be as period-correct as possible to deliver a powerfully authentic sound and a vintage-styled fat warmth. With these pickups, players are able to achieve the classic sounds from the 50s decade, from rock and roll, to swing, rockabilly, and rhythm and blues. With the American Original\'s iconic Telecaster body, thick U shaped neck profile, and familiar 9.5" fingerboard radius, players can benefit from enhanced playability and the comfort that\'s on offer. The American Original also features a lacquer finish which allows the wood to breath naturally for added resonance, as well as helping the appearance to age in a distinctively appealing way. With all of these exceptional qualities, this is the reason why many legendary artists choose Fender.',
-    price: 1590,
-    inStock: 25,
-    imageUrl: 'https://d1aeri3ty3izns.cloudfront.net/media/17/170869/1200/preview.jpg',
-    type: 'ELECTRIC'
-})
-
-products.push({
-    instrument: 'guitar',
-    brand: 'Gretsch',
-    model: 'G2420T Streamliner Hollow Body with Bigsby',
-    features: [
-        'Broad-Tron Humbucking Pickups Deliver High Output',
-        'Fast Playing 12\"Radius Rosewood Fingerboard',
-        'Vintage “Big Block” Inlays and Electro-style Control Knobs',
-        'Bigsby Tailpiece Offers Pitch Bending Effects & Sustain',
-        'Classic F Holes Offer Traditional Look & Acoustic Projection'
-    ],
-    description: 'The Fender American Original \'50s Telecaster MN, Butterscotch Blonde recreates the sound and appearance of those 1950s Telecasters, combined with a modern feel for a classic Fender tone and style. Players who love the Telecaster\'s unique feel and style will truly appreciate the American Original Tele\'s tonal characteristics that take you soaring back to the 1950s. The Fender American Original Telecaster features Pure Vintage \'52 single-coil Tele pickups which were built to be as period-correct as possible to deliver a powerfully authentic sound and a vintage-styled fat warmth. With these pickups, players are able to achieve the classic sounds from the 50s decade, from rock and roll, to swing, rockabilly, and rhythm and blues. With the American Original\'s iconic Telecaster body, thick U shaped neck profile, and familiar 9.5" fingerboard radius, players can benefit from enhanced playability and the comfort that\'s on offer. The American Original also features a lacquer finish which allows the wood to breath naturally for added resonance, as well as helping the appearance to age in a distinctively appealing way. With all of these exceptional qualities, this is the reason why many legendary artists choose Fender.',
-    price: 790,
-    inStock: 12,
-    imageUrl: 'https://d1aeri3ty3izns.cloudfront.net/media/23/236294/1200/preview.jpg',
-    type: 'ELECTRIC'
-})
-
-products.push({
-    instrument: 'guitar',
-    brand: 'Ibanez',
-    model: 'AF200 Artstar Prestige 2018, Brown Sunburst',
-    features: [
-        'Super 58 Pickups for Vintage-Inspired Sounds',
-        'Spruce Top Hollow Body Gives Airy & Resonant Tonality',
-        'Flamed Maple Body & Abalone Inlays for Classy Aesthetic',
-        'Quality Gotoh Tuners, Bone Nut, & Ebony Bridge',
-        'Hardshell Case Included'
-    ],
-    description: 'The Ibanez AF200 Artstar Prestige 2018 in Brown Sunburst is a hollow body guitar designed to take you back to the sounds and the styles of a by-gone era. It combines the design features of a vintage guitar with Ibanez\'s own Super 58 pickups for a vintage-inspired bite and smooth sound, depending on your control adjustments. The hollow body gives a lovely warmth and resonance; it is crafted from spruce and flamed maple for a quick response to every input from the player. A mahogany/maple neck is glued into the body to give optimum vibration transfer and a wonderfully ergonomic left-hand feel. The AF200\'s 22 medium frets are finished with the Artstar Fret Edge Treatment which gives them a rounded surface and a glass-like polish for a liquid-smooth fingering action. The AF200 is completed with a range of design features to give you the authentic look of a vintage guitar, including classic abalone inlays, an ebony bridge with elegant AF Special tailpiece, a bone nut, and a tortoiseshell-coloured pickguard. Many other features also help enhance the professional playability of the AF200 including Sure Grip III control knobs and Gotoh tuners. The AF200 provides the aesthetics and the tones of a vintage guitar with the practicalities and reliability derived from modern construction methods and up-to-date hardware; this guitar will keep even the most discerning players happy.',
-    price: 1799,
-    inStock: 2,
-    imageUrl: 'https://d1aeri3ty3izns.cloudfront.net/media/33/335306/1200/preview.jpg',
-    type: 'ELECTRIC'
 }),
+
+    products.push({
+        instrument: 'guitar',
+        brand: 'Gibson',
+        model: 'SG Faded 2018, Worn Bourbon',
+        features: [
+            'Versatile 490R & 490T Humbuckers Offer Rich, Vintage Tones',
+            'Iconic SG Shaped Mahogany Body Delivers Warm Characteristics',
+            'Slim Taper Neck Provides Comfortable Playing Experience',
+            'Tektoid Nut Increases Middle & Upper Harmonics',
+            'Includes Gibson Softshell Case for Transportation'
+        ],
+        description: 'The Gibson SG Faded Electric Guitar, Worn Bourbon (2018) provides players with the legendary SG performance with a worn-in aesthetic, creating the same feeling as a guitar that\'s seen many years of life. The lightweight mahogany body is finished in a stunning worn bourbon colour, delivering a beautiful look which reflect its warm, organic tones. The slim taper maple neck delivers an incredibly smooth performance, while the addition of a rosewood fingerboard helps warm the harsh tones of the maple for a beautiful tonality. The SG is also equipped with a set of 490 humbuckers, offering a stunning, vintage tone, with independent tone and volume control to dial in a range of powerful sounds. The guitar also features a tune-o-matic bridge, tektoid nut, and vintage-style keystone tuners to deliver incredible string stability and enhance sustain and resonance. Delivered with a softshell case, the Gibson SG Faded Guitar is perfect for players wanting high quality SG performance with a vintage aesthetic.',
+        price: 649,
+        inStock: 5,
+        imageUrl: 'https://d1aeri3ty3izns.cloudfront.net/media/36/367294/1200/preview.jpg',
+        type: 'ELECTRIC'
+    }),
+
+    products.push({
+        instrument: 'guitar',
+        brand: 'Fender',
+        model: 'Fender American Original \'50s Telecaster MN, Butterscotch Blonde',
+        features: [
+            'Pure Vintage \'52 Tele Pickups Delivers Powerfully Authentic Tones',
+            'Iconic Telecaster Body For Signature Fender Style & Tone',
+            'Perfect For Upper Fingerboard Shredding Due To Cutaway Profile',
+            'Lacquer Finish Enables The Wood To Breath Naturally',
+            'Butterscotch Blonde Finish Offers Eye-Catching & Authentic Look'
+        ],
+        description: 'The Fender American Original \'50s Telecaster MN, Butterscotch Blonde recreates the sound and appearance of those 1950s Telecasters, combined with a modern feel for a classic Fender tone and style. Players who love the Telecaster\'s unique feel and style will truly appreciate the American Original Tele\'s tonal characteristics that take you soaring back to the 1950s. The Fender American Original Telecaster features Pure Vintage \'52 single-coil Tele pickups which were built to be as period-correct as possible to deliver a powerfully authentic sound and a vintage-styled fat warmth. With these pickups, players are able to achieve the classic sounds from the 50s decade, from rock and roll, to swing, rockabilly, and rhythm and blues. With the American Original\'s iconic Telecaster body, thick U shaped neck profile, and familiar 9.5" fingerboard radius, players can benefit from enhanced playability and the comfort that\'s on offer. The American Original also features a lacquer finish which allows the wood to breath naturally for added resonance, as well as helping the appearance to age in a distinctively appealing way. With all of these exceptional qualities, this is the reason why many legendary artists choose Fender.',
+        price: 1590,
+        inStock: 25,
+        imageUrl: 'https://d1aeri3ty3izns.cloudfront.net/media/17/170869/1200/preview.jpg',
+        type: 'ELECTRIC'
+    }),
+
+    products.push({
+        instrument: 'guitar',
+        brand: 'Gretsch',
+        model: 'G2420T Streamliner Hollow Body with Bigsby',
+        features: [
+            'Broad-Tron Humbucking Pickups Deliver High Output',
+            'Fast Playing 12\"Radius Rosewood Fingerboard',
+            'Vintage “Big Block” Inlays and Electro-style Control Knobs',
+            'Bigsby Tailpiece Offers Pitch Bending Effects & Sustain',
+            'Classic F Holes Offer Traditional Look & Acoustic Projection'
+        ],
+        description: 'The Fender American Original \'50s Telecaster MN, Butterscotch Blonde recreates the sound and appearance of those 1950s Telecasters, combined with a modern feel for a classic Fender tone and style. Players who love the Telecaster\'s unique feel and style will truly appreciate the American Original Tele\'s tonal characteristics that take you soaring back to the 1950s. The Fender American Original Telecaster features Pure Vintage \'52 single-coil Tele pickups which were built to be as period-correct as possible to deliver a powerfully authentic sound and a vintage-styled fat warmth. With these pickups, players are able to achieve the classic sounds from the 50s decade, from rock and roll, to swing, rockabilly, and rhythm and blues. With the American Original\'s iconic Telecaster body, thick U shaped neck profile, and familiar 9.5" fingerboard radius, players can benefit from enhanced playability and the comfort that\'s on offer. The American Original also features a lacquer finish which allows the wood to breath naturally for added resonance, as well as helping the appearance to age in a distinctively appealing way. With all of these exceptional qualities, this is the reason why many legendary artists choose Fender.',
+        price: 790,
+        inStock: 12,
+        imageUrl: 'https://d1aeri3ty3izns.cloudfront.net/media/23/236294/1200/preview.jpg',
+        type: 'ELECTRIC'
+    }),
+
+    products.push({
+        instrument: 'guitar',
+        brand: 'Ibanez',
+        model: 'AF200 Artstar Prestige 2018, Brown Sunburst',
+        features: [
+            'Super 58 Pickups for Vintage-Inspired Sounds',
+            'Spruce Top Hollow Body Gives Airy & Resonant Tonality',
+            'Flamed Maple Body & Abalone Inlays for Classy Aesthetic',
+            'Quality Gotoh Tuners, Bone Nut, & Ebony Bridge',
+            'Hardshell Case Included'
+        ],
+        description: 'The Ibanez AF200 Artstar Prestige 2018 in Brown Sunburst is a hollow body guitar designed to take you back to the sounds and the styles of a by-gone era. It combines the design features of a vintage guitar with Ibanez\'s own Super 58 pickups for a vintage-inspired bite and smooth sound, depending on your control adjustments. The hollow body gives a lovely warmth and resonance; it is crafted from spruce and flamed maple for a quick response to every input from the player. A mahogany/maple neck is glued into the body to give optimum vibration transfer and a wonderfully ergonomic left-hand feel. The AF200\'s 22 medium frets are finished with the Artstar Fret Edge Treatment which gives them a rounded surface and a glass-like polish for a liquid-smooth fingering action. The AF200 is completed with a range of design features to give you the authentic look of a vintage guitar, including classic abalone inlays, an ebony bridge with elegant AF Special tailpiece, a bone nut, and a tortoiseshell-coloured pickguard. Many other features also help enhance the professional playability of the AF200 including Sure Grip III control knobs and Gotoh tuners. The AF200 provides the aesthetics and the tones of a vintage guitar with the practicalities and reliability derived from modern construction methods and up-to-date hardware; this guitar will keep even the most discerning players happy.',
+        price: 1799,
+        inStock: 2,
+        imageUrl: 'https://d1aeri3ty3izns.cloudfront.net/media/33/335306/1200/preview.jpg',
+        type: 'ELECTRIC'
+    }),
+
+    products.push({
+        instrument: 'guitar',
+        brand: 'Taylor',
+        model: '110e Dreadnought Electro Acoustic Guitar, Natural',
+        features: ['Dreadnought Shape Accommodates a Range of Playing Styles', 'Taylor Expression System 2 Offers Natural Sounding Amplification', 'Solid Sitka Spruce Top Offers Crisp Articulation & Projection', 'Walnut Body Delivers Crisp Highs With Woody Low End', 'Includes Official Taylor Deluxe Gig Bag'],
+        description: 'The Taylor 110e Dreadnought Electro Acoustic Guitar features the classic dreadnought shape crafted from sitka spruce and walnut, delivering definite tones that suit a wide variety of playing styles. This new 2017 model yields an incredibly balanced tone whilst still offering a powerful low end and snappy midrange, perfect for any level of player. Taylor have also incorporated their expression system to provide natural sounding amplification, making the guitar perfect for gigging and recording. For the mobile musician, the 110e Dreadnought also comes with a padded gig bag for storage and transportation.',
+        price: 699,
+        inStock: 15,
+        imageUrl: 'https://d1aeri3ty3izns.cloudfront.net/media/24/242313/1200/preview.jpg',
+        type: 'ELECTROACOUSTIC'
+    }),
+
+    products.push({
+        instrument: 'guitar',
+        brand: 'La Mancha',
+        model: 'Esmeralda SM Classical Guitar',
+        features: ["Classic 4/4", "Top: Solid German Spruce", "Back & Sides: Padouk", "Neck: Toona Kalantas With Carbon Reinforcement", "Spanish Heel Neck Joint"],
+        description: 'The deluxe classical guitar by Gear4music offers outstanding quality at an unprecedented price. With its compact body and short scale length, the deluxe classical guitar is designed with comfort in mind for the advancing player. Despite the reduced dimensions, the guitar still produces a responsive, well balanced tone. An excellent starter instrument that will encourage guitarists of all ages to keep progressing.',
+        price: 599,
+        inStock: 25,
+        imageUrl: 'https://d1aeri3ty3izns.cloudfront.net/media/38/383430/1200/preview_1.jpg',
+        type: 'CLASSICAL'
+
+    }),
 
     // BASSES
 

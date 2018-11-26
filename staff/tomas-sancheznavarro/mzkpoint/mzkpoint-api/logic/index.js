@@ -40,7 +40,7 @@ const logic = {
         validate([{ key: 'id', value: id, type: String }])
 
         return (async () => {
-            const user = await User.findById(id, { '_id': 0 }).lean()
+            const user = await User.findById(id, { '_id': 0, password: 0, __v: 0 }).lean()
 
             if (!user) throw new NotFoundError(`user with id ${id} not found`)
 
@@ -102,7 +102,7 @@ const logic = {
 
             if (!(search.trim().length)) throw new ValueError('You must enter at least one search term')
 
-            const result = await Product.find(
+            const products = await Product.find(
                 {
                     $or: [{ instrument: { $regex: search, $options: 'i' } },
                     { brand: { $regex: search, $options: 'i' } },
@@ -113,9 +113,15 @@ const logic = {
                     if (err) return err
                     return data
                 }
-            )
-            if (!result.length) throw new NotFoundError('Nothing found')
-            return result
+            ).lean()
+
+            if (!products.length) throw new NotFoundError('Nothing found')
+
+            products.forEach(item => {
+                item.productId = item._id
+                delete item._id
+            })
+            return products
         })()
 
     },
@@ -129,9 +135,7 @@ const logic = {
 
         return (async () => {
 
-            if (!query.length) throw new ValueError(`You must enter at least one search term`)
-
-            const result = await Product.find(
+            const products = await Product.find(
                 { $and: [{ instrument: { $regex: instrument, $options: 'i' } }, { type: { $regex: type, $options: 'i' } }] },
                 function (err, data) {
 
@@ -139,9 +143,14 @@ const logic = {
 
                     return data
                 }
-            )
-            if (!result.length) throw new NotFoundError('Nothing found')
-            return result
+            ).lean()
+
+            if (!products.length) throw new NotFoundError('Nothing found')
+            products.forEach(item => {
+                item.productId = item._id
+                delete item._id
+            })
+            return products
         })()
 
     },
@@ -175,13 +184,18 @@ const logic = {
 
             const _items = user.wishlist
 
-            const result = await Product.find({
+            const products = await Product.find({
                 '_id': { $in: _items }
             }, function (err, items) {
                 return items
-            });
+            }).lean()
 
-            return result
+            products.forEach(item => {
+                item.productId = item._id
+                delete item._id
+            })
+
+            return products
 
         })()
     },
@@ -239,13 +253,18 @@ const logic = {
 
             const _items = user.shoppingCart
 
-            const result = await Product.find({
+            const products = await Product.find({
                 '_id': { $in: _items }
             }, function (err, items) {
                 return items
-            });
+            }).lean()
 
-            return result
+            products.forEach(item => {
+                item.productId = item._id
+                delete item._id
+            })
+
+            return products
 
         })()
     },

@@ -1,22 +1,31 @@
-import React, { Component } from 'react';
-import Register from './components/Register'
+import React, { Component } from 'react'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import Home from './components/Home'
 import Login from './components/Login'
-import Error from './components/Error'
+import Register from './components/Register'
 import Landing from './components/Landing'
-import logic from './logic'
-import { Route, withRouter, Redirect } from 'react-router-dom'
 
-logic.url = 'http://localhost:5000/api'
+
+import './App.css'
+
 
 class App extends Component {
-  state = { error: null }
 
   render() {
     return (
-      <div className="App">
-      </div>
+      <BrowserRouter>
+
+        <div className="App">
+          <Switch>
+            <Route exact path="/" component={Landing} />
+            <Route path="/login" component={Login} />
+            <Route path="/register" component={Register} />
+          </Switch>
+        </div>
+
+      </BrowserRouter>
     )
   }
 }
 
-export default withRouter(App)
+export default App;

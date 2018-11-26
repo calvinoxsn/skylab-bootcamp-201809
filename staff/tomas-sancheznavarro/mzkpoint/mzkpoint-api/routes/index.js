@@ -96,7 +96,7 @@ router.get('/products/:search', [jsonBodyParser], (req, res) => {
 router.post('/products/filter', [jsonBodyParser], (req, res) => {
 
     routeHandler(() => {
-        const { sub, body: { instrument, type } } = req
+        const { body: { instrument, type } } = req
 
         return logic.filterProduct(instrument, type)
             .then(product =>

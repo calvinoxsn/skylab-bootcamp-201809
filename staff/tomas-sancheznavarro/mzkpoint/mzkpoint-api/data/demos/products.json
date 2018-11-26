@@ -85,6 +85,40 @@
         "type": "ELECTRIC"
     },
     {
+        "instrument": "guitar",
+        "brand": "Taylor",
+        "model": "110e Dreadnought Electro Acoustic Guitar, Natural",
+        "features": [
+            "Dreadnought Shape Accommodates a Range of Playing Styles",
+            "Taylor Expression System 2 Offers Natural Sounding Amplification",
+            "Solid Sitka Spruce Top Offers Crisp Articulation & Projection",
+            "Walnut Body Delivers Crisp Highs With Woody Low End",
+            "Includes Official Taylor Deluxe Gig Bag"
+        ],
+        "description": "The Taylor 110e Dreadnought Electro Acoustic Guitar features the classic dreadnought shape crafted from sitka spruce and walnut, delivering definite tones that suit a wide variety of playing styles. This new 2017 model yields an incredibly balanced tone whilst still offering a powerful low end and snappy midrange, perfect for any level of player. Taylor have also incorporated their expression system to provide natural sounding amplification, making the guitar perfect for gigging and recording. For the mobile musician, the 110e Dreadnought also comes with a padded gig bag for storage and transportation.",
+        "price": 699,
+        "inStock": 15,
+        "imageUrl": "https://d1aeri3ty3izns.cloudfront.net/media/24/242313/1200/preview.jpg",
+        "type": "ELECTROACOUSTIC"
+    },
+    {
+        "instrument": "guitar",
+        "brand": "La Mancha",
+        "model": "Esmeralda SM Classical Guitar",
+        "features": [
+            "Classic 4/4",
+            "Top: Solid German Spruce",
+            "Back & Sides: Padouk",
+            "Neck: Toona Kalantas With Carbon Reinforcement",
+            "Spanish Heel Neck Joint"
+        ],
+        "description": "The deluxe classical guitar by Gear4music offers outstanding quality at an unprecedented price. With its compact body and short scale length, the deluxe classical guitar is designed with comfort in mind for the advancing player. Despite the reduced dimensions, the guitar still produces a responsive, well balanced tone. An excellent starter instrument that will encourage guitarists of all ages to keep progressing.",
+        "price": 599,
+        "inStock": 25,
+        "imageUrl": "https://d1aeri3ty3izns.cloudfront.net/media/38/383430/1200/preview_1.jpg",
+        "type": "CLASSICAL"
+    },
+    {
         "instrument": "bass",
         "brand": "Fender",
         "model": "Standard Precision, Black",
