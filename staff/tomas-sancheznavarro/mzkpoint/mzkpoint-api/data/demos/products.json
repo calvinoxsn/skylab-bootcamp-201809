@@ -253,5 +253,90 @@
         "inStock": 2,
         "imageUrl": "https://d1aeri3ty3izns.cloudfront.net/media/38/385840/1200/preview.jpg",
         "type": "ELECTRIC"
+    },
+    {
+        "instrument": "drums",
+        "brand": "Yamaha",
+        "model": "DTX402 Electronic Drum Kit",
+        "features": [
+            "Perfect for beginners who want to learn in an exciting new way",
+            "Combine 287 drum and percussion sounds for your own unique voice",
+            "10 built-in kits take your imagination through jazz, rock, pop and more",
+            "Discover how learning drums can now be a fun and rewarding game",
+            "128 keyboard sounds"
+        ],
+        "description": "Start your drumming journey today with the new Yamaha DTX402. With its own intuitive new learning system you will receive challenges and rewards that drive you further on the path to becoming the ultimate drummer. The new Touch app makes learning drums a fun and interactive game to master, taking you through various drumming games to the final stage, where you receive a certificate from Yamaha upon completion. Continue your journey from there with the 10 core drum kits and 287 drum and percussion sounds, mixing them together however you want to develop your own unique, signature style.",
+        "price": 447,
+        "inStock": 12,
+        "imageUrl": "https://d1aeri3ty3izns.cloudfront.net/media/38/382099/1200/preview.jpg",
+        "type": "ELECTRIC"
+    },
+    {
+        "instrument": "drums",
+        "brand": "Mapex",
+        "model": "Tornado III Compact 18\" Drum Kit, Black",
+        "features": [
+            "Includes 2-Piece Cymbal Set and 200 Series Hardware",
+            "Compact Size Kit",
+            "Colour-Matched Wood Snare Included",
+            "9-Ply Poplar Shell",
+            "Durable Black Wrap Finish"
+        ],
+        "description": "The Mapex Tornado has long been considered the best entry level drum kit in terms of value for money and quality and now it's even better. Introducing the Mapex Tornado entry level drum kit, featuring everything you need to start drumming today. This compact kit is ideal for drummers who don't have space on their side and features quality basswood shells, along with quality cymbals and all the required hardware. You'll even receive a stool, kick pedal and a pair of sticks. Perfect for new beginners or experienced players on a budget.",
+        "price": 296,
+        "inStock": 20,
+        "imageUrl": "https://d1aeri3ty3izns.cloudfront.net/media/15/159057/1200/preview.jpg",
+        "type": "ACOUSTIC"
+    },
+    {
+        "instrument": "drums",
+        "brand": "Pearl",
+        "model": "Roadshow 5 Piece Compact Drum Kit, Red Wine",
+        "features": [
+            "Ideal for Beginners",
+            "Compact Jazz Size",
+            "9-Ply Poplar Shells",
+            "Red Wine Finish",
+            "Cymbals Snare and Hardware Included"
+        ],
+        "description": "The Pearl Roadshow Compact Drum Kit is a small 5 piece Jazz drum set perfect for beginners, but well suited to players of every level. Its small size makes it ideal as a space-saving practice kit, a starter kit for younger players, or simply as a kit for players of lighter styles. With cymbals, snare and hardware included, along with a drum throne, Maple sticks and a professional stick bag, this complete drum set offers everything you need to start playing straight away.",
+        "price": 479,
+        "inStock": 12,
+        "imageUrl": "https://d1aeri3ty3izns.cloudfront.net/media/42/425066/1200/preview.jpg",
+        "type": "ACOUSTIC"
+    },
+    {
+        "instrument": "drums",
+        "brand": "Gretsch",
+        "model": "Energy 22\" Drum Kit w/ Hardware & Paiste 101 Set, Black",
+        "features": [
+            "Includes 3-Part Paiste 101 Cymbal Set",
+            "Includes 5-Part Hardware Pack and Drum Throne",
+            "7-Ply Poplar Shells for Bright Attack & Protection",
+            "1.6mm Triple Flanged Hoops & 30 Degree Bearing Angles",
+            "Gretsch Heads Made by Remo"
+        ],
+        "description": "The Gretsch Energy 22\" Drum Kit is a 5 piece kit featuring 7-ply poplar shells with an included 5-Part hardware pack and 3-part Paiste 101 cymbal set. The kit boasts high-quality Gretsch heads made by Remo, for a powerful drumming experience, whatever your chosen style or genre. Ideal for a range of different user abilities, the Gretsch Energy 22\" Drum Kit is the perfect upgrade from a more basic kit or alternatively a great starter kit for a beginner or intermediate drummer. A choice of finishes are available, including Black, Wine Red, and Grey Steel so that you can choose a kit that suits you best.",
+        "price": 639,
+        "inStock": 5,
+        "imageUrl": "https://d1aeri3ty3izns.cloudfront.net/media/21/215426/1200/preview.jpg",
+        "type": "ACOUSTIC"
+    },
+    {
+        "instrument": "drums",
+        "brand": "Mapex",
+        "model": "Storm 22\" Complete Set, Camphor Wood Grain",
+        "features": [
+            "Complete drumkit with hardware and cymbals",
+            "Poplar shells provide balanced low and high frequencies with enhanced warmth",
+            "SONIClear bearing edges make tuning much easier and tone more clear",
+            "Robust double-braced hardware with concave design for stability",
+            "Three tier adjustable boom stand"
+        ],
+        "description": "The Mapex Storm Fusion kit is the complete set for beginner and intermediate players. The poplar shells all feature Mapex's SONIClear bearing edges, which are also featured on the high-end Mapex drumkits. This allows for much easier tuning with increased shell resonance and tonal clarity. A large 22\" x 18\" bass drum means huge, punchy beats that are perfect for heavier music.",
+        "price": 727,
+        "inStock": 13,
+        "imageUrl": "https://d1aeri3ty3izns.cloudfront.net/media/41/415595/1200/preview.jpg",
+        "type": "ACOUSTIC"
     }
 ]

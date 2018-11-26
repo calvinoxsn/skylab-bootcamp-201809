@@ -1,28 +1,22 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import Register from './components/Register'
+import Login from './components/Login'
+import Error from './components/Error'
+import Landing from './components/Landing'
+import logic from './logic'
+import { Route, withRouter, Redirect } from 'react-router-dom'
+
+logic.url = 'http://localhost:5000/api'
 
 class App extends Component {
+  state = { error: null }
+
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
       </div>
-    );
+    )
   }
 }
 
-export default App;
+export default withRouter(App)

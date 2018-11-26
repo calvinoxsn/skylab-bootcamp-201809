@@ -195,15 +195,17 @@ const logic = {
 
         return (async () => {
 
-        const user = await User.findById(userId)
+            const user = await User.findById(userId)
 
-        let wishlist = user.wishlist
+            if (!user) throw new NotFoundError(`user with id ${userId} not found`)
 
-        let items = wishlist.filter(item => item !== productId)
+            let wishlist = user.wishlist
 
-        user.wishlist = items
+            let items = wishlist.filter(item => item != productId)
 
-        await user.save()
+            user.wishlist = items
+
+            await user.save()
 
         })()
     },
@@ -234,8 +236,8 @@ const logic = {
             const user = await User.findById(userId).lean()
 
             if (!user) throw new NotFoundError(`user with id number ${id} not found`)
-            // const items = await Product.find().lean()
-            const _items = user.wishlist
+
+            const _items = user.shoppingCart
 
             const result = await Product.find({
                 '_id': { $in: _items }
@@ -259,10 +261,13 @@ const logic = {
 
             if (!user) throw new NotFoundError(`user with id ${userId} not found`)
 
-            const shoppingCart = await Product.findById(productId)
-            if (!shoppingCart) throw new NotFoundError(`product with id number ${productId} not found`)
+            let shoppingCart = user.shoppingCart
 
-            return User.updateOne({ _id: userId }, { $pull: { shoppingCart: productId } })
+            let items = shoppingCart.filter(item => item != productId)
+
+            user.shoppingCart = items
+
+            await user.save()
         })()
     }
 }

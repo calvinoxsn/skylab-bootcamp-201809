@@ -127,7 +127,7 @@ router.post('/users/wishlist', [bearerTokenParser, jwtVerifier, jsonBodyParser],
     }, res)
 })
 
-router.get('/users/wishlist', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, res) => {
+router.get('/users/products/wishlist', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, res) => {
 
     routeHandler(() => {
         const { sub } = req
@@ -165,36 +165,36 @@ router.post('/users/shopping-cart', [bearerTokenParser, jwtVerifier, jsonBodyPar
         if (!sub) throw Error('Invalid token!')
 
 
-        return logic.addItemToCart(id, productId)
+        return logic.addItemToCart(sub, productId)
             .then(() =>
                 res.json({
-                    message: "Item successfully added to shopping cart"
+                    message: `Item ${productId} succesfully added to shopping cart`
                 })
             )
     }, res)
 })
 
-router.get('/users/:id/shopping-cart', [bearerTokenParser, jwtVerifier], (req, res) => {
-    
+router.get('/users/products/shopping-cart', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, res) => {
+
     routeHandler(() => {
-        const { sub, params: { id } } = req
+        const { sub } = req
 
-        if (id !== sub) throw Error('token sub does not match user id')
+        if (!sub) throw Error('Please enter a valid token!')
 
-        return logic.showCart(id)
+        return logic.showCart(sub)
             .then(shoppingCart =>
                 res.json({ shoppingCart })
             )
     }, res)
 })
 
-router.delete('/users/:id/shopping-cart/:productId', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, res) => {
+router.delete('/users/shopping-cart/:productId', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, res) => {
     routeHandler(() => {
-        const { sub, params: { id, productId } } = req
+        const { sub, params: { productId } } = req
 
-        if (id !== sub) throw Error('token sub does not match user id')
+        if (!sub) throw Error('Invalid token')
 
-        return logic.removeItemInCart(id, productId)
+        return logic.removeItemInCart(sub, productId)
             .then(() => res.json({
                 message: 'Item succesfully removed from shopping cart'
             }))
