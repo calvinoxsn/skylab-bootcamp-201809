@@ -1,4 +1,5 @@
 
+global.sessionStorage = require('sessionstorage')
 
 
 const logic = {
@@ -21,6 +22,7 @@ const logic = {
      */
 
     registerUser(email, username, password) {
+
 
         if (!email.trim()) throw Error('email is empty or blank')
         if (!username.trim()) throw Error('username is empty or blank')
@@ -61,6 +63,8 @@ const logic = {
      */
 
     login(username, password) {
+
+
         if (typeof username !== 'string') throw TypeError(`${username} is not a string`)
         if (typeof password !== 'string') throw TypeError(`${password} is not a string`)
 
@@ -113,11 +117,6 @@ const logic = {
         return !!this._userId
     },
 
-    // getVinyls() {
-    //     const res = axios.get('http://localhost:5500/vinyls')
-       
-    //     return res
-    // },
 
     retrieveGalleryUsers() {
 
@@ -655,5 +654,5 @@ const logic = {
     
 }
 
-export default logic
-//module.exports = logic
+//export default logic
+module.exports = logic
