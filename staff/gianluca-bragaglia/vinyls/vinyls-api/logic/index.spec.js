@@ -1761,13 +1761,14 @@ describe('logic', () => {
                 const year = 1992
                 const imgVinylUrl = null
                 const info = null
+                const likes = []
                 const comments = [{
                     "text" : "Very cool man :)",
                     "username" : "jvzzvvvd",
                     "imgProfileUrl" : "https://res.cloudinary.com/dmp64syaz/image/upload/v1542723040/vinyls/ssie6uwcpfmxezf2pvej.jpg"
                 }]
 
-                vinyl = new Vinyl({ id:user._id, title, artist, year, imgVinylUrl, info, comments })
+                vinyl = new Vinyl({ id:user._id, title, artist, year, imgVinylUrl, info, likes, comments })
 
 
                 await vinyl.save()
@@ -1779,31 +1780,29 @@ describe('logic', () => {
                 const idVinyl = vinyl._id.toString()
                
 
-                const _vinyl = await logic.retrieveVinylComments(idVinyl)
+                const _comments = await logic.retrieveVinylComments(idVinyl)
 
 
-                expect(_vinyl).not.to.be.instanceof(Vinyl)
-
-                expect(_vinyl.comments.length).to.equal(1)
-                expect(_vinyl.comments[0].username).to.equal(user.username)
+                expect(_comments.length).to.equal(1)
+                expect(_comments[0].username).to.equal(user.username)
 
 
             })
 
             it('should fail on undefined id', () => {
-                expect(() => logic.retrieveVinylById(undefined)).to.throw(TypeError, 'undefined is not a string')
+                expect(() => logic.retrieveVinylComments(undefined)).to.throw(TypeError, 'undefined is not a string')
             })
 
             it('should fail on empty id', () => {
-                expect(() => logic.retrieveVinylById('')).to.throw(ValueError, 'id is empty or blank')
+                expect(() => logic.retrieveVinylComments('')).to.throw(ValueError, 'id is empty or blank')
             })
 
             it('should fail on blank id', () => {
-                expect(() => logic.retrieveVinylById('   \t\n')).to.throw(ValueError, 'id is empty or blank')
+                expect(() => logic.retrieveVinylComments('   \t\n')).to.throw(ValueError, 'id is empty or blank')
             })
 
             it('should fail on boolean id', () => {
-                expect(() => logic.retrieveVinylById(false)).to.throw(TypeError, 'false is not a string')
+                expect(() => logic.retrieveVinylComments(false)).to.throw(TypeError, 'false is not a string')
             })
 
 
