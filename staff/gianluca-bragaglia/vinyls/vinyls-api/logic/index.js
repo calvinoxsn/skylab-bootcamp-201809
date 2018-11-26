@@ -224,7 +224,7 @@ const logic = {
                 return _index == follow.id
             })
 
-            const index2 = follow.follows.findIndex(_index => {
+            const index2 = follow.followers.findIndex(_index => {
                 return _index == id
             })
 
@@ -579,14 +579,6 @@ const logic = {
             if (!vinyl) throw new NotFoundError(`vinyl with id ${id} not found`)
 
             const likes = vinyl.likes
-
-            // const isLike = 'FALSE'
-
-            // if(likes.includes(userId) )
-
-            // isLike = 'TRUE'
-            
-            // return isLike
 
             return likes
             
