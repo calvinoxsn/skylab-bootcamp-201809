@@ -43,29 +43,48 @@ class AddVinyl extends Component {
         this.setState({ imgVinylUrl })
     }
 
+    uploadWidget =() => {
 
+        let widget = window.cloudinary.openUploadWidget({ cloud_name: 'dmp64syaz', upload_preset: 'pd0ikih0'},
+            (error, result) => {
+               
 
-    handleUploadImgVinyl = e => {
-        e.preventDefault()
- 
-         try {
-             logic.uploadImgVinyl(this.state.picture)
-             .then(() => this.setState({imgVinylUrl: this.state.previewPicture}))
-             .catch(err => this.setState({ error: err.message }))
-         } catch (err) {
-             this.setState({ error: err.message })
-         }
- 
+                if (result.event === 'success') {
+
+                    const imgVinylUrl = result.info.secure_url
+
+                    this.setState({ imgVinylUrl })
+                    
+                    widget.close()
+
+                }
+            })
+            
     }
- 
- 
-    fileChangedHandler = event => {
-        event.preventDefault()
 
-        this.setState({previewPicture: URL.createObjectURL(event.target.files[0]), picture: event.target.files[0]})
+
+
+    // handleUploadImgVinyl = e => {
+    //     e.preventDefault()
+ 
+    //      try {
+    //          logic.uploadImgVinyl(this.state.picture)
+    //          .then(() => this.setState({imgVinylUrl: this.state.previewPicture}))
+    //          .catch(err => this.setState({ error: err.message }))
+    //      } catch (err) {
+    //          this.setState({ error: err.message })
+    //      }
+ 
+    // }
+ 
+ 
+    // fileChangedHandler = event => {
+    //     event.preventDefault()
+
+    //     this.setState({previewPicture: URL.createObjectURL(event.target.files[0]), picture: event.target.files[0]})
   
         
-    }
+    // }
 
 
     handleSubmit = e => {
@@ -94,14 +113,14 @@ class AddVinyl extends Component {
                 <img className='profile-img'  src={imgVinylUrl ? imgVinylUrl : './img/vinyl.png'} ></img>
                 <br></br>
                 {error && <Error message={error} />}
-                {/* <Button type='button' onClick={this.uploadWidget} color='black' >Upload Image</Button> */}
-                <div>
+                <Button type='button' onClick={this.uploadWidget} color='black' >Upload Image</Button>
+                {/* <div>
                     <form encType="multipart/form-data" onSubmit={this.handleUploadImgVinyl}>
                     <input type="file" className='inputfile' name="pic" accept="image/*" onChange={this.fileChangedHandler}></input>
                     <br></br>
                     <Button type='submit' color='black' >Upload Image</Button>
                     </form>
-                </div>
+                </div> */}
                 <form className='form-edit-profile' onSubmit={this.handleSubmit}>
                     <br></br>
                     <input className='input' type='text'  id='title' placeholder='title' onChange={this.handleTitleChange} />

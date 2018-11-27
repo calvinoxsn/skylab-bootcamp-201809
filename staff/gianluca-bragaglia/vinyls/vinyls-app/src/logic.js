@@ -220,6 +220,8 @@ const logic = {
     getCurrentUser() {
         let id = this._userId
 
+        console.log('get logic')
+
         if (typeof id !== 'string') throw new TypeError(`${id} is not a string`)
 
         if (!id.trim().length) throw Error('id is empty or blank')

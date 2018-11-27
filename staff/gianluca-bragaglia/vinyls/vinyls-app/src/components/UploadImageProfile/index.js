@@ -36,7 +36,7 @@ class AddPicture extends Component {
         <br></br>
         <img src={this.state.previewPicture} alt='' className='picture__preview'/>
         <br></br>
-        <Button type='submit' color='black' >Upload Image</Button>
+        <Button type='submit' color='black' className='upload-btn' >Upload Image</Button>
         </form>
     </div>
 

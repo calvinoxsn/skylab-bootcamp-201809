@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Route, withRouter, Redirect } from 'react-router-dom'
 import logic from './logic'
-import Event from './plugins/bus'
 import Index from './components/Index'
 import Login from './components/Login'
 import Register from './components/Register'
@@ -9,7 +8,8 @@ import NavbarComponent from './components/NavbarComponent'
 import Landing from './components/Landing'
 import Error from './components/Error'
 import Profile from './components/Profile'
-import EditProfile from './components/EditProfile'
+import EditProfile1 from './components/EditProfile1'
+import EditProfile2 from './components/EditProfile2'
 import PublicProfile from './components/PublicProfile'
 import FollowsListUser  from './components/FollowsListUser'
 import FollowersListUser  from './components/FollowersListUser'
@@ -52,20 +52,7 @@ class App extends Component {
     
     }
 
-    handleEditProfile = ( username,  newPassword, password, imgProfileUrl, bio ) => {
-        
-        try {
-            logic.modifyUser( username,  newPassword, password, imgProfileUrl, bio )
-                .then(() => {
-                    this.setState({ error: null }, () => this.props.history.push('/profile'))
-                    Event.$emit('change-profile-img', {image: imgProfileUrl})
-                    Event.$emit('change-profile-username', {username: username})
-                })
-                .catch(err => this.setState({ error: err.message }))
-        } catch (err) {
-            this.setState({ error: err.message })
-        }
-    }
+    
     
     handleLogoutClick = () => {
         this.setState({error: null})
@@ -92,7 +79,8 @@ class App extends Component {
                   <Route path="/login" render={() => !logic.loggedIn ? <Login onLogin={this.handleLogin} onGoBack={this.handleGoBack}  /> : <Redirect to="/index" />} /> 
                   {error && <Error message={error} />}
                   <Route path="/index" render={() => logic.loggedIn ? <Index onLogin={this.handleLogin}  /> : <Redirect to="/index" />}/> 
-                  <Route path="/edit-profile" render={() => logic.loggedIn ? <EditProfile onEditProfile={this.handleEditProfile} /> : <Redirect to="/login" />} />
+                  <Route path="/edit-profile" render={() => logic.loggedIn ? <EditProfile1 /> : <Redirect to="/login" />} />
+                  <Route path="/edit-profile2" render={() => logic.loggedIn ? <EditProfile2 /> : <Redirect to="/login" />} />
                   <Route exact path="/profile" render={() => logic.loggedIn ? <Profile /> : <Redirect to="/login" />} />
                   <Route exact path="/profile/:id" render={(props) => logic.loggedIn ? <PublicProfile id={props.match.params.id}/> : <Redirect to="/login" />} />
                   <Route exact path="/follows" render={() => logic.loggedIn ? <FollowsListUser /> : <Redirect to="/login" />} />

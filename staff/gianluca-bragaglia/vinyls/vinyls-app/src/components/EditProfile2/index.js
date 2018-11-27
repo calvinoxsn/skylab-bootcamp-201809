@@ -1,14 +1,17 @@
 import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
+import Event from '../../plugins/bus'
 import { Button } from 'mdbreact'
 import logic from '../../logic'
 import Error from '../Error'
+import UploadImgProfile from '../UploadImageProfile'
 import './index.css'
 
 
 
-class EditProfile extends Component {
-    state = { username: '', newPassword: '', password: '', imgProfileUrl: null, bio: '', error: null, picture: null, previewPicture: null }
+
+class EditProfile2 extends Component {
+    state = { username: '', newPassword: '', password: '', imgProfileUrl: null, bio: '', error: null }
 
 
     componentDidMount() {
@@ -57,36 +60,59 @@ class EditProfile extends Component {
         this.setState({ bio })
     }
 
+    
+    // fileChangedHandler = event => {
+    //     event.preventDefault()
+
+    //    this.setState({picture: event.target.files[0]})
+    // }
 
 
-    handleUploadImgProfile = e => {
-       e.preventDefault()
+    // handleUploadImgProfile = e => {
+    //   e.preventDefault()
 
+    //    console.log(this.state.picture)
+
+    //     try {
+    //         logic.uploadImgProfile(this.state.picture)
+    //         .then(res => {
+    //             this.setState({error: null})
+    //         })
+    //         .catch(err => this.setState({ error: err.message }))
+            
+            
+    //     } catch (err) {
+    //         this.setState({ error: err.message })
+    //     }
+    // }
+
+    onEditProfile = ( username,  newPassword, password, imgProfileUrl, bio ) => {
+        
         try {
-            logic.uploadImgProfile(this.state.picture)
-            .then(() => this.setState({imgProfileUrl: this.state.previewPicture}))
-            .catch(err => this.setState({ error: err.message }))
+            logic.modifyUser( username,  newPassword, password, imgProfileUrl, bio )
+                .then(() => {
+                    this.setState({ error: null }, () => this.props.history.push('/profile'))
+                    Event.$emit('change-profile-img', {image: imgProfileUrl})
+                    Event.$emit('change-profile-username', {username: username})
+                })
+                .catch(err => this.setState({ error: err.message }))
         } catch (err) {
             this.setState({ error: err.message })
         }
-
     }
 
-
-    fileChangedHandler = event => {
-        event.preventDefault()
-
-       this.setState({previewPicture: URL.createObjectURL(event.target.files[0]), picture: event.target.files[0]})
-    }
 
 
     handleSubmit = e => {
 
         e.preventDefault()
 
+
         const { username, newPassword, password, imgProfileUrl, bio } = this.state
 
-        this.props.onEditProfile(username, newPassword, password, imgProfileUrl, bio)
+        console.log(username, newPassword, password, imgProfileUrl, bio )
+
+        this.onEditProfile(username, newPassword, password, imgProfileUrl, bio)
 
         this.setState({error: null})
      
@@ -100,13 +126,15 @@ class EditProfile extends Component {
                 <img className='profile-img' src={ imgProfileUrl ? imgProfileUrl : './img/icon-profile.png'} ></img>
                 <br></br>
 
-                <div>
+                {/* <div>
                     <form encType="multipart/form-data" onSubmit={this.handleUploadImgProfile}>
                     <input type="file" className='inputfile' name="pic" accept="image/*" onChange={this.fileChangedHandler}></input>
                     <br></br>
                     <Button type='submit' color='black' >Upload Image</Button>
                     </form>
-                </div>
+                </div> */}
+
+                {/* <UploadImgProfile></UploadImgProfile> */}
 
                 <form className='form-edit-profile' onSubmit={this.handleSubmit}>
                     <br></br>
@@ -125,4 +153,4 @@ class EditProfile extends Component {
     }
 }
 
-export default withRouter(EditProfile)
+export default withRouter(EditProfile2)

@@ -403,8 +403,8 @@ const logic = {
         })()
     },
 
-    addVinylPicture(file) {
 
+    addVinylPicture(file) {
 
         return (async () => {
 
@@ -420,7 +420,6 @@ const logic = {
 
             return result.url
             
-
         })()
     },
 

@@ -44,7 +44,7 @@ class Profile extends Component {
                 <p className='profile-bio'>{bio}</p>
                 <section><Button color='black' onClick={this.handleEditClick}>Edit Profile</Button></section>
                 <br></br>
-                <VinylsListProfile id={this.props.id}/>
+                {/* <VinylsListProfile id={this.props.id}/> */}
             
             
         </div>
