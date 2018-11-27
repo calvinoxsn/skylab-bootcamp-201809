@@ -64,9 +64,13 @@ const logic = {
             
             user.imgProfileUrl = result.url
 
+
             await user.save()
+
+
         })()
     },
+
 
 
     retrieveUser(id) {
@@ -396,6 +400,27 @@ const logic = {
             vinyl.info = info || ''
 
             await vinyl.save()
+        })()
+    },
+
+    addVinylPicture(file) {
+
+
+        return (async () => {
+
+            const result = await new Promise((resolve, reject) => {
+                const stream = cloudinary.uploader.upload_stream((result, error) => {
+                    if (error) return reject(error)
+
+                    resolve(result)
+                })
+
+                file.pipe(stream)
+            })
+
+            return result.url
+            
+
         })()
     },
 

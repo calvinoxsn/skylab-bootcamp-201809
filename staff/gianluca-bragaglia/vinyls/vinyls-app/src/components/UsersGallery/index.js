@@ -20,7 +20,6 @@ class UsersGallery extends Component {
     try {       
         
         logic.retrieveGalleryUsers()
-        //.then(res => { this.setState({ users: res.slice(0, 8)  }) })
         .then(res =>  this.setState({ users: res }))
         .catch(err => this.setState({ error: err.message }))
     } catch (err) {

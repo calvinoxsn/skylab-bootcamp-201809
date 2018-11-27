@@ -117,6 +117,63 @@ const logic = {
         return !!this._userId
     },
 
+    // uploadImgProfile(formData) {
+
+    //     return fetch(`users/${this._userId}/profilePicture`, {
+    //         method: 'POST',
+    //         headers: {
+    //             'Content-Type': 'application/json; charset=utf-8',
+    //             'Authorization': `Bearer ${this._token}`,
+    //             formData
+    //         }
+            
+    //     })
+    //         .then(res => res.json())
+    //         .then(res => {
+    //             if (res.error) throw Error(res.error)
+    //         })
+    // },
+
+    uploadImgProfile(picture) {
+
+        let data = new FormData()
+ 
+        data.append('picture', picture)
+ 
+        return fetch (`${this.url}/users/${this._userId}/profilePicture`, {
+            method:'POST',
+            headers: {
+                'Authorization': `Bearer ${this._token}`
+            },
+            body: data
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res.error) throw Error(res.error)
+                return res.data
+            })
+    },
+
+    uploadImgVinyl(picture) {
+
+        let data = new FormData()
+ 
+        data.append('picture', picture)
+ 
+        return fetch (`${this.url}/vinyls/images`, {
+            method:'POST',
+            headers: {
+                'Authorization': `Bearer ${this._token}`
+            },
+            body: data
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res.error) throw Error(res.error)
+                return res.data
+            })
+    },
+
 
     retrieveGalleryUsers() {
 

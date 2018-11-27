@@ -8,7 +8,7 @@ import './index.css'
 
 
 class AddVinyl extends Component {
-    state = { title: '', artist: '', year: 0, info: '', imgVinylUrl: null, error: null }
+    state = { title: '', artist: '', year: 0, info: '', imgVinylUrl: null, error: null, picture: null, previewPicture: null }
 
 
     handleTitleChange = e => {
@@ -44,30 +44,36 @@ class AddVinyl extends Component {
     }
 
 
-    uploadWidget =() => {
 
-        let widget = window.cloudinary.openUploadWidget({ cloud_name: 'dmp64syaz', upload_preset: 'pd0ikih0'},
-            (error, result) => {
-               
-
-                if (result.event === 'success') {
-
-                    const imgVinylUrl = result.info.secure_url
-
-                    this.setState({ imgVinylUrl })
-                    
-                    widget.close()
-
-                }
-            })
-            
+    handleUploadImgVinyl = e => {
+        e.preventDefault()
+ 
+         try {
+             logic.uploadImgVinyl(this.state.picture)
+             .then(() => this.setState({imgVinylUrl: this.state.previewPicture}))
+             .catch(err => this.setState({ error: err.message }))
+         } catch (err) {
+             this.setState({ error: err.message })
+         }
+ 
     }
+ 
+ 
+    fileChangedHandler = event => {
+        event.preventDefault()
+
+        this.setState({previewPicture: URL.createObjectURL(event.target.files[0]), picture: event.target.files[0]})
+  
+        
+    }
+
 
     handleSubmit = e => {
 
         e.preventDefault()
 
         const { title, artist, year, imgVinylUrl, info } = this.state
+
 
 
         try {
@@ -90,7 +96,14 @@ class AddVinyl extends Component {
                 <img className='profile-img'  src={imgVinylUrl ? imgVinylUrl : './img/vinyl.png'} ></img>
                 <br></br>
                 {error && <Error message={error} />}
-                <Button type='button' onClick={this.uploadWidget} color='black' >Upload Image</Button>
+                {/* <Button type='button' onClick={this.uploadWidget} color='black' >Upload Image</Button> */}
+                <div>
+                    <form encType="multipart/form-data" onSubmit={this.handleUploadImgVinyl}>
+                    <input type="file" className='inputfile' name="pic" accept="image/*" onChange={this.fileChangedHandler}></input>
+                    <br></br>
+                    <Button type='submit' color='black' >Upload Image</Button>
+                    </form>
+                </div>
                 <form className='form-edit-profile' onSubmit={this.handleSubmit}>
                     <br></br>
                     <input className='input' type='text'  id='title' placeholder='title' onChange={this.handleTitleChange} />

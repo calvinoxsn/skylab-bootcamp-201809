@@ -8,7 +8,7 @@ import './index.css'
 
 
 class EditProfile extends Component {
-    state = { username: '', newPassword: '', password: '', imgProfileUrl: null, bio: '', error: null }
+    state = { username: '', newPassword: '', password: '', imgProfileUrl: null, bio: '', error: null, picture: null, previewPicture: null }
 
 
     componentDidMount() {
@@ -57,29 +57,32 @@ class EditProfile extends Component {
         this.setState({ bio })
     }
 
-    uploadWidget =() => {
-
-        let widget = window.cloudinary.openUploadWidget({ cloud_name: 'dmp64syaz', upload_preset: 'pd0ikih0'},
-            (error, result) => {
-               
-
-                if (result.event === 'success') {
-
-                    const imgProfileUrl = result.info.secure_url
-
-                    this.setState({ imgProfileUrl })
-                    
-                    widget.close()
 
 
-                }
-            })
-            
+    handleUploadImgProfile = e => {
+       e.preventDefault()
+
+        try {
+            logic.uploadImgProfile(this.state.picture)
+            .then(() => this.setState({imgProfileUrl: this.state.previewPicture}))
+            .catch(err => this.setState({ error: err.message }))
+        } catch (err) {
+            this.setState({ error: err.message })
+        }
+
     }
 
-    handleSubmit = event => {
 
+    fileChangedHandler = event => {
         event.preventDefault()
+
+       this.setState({previewPicture: URL.createObjectURL(event.target.files[0]), picture: event.target.files[0]})
+    }
+
+
+    handleSubmit = e => {
+
+        e.preventDefault()
 
         const { username, newPassword, password, imgProfileUrl, bio } = this.state
 
@@ -96,7 +99,15 @@ class EditProfile extends Component {
         return <div className='edit-profile-container'>
                 <img className='profile-img' src={ imgProfileUrl ? imgProfileUrl : './img/icon-profile.png'} ></img>
                 <br></br>
-                <Button type='button' onClick={this.uploadWidget} color='black' >Upload Image</Button>
+
+                <div>
+                    <form encType="multipart/form-data" onSubmit={this.handleUploadImgProfile}>
+                    <input type="file" className='inputfile' name="pic" accept="image/*" onChange={this.fileChangedHandler}></input>
+                    <br></br>
+                    <Button type='submit' color='black' >Upload Image</Button>
+                    </form>
+                </div>
+
                 <form className='form-edit-profile' onSubmit={this.handleSubmit}>
                     <br></br>
                     <input className='input' type='text'  value={username} onChange={this.handleUsernameChange} />

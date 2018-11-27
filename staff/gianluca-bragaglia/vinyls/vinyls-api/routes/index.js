@@ -64,20 +64,7 @@ router.get('/users/:id', [bearerTokenParser, jwtVerifier], (req, res) => {
     }, res)
 })
 
-// router.post('/users/:id/photo', [jsonBodyParser, bearerTokenParser, jwtVerifier, fileUpload()], (req, res) => {
-//     routeHandler(() => {
-        
-//         const { sub, params: { id }, files: { photo } } = req
-        
-//         if (id !== sub) throw Error('token sub does not match user id')
-        
-//         return logic.addImgProfile(id, photo.name, photo.data)
-//             .then(() => res.json({
-//                 message: 'photo user added'
-//             }))
 
-//     }, res)
-// })
 
 router.post('/users/:id/profilePicture', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, res) => {
     routeHandler(() => {
@@ -99,6 +86,29 @@ router.post('/users/:id/profilePicture', [bearerTokenParser, jwtVerifier, jsonBo
         })
             .then(() => res.json({
                 message: 'photo uploaded'
+            }))
+    }, res)
+})
+
+router.post('/vinyls/images', jsonBodyParser, (req, res) => {
+    routeHandler(() => {
+
+        return new Promise((resolve, reject) => {
+            const busboy = new Busboy({ headers: req.headers })
+
+            busboy.on('file', (fieldname, file, filename, encoding, mimetype) => {
+                return logic.addVinylPicture(file)
+            })
+
+            busboy.on('finish', () => resolve())
+
+            busboy.on('error', err => reject(err))
+
+            req.pipe(busboy)
+        })
+            .then(url => res.json({
+
+                data: 'photo uploaded'  
             }))
     }, res)
 })
@@ -249,6 +259,7 @@ router.post('/vinyls', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, r
 
     }, res)
 })
+
 
 router.get('/vinyls', [bearerTokenParser, jwtVerifier], (req, res) => {
     routeHandler(() => {
