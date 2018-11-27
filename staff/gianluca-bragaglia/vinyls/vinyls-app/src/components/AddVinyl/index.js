@@ -74,10 +74,8 @@ class AddVinyl extends Component {
 
         const { title, artist, year, imgVinylUrl, info } = this.state
 
-
-
         try {
-            logic.addVinyl( title, artist, year, imgVinylUrl, info )
+                logic.addVinyl( title, artist, year, imgVinylUrl, info )
                 .then(() => {
                     this.setState({ error: null }, () => this.props.history.push('/index'))
                 })
