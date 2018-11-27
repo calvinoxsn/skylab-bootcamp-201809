@@ -1,10 +1,15 @@
 
 const { models: { User, Comment, Vinyl } } = require('vinyls-data')
-const fs = require('fs')
-const path = require('path')
 const { env: { PORT } } = process
 const validate = require('../utils/validate')
+var cloudinary = require('cloudinary')
 const { AlreadyExistsError, AuthError, NotFoundError, ValueError, NotAllowedError } = require('../errors')
+
+cloudinary.config({
+    cloud_name: 'dmp64syaz',
+    api_key: '996161994316851',
+    api_secret: 'sd-iBjgcS3aMoRTUU2xnMyb0VKA'
+})
 
 const logic = {
     registerUser(email, username, password) {
@@ -32,6 +37,34 @@ const logic = {
             if (!user || user.password !== password) throw new AuthError('invalid username or password')
 
             return user.id
+        })()
+    },
+
+
+    addProfilePicture(userId, file) {
+        validate([
+            { key: 'userId', value: userId, type: String },
+
+        ])
+
+        return (async () => {
+            let user = await User.findById(userId)
+
+            if (!user) throw new NotFoundError(`user does not exist`)
+
+            const result = await new Promise((resolve, reject) => {
+                const stream = cloudinary.uploader.upload_stream((result, error) => {
+                    if (error) return reject(error)
+
+                    resolve(result)
+                })
+
+                file.pipe(stream)
+            })
+            
+            user.imgProfileUrl = result.url
+
+            await user.save()
         })()
     },
 

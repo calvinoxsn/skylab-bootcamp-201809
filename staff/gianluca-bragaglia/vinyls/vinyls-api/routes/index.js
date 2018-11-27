@@ -5,6 +5,8 @@ const jwt = require('jsonwebtoken')
 const bearerTokenParser = require('../utils/bearer-token-parser')
 const jwtVerifier = require('./jwt-verifier')
 const routeHandler = require('./route-handler')
+//const fileUpload = require('express-fileupload')
+const Busboy = require('busboy')
 
 const jsonBodyParser = bodyParser.json()
 
@@ -59,6 +61,45 @@ router.get('/users/:id', [bearerTokenParser, jwtVerifier], (req, res) => {
                     data: user
                 })
             )
+    }, res)
+})
+
+// router.post('/users/:id/photo', [jsonBodyParser, bearerTokenParser, jwtVerifier, fileUpload()], (req, res) => {
+//     routeHandler(() => {
+        
+//         const { sub, params: { id }, files: { photo } } = req
+        
+//         if (id !== sub) throw Error('token sub does not match user id')
+        
+//         return logic.addImgProfile(id, photo.name, photo.data)
+//             .then(() => res.json({
+//                 message: 'photo user added'
+//             }))
+
+//     }, res)
+// })
+
+router.post('/users/:id/profilePicture', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, res) => {
+    routeHandler(() => {
+        const { params: { id }, sub } = req
+        if (id !== sub) throw Error('token sub does not match user id')
+
+        return new Promise((resolve, reject) => {
+            const busboy = new Busboy({ headers: req.headers })
+
+            busboy.on('file', (fieldname, file, filename, encoding, mimetype) => {
+                logic.addProfilePicture(id, file)
+            })
+
+            busboy.on('finish', () => resolve())
+
+            busboy.on('error', err => reject(err))
+
+            req.pipe(busboy)
+        })
+            .then(() => res.json({
+                message: 'photo uploaded'
+            }))
     }, res)
 })
 
