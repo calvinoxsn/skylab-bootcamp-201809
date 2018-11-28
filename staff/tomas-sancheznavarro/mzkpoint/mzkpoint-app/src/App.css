@@ -1,26 +1,7 @@
 .App {
   text-align: center;
+  font-family: 'Roboto', sans-serif;
+  max-width: 1280px;
+  margin: 0 auto;
 }
 
-/* main {
-  background-color: beige
-} */
-
-.container {
-position: relative;
-margin-top: 25px;
-width: 100px;
- /* height: 400px; */
-}
-
-.center-pic {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.img {
-  position: relative;
-    max-width: 600px;
-    height: 600px;
-}

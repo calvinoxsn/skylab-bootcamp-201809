@@ -126,17 +126,23 @@ const logic = {
 
     },
 
-    filterProduct(instrument, type) {
+    filterProduct(query) {
+
 
         validate([
-            { key: 'instrument', value: instrument, type: String },
-            { key: 'type', value: type, type: String }
+            { key: 'query', value: query, type: String }
         ])
 
         return (async () => {
 
             const products = await Product.find(
-                { $and: [{ instrument: { $regex: instrument, $options: 'i' } }, { type: { $regex: type, $options: 'i' } }] },
+                {
+                    $or: [{ instrument: { $regex: query, $options: 'i' } },
+                    { type: { $regex: query, $options: 'i' } },
+                    { brand: { $regex: query, $options: 'i' } },
+                    ]
+
+                },
                 function (err, data) {
 
                     if (err) return

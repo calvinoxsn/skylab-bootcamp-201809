@@ -2,6 +2,8 @@ import React from 'react'
 import NavbarPage from './Navbar'
 import FooterPage from './Footer'
 import CarrouselPage from './Carrousel'
+import { NavLink } from 'react-router-dom'
+import './Landing.sass'
 
 function Landing(props) {
     return <section>
@@ -9,7 +11,10 @@ function Landing(props) {
             <NavbarPage />
         </header>
         <main>
-            <CarrouselPage/>
+            <CarrouselPage />
+            <NavLink to="home">
+                <button className="enter-button">Enter our online shop!</button>
+            </NavLink>
         </main>
         <footer>
             <FooterPage />

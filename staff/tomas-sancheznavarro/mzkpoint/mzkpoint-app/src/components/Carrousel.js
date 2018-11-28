@@ -5,7 +5,7 @@ class CarouselPage extends Component {
     render() {
         return (
             <Container className="container">
-                <Carousel activeItem={1} length={5} showControls={false} showIndicators={true} className="z-depth-1">
+                <Carousel interval={3000} activeItem={1} length={5} showControls={false} showIndicators={true} className="z-depth-1">
                     <CarouselInner>
                         <CarouselItem itemId="1">
                             <View className="center-pic">
