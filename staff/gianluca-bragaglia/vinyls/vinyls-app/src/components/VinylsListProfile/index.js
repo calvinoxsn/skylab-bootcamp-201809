@@ -28,9 +28,6 @@ class VinylsListProfile extends Component {
             
             logic.removeVinyl(this.props.id)
             .catch(err => this.setState({ error: err.message }))
-            // logic. retrieveVinylsCurrentUser()        
-            // .then(vinyls => {this.setState ({ vinyls })})
-            // .catch(err => this.setState({ error: err.message }))
         } catch (err) {
             this.setState({ error: err.message })
         }

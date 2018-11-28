@@ -8,7 +8,7 @@ import './index.css'
 
 
 class AddVinyl extends Component {
-    state = { title: '', artist: '', year: 0, info: '', imgVinylUrl: null, error: null, picture: null, previewPicture: null }
+    state = { title: '', artist: '', year: 0, info: '', imgVinylUrl: null, error: null, idVinyl: null }
 
 
     handleTitleChange = e => {
@@ -43,49 +43,6 @@ class AddVinyl extends Component {
         this.setState({ imgVinylUrl })
     }
 
-    uploadWidget =() => {
-
-        let widget = window.cloudinary.openUploadWidget({ cloud_name: 'dmp64syaz', upload_preset: 'pd0ikih0'},
-            (error, result) => {
-               
-
-                if (result.event === 'success') {
-
-                    const imgVinylUrl = result.info.secure_url
-
-                    this.setState({ imgVinylUrl })
-                    
-                    widget.close()
-
-                }
-            })
-            
-    }
-
-
-
-    // handleUploadImgVinyl = e => {
-    //     e.preventDefault()
- 
-    //      try {
-    //          logic.uploadImgVinyl(this.state.picture)
-    //          .then(() => this.setState({imgVinylUrl: this.state.previewPicture}))
-    //          .catch(err => this.setState({ error: err.message }))
-    //      } catch (err) {
-    //          this.setState({ error: err.message })
-    //      }
- 
-    // }
- 
- 
-    // fileChangedHandler = event => {
-    //     event.preventDefault()
-
-    //     this.setState({previewPicture: URL.createObjectURL(event.target.files[0]), picture: event.target.files[0]})
-  
-        
-    // }
-
 
     handleSubmit = e => {
 
@@ -95,8 +52,8 @@ class AddVinyl extends Component {
 
         try {
                 logic.addVinyl( title, artist, year, imgVinylUrl, info )
-                .then(() => {
-                    this.setState({ error: null }, () => this.props.history.push('/index'))
+                .then(res => {
+                    this.setState({idVinyl: res }, () => this.props.history.push(`/vinyl/${res}/add-vinyl2`))
                 })
                 .catch(err => this.setState({ error: err.message }))
         } catch (err) {
@@ -110,17 +67,12 @@ class AddVinyl extends Component {
         const {error, imgVinylUrl, info } = this.state
 
         return <div className='edit-profile-container'>
+                <h3>Add Vinyl</h3>
                 <img className='profile-img'  src={imgVinylUrl ? imgVinylUrl : './img/vinyl.png'} ></img>
                 <br></br>
                 {error && <Error message={error} />}
-                <Button type='button' onClick={this.uploadWidget} color='black' >Upload Image</Button>
-                {/* <div>
-                    <form encType="multipart/form-data" onSubmit={this.handleUploadImgVinyl}>
-                    <input type="file" className='inputfile' name="pic" accept="image/*" onChange={this.fileChangedHandler}></input>
-                    <br></br>
-                    <Button type='submit' color='black' >Upload Image</Button>
-                    </form>
-                </div> */}
+                {/* <Button type='button' onClick={this.uploadWidget} color='black' >Upload Image</Button> */}
+
                 <form className='form-edit-profile' onSubmit={this.handleSubmit}>
                     <br></br>
                     <input className='input' type='text'  id='title' placeholder='title' onChange={this.handleTitleChange} />
@@ -250,7 +202,7 @@ class AddVinyl extends Component {
                     <br></br>
                     <textarea className='textarea' type='text' value={info} placeholder='info' onChange={this.handleInfoChange} />                   
                     <br></br>
-                    <Button type='submit'color='black' >Save</Button> 
+                    <Button type='submit'color='black' >Next</Button> 
                 </form>
         </div>
     }

@@ -43,6 +43,12 @@
     border-radius: 50%;
 }
 
+.title-list{
+    font-size: 15px;
+    margin-left: 5px;
+    font-weight: bold;
+}
+
 @media screen and (max-width: 600px) {
 
 

@@ -7,7 +7,7 @@ import './index.css'
 
 
 
-class EditVinyl extends Component {
+class EditVinyl2 extends Component {
     state = { title: '', artist: '', year: 0, info: '', imgVinylUrl: null, error: null }
 
 
@@ -54,24 +54,24 @@ class EditVinyl extends Component {
     }
 
 
-    uploadWidget =() => {
+    // uploadWidget =() => {
 
-        let widget = window.cloudinary.openUploadWidget({ cloud_name: 'dmp64syaz', upload_preset: 'pd0ikih0'},
-            (error, result) => {
+    //     let widget = window.cloudinary.openUploadWidget({ cloud_name: 'dmp64syaz', upload_preset: 'pd0ikih0'},
+    //         (error, result) => {
                
 
-                if (result.event === 'success') {
+    //             if (result.event === 'success') {
 
-                    const imgVinylUrl = result.info.secure_url
+    //                 const imgVinylUrl = result.info.secure_url
 
-                    this.setState({ imgVinylUrl })
+    //                 this.setState({ imgVinylUrl })
                     
-                    widget.close()
+    //                 widget.close()
 
-                }
-            })
+    //             }
+    //         })
             
-    }
+    // }
 
     handleSubmit = e => {
 
@@ -101,7 +101,7 @@ class EditVinyl extends Component {
                 <img className='edit-vinyl-img'  src={imgVinylUrl ? imgVinylUrl : './img/vinyl.png'} alt={title}></img>
                 {error && <Error message={error} />}
                 <br></br>
-                <Button type='button' onClick={this.uploadWidget} color='black' >Upload Image</Button>
+                {/* <Button type='button' onClick={this.uploadWidget} color='black' >Upload Image</Button> */}
                 <form className='form-edit-vinyl' onSubmit={this.handleSubmit}>
                     <input className='input' type='text'  id='title' value={title} placeholder='title' onChange={this.handleTitleChange} />
                     <input className='input' type='text'  id='artist' value={artist} placeholder='artist' onChange={this.handleArtistChange} />
@@ -235,4 +235,4 @@ class EditVinyl extends Component {
     }
 }
 
-export default withRouter(EditVinyl)
+export default withRouter(EditVinyl2)

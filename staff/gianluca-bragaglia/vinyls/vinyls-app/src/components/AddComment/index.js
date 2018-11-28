@@ -14,7 +14,9 @@ class AddComment extends Component {
         this.setState({ text })
     }
 
-    handleSubmit = () => {
+    handleSubmit = e => {
+
+        e.preventDefault()
         
         const { text } = this.state
 

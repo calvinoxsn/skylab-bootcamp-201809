@@ -15,8 +15,10 @@ import FollowsListUser  from './components/FollowsListUser'
 import FollowersListUser  from './components/FollowersListUser'
 import SearchListUsers from './components/SearchListUsers'
 import AddVinyl from './components/AddVinyl'
+import AddVinyl2 from './components/AddVinyl2'
 import Vinyl from './components/Vinyl'
-import EditVinyl from './components/EditVinyl'
+import EditVinyl1 from './components/EditVinyl1'
+import EditVinyl2 from './components/EditVinyl2'
 import SearchListVinyls from './components/SearchListVinyls'
 
 logic.url = 'http://localhost:5000/api'
@@ -88,8 +90,10 @@ class App extends Component {
                   <Route exact path="/users" render={() => logic.loggedIn ? <SearchListUsers /> : <Redirect to="/login" />} />
                   <Route path="/vinyls" render={() => logic.loggedIn ? <SearchListVinyls /> : <Redirect to="/login" />} />
                   <Route path="/add-vinyl" render={() => logic.loggedIn ? <AddVinyl /> : <Redirect to="/login" />} />
+                  <Route exact path="/vinyl/:id/add-vinyl2" render={(props) => logic.loggedIn ? <AddVinyl2 id={props.match.params.id} /> : <Redirect to="/login" />} />
                   <Route exact path="/vinyl/:id" render={(props) => logic.loggedIn ? <Vinyl id={props.match.params.id}/> : <Redirect to="/login" />} />
-                  <Route exact path="/vinyl/:id/edit" render={(props) => logic.loggedIn ? <EditVinyl id={props.match.params.id}/> : <Redirect to="/login" />} />
+                  <Route exact path="/vinyl/:id/edit1" render={(props) => logic.loggedIn ? <EditVinyl1 id={props.match.params.id}/> : <Redirect to="/login" />} />
+                  <Route exact path="/vinyl/:id/edit2" render={(props) => logic.loggedIn ? <EditVinyl2 id={props.match.params.id}/> : <Redirect to="/login" />} />
                 </div> 
 
            

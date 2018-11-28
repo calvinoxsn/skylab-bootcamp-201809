@@ -400,13 +400,21 @@ const logic = {
             vinyl.info = info || ''
 
             await vinyl.save()
+
+            const idVinyl = vinyl._id
+
+            return idVinyl
         })()
     },
 
 
-    addVinylPicture(file) {
+    addVinylPicture(file, id) {
 
         return (async () => {
+
+            let vinyl = await Vinyl.findById(id)
+
+            if (!vinyl) throw new NotFoundError(`vinyl does not exist`)
 
             const result = await new Promise((resolve, reject) => {
                 const stream = cloudinary.uploader.upload_stream((result, error) => {
@@ -418,7 +426,10 @@ const logic = {
                 file.pipe(stream)
             })
 
-            return result.url
+            vinyl.imgVinylUrl = result.url
+
+
+            await vinyl.save()
             
         })()
     },

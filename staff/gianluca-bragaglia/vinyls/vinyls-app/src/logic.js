@@ -154,13 +154,13 @@ const logic = {
             })
     },
 
-    uploadImgVinyl(picture) {
+    uploadImgVinyl(picture, id) {
 
         let data = new FormData()
  
         data.append('picture', picture)
  
-        return fetch (`${this.url}/vinyls/images`, {
+        return fetch (`${this.url}/vinyls/${id}/image`, {
             method:'POST',
             headers: {
                 'Authorization': `Bearer ${this._token}`
@@ -218,9 +218,8 @@ const logic = {
      * 
      */
     getCurrentUser() {
-        let id = this._userId
 
-        console.log('get logic')
+        let id = this._userId
 
         if (typeof id !== 'string') throw new TypeError(`${id} is not a string`)
 
@@ -467,6 +466,8 @@ const logic = {
             .then(res => res.json())
             .then(res => {
                 if (res.error) throw Error(res.error)
+                return res.data
+                
             })
     },
 

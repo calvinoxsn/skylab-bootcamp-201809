@@ -4,7 +4,6 @@ import Event from '../../plugins/bus'
 import { Button } from 'mdbreact'
 import logic from '../../logic'
 import Error from '../Error'
-import UploadImgProfile from '../UploadImageProfile'
 import './index.css'
 
 

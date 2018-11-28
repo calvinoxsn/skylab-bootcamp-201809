@@ -21,7 +21,7 @@ class VinylsListProfileItem extends Component {
     }
     
     render() { 
-        const { title, artist, img, id } = this.props
+        const { title, img, id } = this.props
 
         const { deleted, error } = this.state
 
@@ -32,13 +32,12 @@ class VinylsListProfileItem extends Component {
                         <Link to={`/vinyl/${id}`}>
                             <li className='list-group-item profile'>
                                 <span><img className='vinyl-img-small' src={img ? img : './img/vinyl.png'} alt={title}></img></span> 
-                                <span className='title' >{title}</span>
-                                {/* <span className='artist'>{artist}</span> */}
+                                <span className='title-list' >{title}</span>
                             </li>
                         </Link>
                         </div>
                         <div>
-                            <Link to={`/vinyl/${id}/edit`}><span className='edit-btn' >edit</span></Link>
+                            <Link to={`/vinyl/${id}/edit1`}><span className='edit-btn' >edit</span></Link>
                             <a onClick={this.handleRemoveVinyl}><span className='delete-btn' >delete</span></a>
                         </div>
                         

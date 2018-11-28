@@ -90,28 +90,6 @@ router.post('/users/:id/profilePicture', [bearerTokenParser, jwtVerifier, jsonBo
     }, res)
 })
 
-router.post('/vinyls/images', jsonBodyParser, (req, res) => {
-    routeHandler(() => {
-
-        return new Promise((resolve, reject) => {
-            const busboy = new Busboy({ headers: req.headers })
-
-            busboy.on('file', (fieldname, file, filename, encoding, mimetype) => {
-                return logic.addVinylPicture(file)
-            })
-
-            busboy.on('finish', () => resolve())
-
-            busboy.on('error', err => reject(err))
-
-            req.pipe(busboy)
-        })
-            .then(url => res.json({
-
-                data: 'photo uploaded'  
-            }))
-    }, res)
-})
 
 
 router.get('/users', [bearerTokenParser, jwtVerifier], (req, res) => {
@@ -253,10 +231,36 @@ router.post('/vinyls', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, r
         const  { id, title, artist, year, imgVinylUrl, info }  = req.body
 
         return logic.addVinyl( id, title, artist, year, imgVinylUrl, info )
-            .then(() => res.json({
-                message: 'vinyl added'
+            .then(idVinyl => res.json({
+
+                data: idVinyl
             }))
 
+    }, res)
+})
+
+router.post('/vinyls/:id/image', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, res) => {
+    routeHandler(() => {
+
+        const { params: { id } } = req
+
+        return new Promise((resolve, reject) => {
+            const busboy = new Busboy({ headers: req.headers })
+
+            busboy.on('file', (fieldname, file, filename, encoding, mimetype) => {
+                return logic.addVinylPicture(file, id)
+            })
+
+            busboy.on('finish', () => resolve())
+
+            busboy.on('error', err => reject(err))
+
+            req.pipe(busboy)
+        })
+            .then(url => res.json({
+
+                data: 'photo uploaded'  
+            }))
     }, res)
 })
 
