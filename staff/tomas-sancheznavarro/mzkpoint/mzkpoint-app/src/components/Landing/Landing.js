@@ -1,16 +1,16 @@
 import React from 'react'
-import NavbarPage from './Navbar'
-import FooterPage from './Footer'
-import CarrouselPage from './Carrousel'
+import NavbarPage from '../Navbar/Navbar'
+import FooterPage from '../Footer/Footer'
+import CarrouselPage from '../Carrousel/Carrousel'
 import { NavLink } from 'react-router-dom'
 import './Landing.sass'
 
-function Landing(props) {
+function Landing() {
     return <section>
         <header>
             <NavbarPage />
         </header>
-        <main>
+        <main className="carrousel-container">
             <CarrouselPage />
             <NavLink to="home">
                 <button className="enter-button">Enter our online shop!</button>

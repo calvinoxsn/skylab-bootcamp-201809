@@ -1,9 +1,9 @@
-@import "./mixins"
+@import "../mixins"
 
 .mycard
     transition: box-shadow 0.3s linear
     &:hover
-        box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12)
+        box-shadow: 0 2px 25px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12)
         cursor: pointer
     border: 0
     font-weight: 400
@@ -19,8 +19,10 @@
     border-radius: .25rem
     margin-bottom: 1em
     .card-pic
-        border-bottom: solid 1px red 
         width: 100%
+        .line
+            border: 1px solid #ff6961
+            width: 75%
         img 
             width: 100%
             height: auto

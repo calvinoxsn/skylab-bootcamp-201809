@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { NavLink, withRouter } from 'react-router-dom'
-import logic from '../logic'
-import Error from './Error'
+import logic from '../../logic'
+import Error from '../Error/Error'
 
 class Register extends Component {
     state = { error: null, name: '', surname: '', username: '', email: '', password: '' }

@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { withRouter } from 'react-router-dom'
 
-import Error from './Error'
-import logic from '../logic'
+import Error from '../Error/Error'
+import logic from '../../logic'
 
 class Login extends Component {
     state = { username: '', password: '', error: null }

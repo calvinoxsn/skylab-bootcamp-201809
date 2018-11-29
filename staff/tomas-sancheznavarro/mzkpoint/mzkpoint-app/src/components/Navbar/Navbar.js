@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import logic from '../logic'
+import logic from '../../logic'
 import { withRouter } from 'react-router-dom'
 import { Navbar, NavbarBrand, NavbarNav, NavItem, NavLink, NavbarToggler, Collapse, Fa } from 'mdbreact';
 

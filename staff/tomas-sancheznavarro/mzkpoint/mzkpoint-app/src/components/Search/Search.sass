@@ -1,0 +1,31 @@
+@import "../mixins"
+    
+.form-group 
+    position: relative
+    padding-top: 1.5rem
+    @include screen(320,"width", 100%)
+
+    .search-bar
+        border-radius: 10px
+        font-size: .8em
+        @include screen(480,"font-size", 1em)
+        padding: 8px
+        width: 100%
+        @include screen(480,"width", 72%)
+        outline: none
+
+    label 
+        position: absolute
+        top: 0
+        left: 3%
+        @include screen(480,"left", em)
+        font-family: inherit
+        font-size: inherit
+        opacity: 1
+        transform: translateY(0)
+        transition: all 0.2s ease-out
+
+
+    input:placeholder-shown + label 
+        opacity: 0
+        transform: translateY(1rem)

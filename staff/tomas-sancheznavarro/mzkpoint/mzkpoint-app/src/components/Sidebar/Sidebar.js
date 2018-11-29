@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import logic from '../logic'
-import Error from './Error'
+import logic from '../../logic'
+// import Error from './Error'
 
 class Sidebar extends Component {
     state = { error: null }
@@ -31,10 +31,10 @@ class Sidebar extends Component {
         return (
             <aside className="aside">
                 <ul>
-                    <li><button onClick={() => this.handleSearch('guitar')}>Our Guitars</button></li>
-                    <li><button onClick={() => this.handleSearch('bass')}>Our Basses</button></li>
-                    <li><button onClick={() => this.handleSearch('keyboard')}>Our Keyboards</button></li>
-                    <li><button onClick={() => this.handleSearch('drums')}>Our Drums</button></li>
+                    <li><button className="aside-button" onClick={() => this.handleSearch('guitar')}>Our Guitars</button></li>
+                    <li><button className="aside-button" onClick={() => this.handleSearch('bass')}>Our Basses</button></li>
+                    <li><button className="aside-button" onClick={() => this.handleSearch('keyboard')}>Our Keyboards</button></li>
+                    <li><button className="aside-button" onClick={() => this.handleSearch('drums')}>Our Drums</button></li>
                 </ul>
                 <span>{this.state.error}</span>
             </aside>

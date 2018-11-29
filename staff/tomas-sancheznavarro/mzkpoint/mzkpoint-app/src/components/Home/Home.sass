@@ -1,4 +1,4 @@
-@import "./mixins"
+@import "../mixins"
 
 .upper-bar
     margin-top: 10px
@@ -10,12 +10,12 @@
     flex-wrap: wrap
     @include screen(1024,"flex-direction", row)
     .aside
-        background: red
+        background: lightgrey
         @include screen(1024,"width", 20%)
         @include screen(1024,"margin-right", 1em)
        
     .main
-       background: yellow
+       background: whitesmoke
        padding: 1em
        @include screen(1024,"padding-left", 0)
        @include screen(1024,"width", 78.43%) 

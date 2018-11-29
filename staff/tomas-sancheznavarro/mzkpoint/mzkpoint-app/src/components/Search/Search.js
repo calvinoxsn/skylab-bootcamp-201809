@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import logic from '../logic'
-import Error from './Error'
+import logic from '../../logic'
+import Error from '../Error/Error'
+import './Search.sass'
 
 class SearchBar extends Component {
     state = { error: null, query: '' }
@@ -35,9 +36,12 @@ class SearchBar extends Component {
         const { error } = this.state
 
         return <form onSubmit={this.handleSubmit}>
-            <input className="search-bar" type="text" placeholder="Search by instrument or brand..." onChange={this.handleSearchChange} />
+            <div className="form-group">
+                <input className="search-bar" type="text" placeholder="Search by instrument or brand" onChange={this.handleSearchChange} />
+                <label for="search-bar">Search by instrument or brand</label>
 
-            {error && <Error message={error} />}
+                {error && <Error message={error} />}
+            </div>
         </form>
 
     }

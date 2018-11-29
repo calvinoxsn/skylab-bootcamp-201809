@@ -69,6 +69,8 @@ const logic = {
         sessionStorage.removeItem('token')
     },
 
+    ////// QUERIES //////
+
     searchProduct(query) {
         if (typeof query !== 'string') throw TypeError(`${query} is not a string`)
         if (!query.trim()) throw Error('You must enter at least one custom search term')
@@ -90,7 +92,6 @@ const logic = {
     filterProduct(query) {
         if (typeof query !== 'string') throw TypeError(`${query} is not a string`)
 
-        console.log(query)
         return fetch(`${this.url}/products/custom/filter`, {
             method: 'POST',
             body: JSON.stringify({ query }),
@@ -104,8 +105,122 @@ const logic = {
                 if (res.error) throw Error(res.error)
                 return res
             })
-    }
+    },
+
+    ////// WISHLIST //////
+
+    addItemToWishlist(productId) {
+        if (typeof productId !== 'string') throw TypeError(`${productId} is not a string`)
+
+        return fetch(`${this.url}/users/wishlist`, {
+            method: 'POST',
+            body: JSON.stringify({ productId }),
+            headers: {
+                'Authorization': `Bearer ${this._token}`,
+                'Content-Type': 'application/json; charset=utf-8'
+            }
+        })
+            .then(res => res.json())
+            .then(res => {
+                console.log(res)
+                if (res.error) throw Error(res.error)
+                return res
+            })
+    },
+
+    showWishlist() {
+
+        return fetch(`${this.url}/users/products/wishlist`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${this._token}`
+            }
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res.error) throw Error(res.error)
+
+                return res
+            })
+
+    },
+
+    removeItemInWishlist(id) {
+        if (typeof id !== 'string') throw new TypeError(`${id} is not a string`)
+
+        if (!id.trim().length) throw Error('id is empty or blank')
+
+        return fetch(`${this.url}/users/product/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${this._token}`
+            }
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res.error) throw Error(res.error)
+            })
+    },
+
+    ////// SHOPPING CART //////
+
+    addItemToCart(productId) {
+        if (typeof productId !== 'string') throw new TypeError(`${productId} is not a string`)
+        if (!productId.trim().length) throw Error('product id is empty or blank')
+
+        return fetch(`${this.url}/users/shopping-cart`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${this._token}`,
+                'Content-Type': 'application/json; charset=utf-8'
+            }
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res.error) throw Error(res.error)
+                return res
+            })
+    },
+
+    showCart(userId) {
+        if (typeof userId !== 'string') throw new TypeError(`${userId} is not a string`)
+        if (!userId.trim().length) throw Error('id is empty or blank')
+
+        return fetch(`${this.url}/users/products/shopping-cart`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${this._token}`
+            }
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res.error) throw Error(res.error)
+
+                return res.data
+            })
+
+    },
+
+    removeItemInCart(userId, productId) {
+        if (typeof userId !== 'string') throw new TypeError(`${userId} is not a string`)
+        if (typeof productId !== 'string') throw new TypeError(`${productId} is not a string`)
+
+        if (!userId.trim().length) throw Error('user id is empty or blank')
+        if (!productId.trim().length) throw Error('product id is empty or blank')
+
+
+        return fetch(`${this.url}/users/product/${productId}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${this._token}`
+            }
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res.error) throw Error(res.error)
+            })
+    },
 }
 
-// export default logic
-module.exports = logic
+export default logic
+// module.exports = logic

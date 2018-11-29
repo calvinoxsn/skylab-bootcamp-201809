@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
-import NavbarPage from './Navbar'
-import SearchBar from './Search'
-import Sidebar from './Sidebar'
-import CarrouselPage from './Carrousel'
-import Main from './Main'
+import NavbarPage from '../Navbar/Navbar'
+import SearchBar from '../Search/Search'
+import Sidebar from '../Sidebar/Sidebar'
+import CarrouselPage from '../Carrousel/Carrousel'
+import Main from '../Main/Main'
 import './Home.sass'
-import './Sidebar.sass'
+import '../Sidebar/Sidebar.sass'
 
 class Home extends Component {
 
@@ -29,7 +29,10 @@ class Home extends Component {
             </section>
 
             <section className="carrousel-deals">
-                <CarrouselPage />
+                <h1>...or check out our latest deals!</h1>
+                <div className="carrousel-home">
+                    <CarrouselPage />
+                </div>
             </section>
 
             <section className="home-container">

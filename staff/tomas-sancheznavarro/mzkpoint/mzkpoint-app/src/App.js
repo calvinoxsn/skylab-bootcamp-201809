@@ -1,14 +1,15 @@
 import React, { Component } from 'react'
-import Error from './components/Error'
-import Home from './components/Home'
-import Login from './components/Login'
-import Register from './components/Register'
-import Landing from './components/Landing'
+import Error from './components/Error/Error'
+import Home from './components/Home/Home'
+import Login from './components/Login/Login'
+import Register from './components/Register/Register'
+import Landing from './components/Landing/Landing'
 
 import logic from './logic'
 
 import { Route, Switch, Redirect, withRouter } from 'react-router-dom'
 import './App.css'
+import '../src/components/reset.sass'
 
 
 class App extends Component {
@@ -35,7 +36,6 @@ class App extends Component {
           <Route exact path="/" component={Landing} />
           <Route path="/login" render={() => !logic.loggedIn ? <Login onGoBack={this.handleGoBack} /> : <Redirect to="/home" />} />
           {error && <Error message={error} />}
-
           <Route path="/register" render={() => !logic.loggedIn ? <Register onGoBack={this.handleGoBack} /> : <Redirect to="/home" />} />
           <Route path="/home" component={Home} />
         </Switch>
