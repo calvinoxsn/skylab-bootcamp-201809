@@ -327,6 +327,105 @@ const logic = {
 
     },
 
+
+    retrieveFriends(id) {
+
+        validate([{ key: 'id', value: id, type: String }])
+
+
+        return (async () => {
+            const user = await User.findById(id)
+
+            if (!user) throw new NotFoundError(`user with id ${id} not found`)
+
+            const follows = user.follows
+
+            const followers = user.followers
+
+            const friends = follows.concat(followers)
+
+            const _friends = friends.filter((value) => {
+                return !this[value] && (this[value] = true)
+              }, Object.create(null))
+
+
+            const friendsList = await User.find({
+                '_id': { $in: _friends}
+            }, function(err, docs){
+                return docs
+            }).lean()
+
+
+            friendsList.forEach(user => {
+
+                user.idUser = user._id
+                delete user._id
+                delete user.__v
+                delete user.password
+                delete user.email
+                delete user.followers
+                delete user.follows
+                delete user.bio
+
+                return user
+            })
+            
+            return friendsList
+
+
+
+        })()
+
+    },
+
+    retrieveVinylsFriends(id) {
+
+        validate([{ key: 'id', value: id, type: String }])
+
+
+        return (async () => {
+            const user = await User.findById(id)
+
+            if (!user) throw new NotFoundError(`user with id ${id} not found`)
+
+            const follows = user.follows
+
+            const followers = user.followers
+
+            const friends = follows.concat(followers)
+
+            const _friends = friends.filter((value) => {
+                return !this[value] && (this[value] = true)
+              }, Object.create(null))
+
+            const listVinylsFriends = await Vinyl.find({
+                'id': { $in: _friends}
+            }, function(err, docs){
+                return docs
+            }).lean()
+
+            console.log(listVinylsFriends)
+            
+
+            listVinylsFriends.forEach(vinyl => {
+
+                vinyl.idVinyl = vinyl._id
+
+                delete vinyl._id
+                delete vinyl.__v
+
+                return vinyl
+
+            })
+            
+            return listVinylsFriends
+
+
+
+        })()
+
+    },
+
     retrieveListFollowers(id) {
 
         validate([{ key: 'id', value: id, type: String }])

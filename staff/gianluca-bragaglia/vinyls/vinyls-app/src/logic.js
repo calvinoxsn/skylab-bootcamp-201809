@@ -1,5 +1,5 @@
 
-global.sessionStorage = require('sessionstorage')
+//global.sessionStorage = require('sessionstorage')
 
 
 const logic = {
@@ -23,17 +23,16 @@ const logic = {
 
     registerUser(email, username, password) {
 
-
-        if (!email.trim()) throw Error('email is empty or blank')
-        if (!username.trim()) throw Error('username is empty or blank')
-        if (!password.trim()) throw Error('password is empty or blank')
-       
         if (typeof email !== 'string') throw TypeError(`${email} is not a string`)
         if (email.match(/^(([^<>()\[\]\\.,;:\s@“]+(\.[^<>()\[\]\\.,;:\s@“]+)*)|(“.+“))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/) === null) throw Error(`${email} is an invalid email`)
         if (typeof username !== 'string') throw TypeError(`${username} is not a string`)
         if (typeof password !== 'string') throw TypeError(`${password} is not a string`)
-        
-        
+
+
+        if (!email.trim()) throw Error('email is empty or blank')
+        if (!username.trim()) throw Error('username is empty or blank')
+        if (!password.trim()) throw Error('password is empty or blank')
+         
 
         return fetch(`${this.url}/users`, {
             method: 'POST',
@@ -117,22 +116,7 @@ const logic = {
         return !!this._userId
     },
 
-    // uploadImgProfile(formData) {
 
-    //     return fetch(`users/${this._userId}/profilePicture`, {
-    //         method: 'POST',
-    //         headers: {
-    //             'Content-Type': 'application/json; charset=utf-8',
-    //             'Authorization': `Bearer ${this._token}`,
-    //             formData
-    //         }
-            
-    //     })
-    //         .then(res => res.json())
-    //         .then(res => {
-    //             if (res.error) throw Error(res.error)
-    //         })
-    // },
 
     uploadImgProfile(picture) {
 
@@ -141,26 +125,6 @@ const logic = {
         data.append('picture', picture)
  
         return fetch (`${this.url}/users/${this._userId}/profilePicture`, {
-            method:'POST',
-            headers: {
-                'Authorization': `Bearer ${this._token}`
-            },
-            body: data
-        })
-            .then(res => res.json())
-            .then(res => {
-                if (res.error) throw Error(res.error)
-                return res.data
-            })
-    },
-
-    uploadImgVinyl(picture, id) {
-
-        let data = new FormData()
- 
-        data.append('picture', picture)
- 
-        return fetch (`${this.url}/vinyls/${id}/image`, {
             method:'POST',
             headers: {
                 'Authorization': `Bearer ${this._token}`
@@ -471,6 +435,26 @@ const logic = {
             })
     },
 
+    uploadImgVinyl(picture, id) {
+
+        let data = new FormData()
+ 
+        data.append('picture', picture)
+ 
+        return fetch (`${this.url}/vinyls/${id}/image`, {
+            method:'POST',
+            headers: {
+                'Authorization': `Bearer ${this._token}`
+            },
+            body: data
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res.error) throw Error(res.error)
+                return res.data
+            })
+    },
+
     retrieveVinyls() {
    
         return fetch(`${this.url}/vinyls`, {
@@ -714,5 +698,5 @@ const logic = {
     
 }
 
-//export default logic
-module.exports = logic
+export default logic
+//module.exports = logic

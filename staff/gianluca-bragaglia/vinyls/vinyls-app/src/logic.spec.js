@@ -19,10 +19,14 @@ logic.url = 'http://localhost:5000/api'
 
 
 // running test from CLI
-// normal -> $ mocha src/logic.spec.js --timeout 10000
+// normal -> $ mocha src/logic.spec.js --timeout 1000
 // debug -> $ mocha debug src/logic.spec.js --timeout 10000
 
-false && describe('logic', () => {
+describe('logic', () => {
+    before(() => mongoose.connect(MONGO_URL, { useNewUrlParser: true, useCreateIndex: true }))
+
+    beforeEach(() => Promise.all([User.deleteMany(), Vinyl.deleteMany()]))
+
     describe('users', () => {
         describe('register', () => {
             it('should succeed on correct data', () =>
@@ -35,7 +39,7 @@ false && describe('logic', () => {
                 const username = 'JohnDoe'
 
                 return logic.registerUser(email, username, '123')
-                    .then(() => logic.registerUseremail,(username, '123'))
+                    .then(() => logic.registerUser(`jd-${Math.random()}n@jon.com`, username, '123'))
                     .catch(err => {
                         expect(err).not.to.be.undefined
                         expect(err.message).to.equal(`username ${username} already registered`)
@@ -43,23 +47,11 @@ false && describe('logic', () => {
                     })
             })
 
-            // it('should fail on trying to register twice same email', () => {
-            //     const email = `jd-jon@jon.com`
-            //     const username = `jd-${Math.random()}`
-
-            //     return logic.registerUser(email, username, '123')
-            //         .then(() => logic.registerUser(email,username, '123'))
-            //         .catch(err => {
-            //             expect(err).not.to.be.undefined
-            //             expect(err.message).to.equal(`email ${email} already registered`)
-            //         })
-            // })
-
-            // it('should fail on undefined email', () => {
-            //     expect(() =>
-            //         logic.registerUser(undefined, 'jd', '123')
-            //     ).to.throw(TypeError, 'undefined is not a string')
-            // })
+            it('should fail on undefined email', () => {
+                expect(() =>
+                    logic.registerUser(undefined, 'jd', '123')
+                ).to.throw(TypeError, 'undefined is not a string')
+            })
 
             it('should fail on undefined username', () => {
                 expect(() =>
@@ -67,7 +59,6 @@ false && describe('logic', () => {
                 ).to.throw(TypeError, 'undefined is not a string')
             })
 
-            // TODO other cases
 
             it('should fail on empty username', () => {
                 expect(() =>
@@ -99,12 +90,12 @@ false && describe('logic', () => {
                 let username, password
 
                 beforeEach(() => {
-                    const name = 'John', surname = 'Doe'
-
+                   
+                    email = `jd-${Math.random()}@gmail.com`
                     username = `jd-${Math.random()}`
                     password = `123-${Math.random()}`
 
-                    return logic.registerUser(name, surname, username, password)
+                    return logic.registerUser(email, username, password)
                 })
 
                 it('should succeed on correct data', () =>
@@ -159,170 +150,134 @@ false && describe('logic', () => {
 
             // TODO other cases
         })
-    })
 
-    // describe('postits', () => {
-    //     describe('add', () => {
-    //         describe('with existing user', () => {
-    //             let username, password, text
-
-    //             beforeEach(() => {
-    //                 const name = 'John', surname = 'Doe'
-
-    //                 username = `jd-${Math.random()}`
-    //                 password = `123-${Math.random()}`
-
-    //                 text = `hello ${Math.random()}`
-
-    //                 return logic.registerUser(name, surname, username, password)
-    //                     .then(() => logic.login(username, password))
-    //             })
-
-    //             it('should succeed on correct data', () =>
-    //                 logic.addPostit(text)
-    //                     .then(() => expect(true).to.be.true)
-    //             )
-    //         })
-    //     })
-
-    //     describe('list', () => {
-    //         describe('with existing user', () => {
-    //             let username, password, text
-
-    //             beforeEach(() => {
-    //                 const name = 'John', surname = 'Doe'
-
-    //                 username = `jd-${Math.random()}`
-    //                 password = `123-${Math.random()}`
-
-    //                 text = `hello ${Math.random()}`
-
-    //                 return logic.registerUser(name, surname, username, password)
-    //                     .then(() => logic.login(username, password))
-    //             })
-
-    //             describe('with existing postit', () => {
-    //                 beforeEach(() => logic.addPostit(text))
-
-    //                 it('should return postits', () =>
-    //                     logic.listPostits()
-    //                         .then(postits => {
-    //                             expect(postits).not.to.be.undefined
-    //                             expect(postits.length).to.equal(1)
-    //                         })
-    //                 )
-    //             })
-
-    //             it('should return no postits', () =>
-    //                 logic.listPostits()
-    //                     .then(postits => {
-    //                         expect(postits).not.to.be.undefined
-    //                         expect(postits.length).to.equal(0)
-    //                     })
-    //             )
-    //         })
-    //     })
-
-    //     describe('remove', () => {
-    //         describe('with existing user', () => {
-    //             let username, password, text, postitId
-
-    //             beforeEach(() => {
-    //                 const name = 'John', surname = 'Doe'
-
-    //                 username = `jd-${Math.random()}`
-    //                 password = `123-${Math.random()}`
-
-    //                 text = `hello ${Math.random()}`
-
-    //                 return logic.registerUser(name, surname, username, password)
-    //                     .then(() => logic.login(username, password))
-    //             })
-
-    //             describe('with existing postit', () => {
-    //                 beforeEach(() =>
-    //                     logic.addPostit(text)
-    //                         .then(() => logic.listPostits())
-    //                         .then(postits => postitId = postits[0].id)
-    //                 )
-
-    //                 it('should succeed', () =>
-    //                     logic.removePostit(postitId)
-    //                         .then(() => expect(true).to.be.true)
-    //                 )
-    //             })
-    //         })
-    //     })
-
-    //     describe('modify', () => {
-    //         describe('with existing user', () => {
-    //             let username, password, text, postitId
-
-    //             beforeEach(() => {
-    //                 const name = 'John', surname = 'Doe'
-
-    //                 username = `jd-${Math.random()}`
-    //                 password = `123-${Math.random()}`
-
-    //                 text = `hello ${Math.random()}`
-
-    //                 return logic.registerUser(name, surname, username, password)
-    //                     .then(() => logic.login(username, password))
-    //             })
-
-    //             describe('with existing postit', () => {
-    //                 let newText
-
-    //                 beforeEach(() => {
-    //                     newText = `hello ${Math.random()}`
-
-    //                     return logic.addPostit(text)
-    //                         .then(() => logic.listPostits())
-    //                         .then(([postit]) => postitId = postit.id)
-    //                 })
-
-    //                 it('should succeed', () =>
-    //                     logic.modifyPostit(postitId, newText)
-    //                         .then(() => {
-    //                             expect(true).to.be.true
-
-    //                             return logic.listPostits()
-    //                         })
-    //                         .then(postits => {
-    //                             expect(postits).not.to.be.undefined
-    //                             expect(postits.length).to.equal(1)
-
-    //                             const [postit] = postits
-
-    //                             expect(postit.id).to.equal(postitId)
-    //                             expect(postit.text).to.equal(newText)
-    //                         })
-    //                 )
-    //             })
-    //         })
-    //     })
-    // })
-})
-
-describe('logic', () => {
-    before(() => mongoose.connect(MONGO_URL, { useNewUrlParser: true, useCreateIndex: true }))
-
-    beforeEach(() => Promise.all([User.deleteMany(), Vinyl.deleteMany()]))
-
-    describe('user', () => {
-        describe('register', () => {
+        describe('logout', () => {
             let email, username, password
 
-            beforeEach(() => {
-                email = `email-${Math.random()}@tio.com`
-                username = `username-${Math.random()}`
-                password = `password-${Math.random()}`
+            beforeEach(async () => {
+                email = `jd-${Math.random()}@gmail.com`
+                username = `u-${Math.random()}`
+                password = `p-${Math.random()}`
+
+                await logic.registerUser(email, username, password)
+                await logic.login(username, password)
             })
 
             it('should succeed on correct data', async () => {
-                const res = await logic.registerUser(email, username, password)
+                const res = await logic.logout()
 
                 expect(res).to.be.undefined
+            })
+
+            // TODO other test cases
+        })
+
+        describe('retrieve user', () => {
+            let user
+            
+            beforeEach(async () => {
+                email = `email-${Math.random()}@tio.com`
+                username = `u-${Math.random()}`
+                password = `p-${Math.random()}`
+
+                await logic.registerUser(email, username, password)
+                await logic.login(username, password)
+            })
+            
+
+            it('should succeed on correct data', async () => {
+
+                const userId = logic._userId
+                
+                const _user = await logic.retrieveUserById(userId)
+
+                const { email, username, idUser } = _user
+
+                expect(_user).not.to.be.instanceof(User)
+
+                expect(idUser).to.exist
+               
+                expect(idUser).to.be.a('string')
+                expect(idUser).to.equal(_user.idUser)
+                expect(_user.email).to.equal(email)
+                expect(_user.username).to.equal(username)
+            })
+
+            it('should fail on undefined id', () => {
+                expect(() => logic.retrieveUserById(undefined)).to.throw(TypeError, 'undefined is not a string')
+            })
+
+            it('should fail on empty id', () => {
+                expect(() => logic.retrieveUserById('')).to.throw(Error, 'id is empty or blank')
+            })
+
+            it('should fail on blank id', () => {
+                expect(() => logic.retrieveUserById('   \t\n')).to.throw(Error, 'id is empty or blank')
+            })
+
+        })
+
+        describe('retrieve gallery Users', () => {
+            let user
+            
+            beforeEach(async () => {
+                user = new User({ email: 'John@jon.com', username: 'jd', password: '123' })
+                user2 = new User({ email: 'Joh2n@jon.com', username: 'jd2', password: '1232' })
+
+                await user.save()
+                await user2.save()
+            })
+            
+
+            it('should succeed on valid id', async () => {
+                const _users = await logic.retrieveGalleryUsers()
+
+                expect(_users.length).to.equal(2)
+
+            })
+
+        })
+
+        describe('retrieve all users', () => {
+            let user
+            
+            beforeEach(async () => {
+                user = new User({ email: 'John@jon.com', username: 'jd', password: '123' })
+                user2 = new User({ email: 'Joh2n@jon.com', username: 'jd2', password: '1232' })
+
+
+                await user.save()
+                await user2.save()
+            })
+            
+
+            it('should succeed on correct data', async () => {
+                const _users = await logic.retrieveUsers()
+
+                expect(_users.length).to.equal(2)
+
+            })
+
+
+        })
+    })
+
+    after(() => mongoose.disconnect())
+
+})
+
+false && describe('logic', () => {
+    //before(() => mongoose.connect(MONGO_URL, { useNewUrlParser: true, useCreateIndex: true }))
+
+    //beforeEach(() => Promise.all([User.deleteMany(), Vinyl.deleteMany()]))
+
+    describe('user', () => {
+        describe('register', () => {
+            
+
+            it('should succeed on correct data', async () => {
+                logic.registerUser(`jd-${Math.random()}n@jon.com`, `jd-${Math.random()}`, '123')
+                .then(() => expect(true).to.be.true)
             })
 
             it('should fail on empty email', () => {
@@ -352,21 +307,37 @@ describe('logic', () => {
         })
 
         describe('login', () => {
-            let email, username, password
+            let email, username, password, user
 
             beforeEach(async () => {
 
-                email = `email-${Math.random()}@tio.com`
-                username = `u-${Math.random()}`
-                password = `p-${Math.random()}`
+                // email = `email-${Math.random()}@tio.com`
+                // username = `u-${Math.random()}`
+                // password = `p-${Math.random()}`
 
-                await logic.registerUser(email, username, password)
+                // email = `email-@tio.com`
+                // username = `u-`
+                // password = `p-`
+
+            
+                // let user = await new User({ email, username, password }).save()
             })
 
             it('should succeed on correct data', async () => {
-                const res = await logic.login(username, password)
 
-                expect(res).to.be.undefined
+                email = `email-@tio.com`
+                username = `u-`
+                password = `p-`
+
+            
+                user = await new User({ email, username, password }).save()
+
+                const id = await logic.login('u-', 'p-')
+
+                const _user = await User.findOne({ username })
+
+                expect(id).to.be.a('string')
+                expect(id).to.equal(_user.id)
             })
 
             it('should fail on incorrect password', async () => {

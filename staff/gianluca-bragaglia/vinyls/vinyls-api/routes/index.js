@@ -207,6 +207,36 @@ router.get('/users/:id/followersList', [bearerTokenParser, jwtVerifier], (req, r
     }, res)
 })
 
+router.get('/users/:id/friends', [bearerTokenParser, jwtVerifier], (req, res) => {
+    routeHandler(() => {
+        const { params: { id }, sub } = req
+
+        if (id !== sub) throw Error('token sub does not match user id')
+
+        return logic.retrieveFriends(id)
+            .then(friends => res.json({
+
+                data: friends
+            }))
+            
+    }, res)
+})
+
+router.get('/users/:id/friendsVinyls', [bearerTokenParser, jwtVerifier], (req, res) => {
+    routeHandler(() => {
+        const { params: { id }, sub } = req
+
+        if (id !== sub) throw Error('token sub does not match user id')
+
+        return logic.retrieveVinylsFriends(id)
+            .then(friendsVinyls => res.json({
+
+                data: friendsVinyls
+            }))
+            
+    }, res)
+})
+
 router.get(`/users/search/:query`, [bearerTokenParser, jwtVerifier], (req, res) => {
 
     routeHandler(() => {
