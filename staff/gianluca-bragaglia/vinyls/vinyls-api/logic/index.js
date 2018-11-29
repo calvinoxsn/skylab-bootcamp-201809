@@ -404,8 +404,6 @@ const logic = {
                 return docs
             }).lean()
 
-            console.log(listVinylsFriends)
-            
 
             listVinylsFriends.forEach(vinyl => {
 

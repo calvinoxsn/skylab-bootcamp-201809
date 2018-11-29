@@ -2,7 +2,7 @@ const { mongoose, models: { User, Vinyl} } = require('vinyls-data')
 const logic = require('./index')
 const { AlreadyExistsError, AuthError, NotFoundError, ValueError } = require('../errors')
 const { expect } = require('chai')
-// const fs = require('fs-extra')
+const fs = require('fs')
 // const path = require('path')
 // const hasha = require('hasha')
 // const text2png = require('text2png')
@@ -762,6 +762,110 @@ describe('logic', () => {
 
         })
 
+        describe('retrieve Friends', () => {
+            let user, user2
+            
+            beforeEach(async () => {
+                user = new User({ email: 'Johnm@jon.com', username: 'jdmakk', password: '123' })
+
+                user.follows.length = 1
+                user.followers.length = 2
+
+  
+                await user.save()
+
+            })
+            
+
+            it('should succeed on correct data', async () => {
+
+                await logic.retrieveFriends(user._id.toString())
+
+                
+                const _user = await User.findById(user._id).lean()
+
+                let friends = _user.follows.concat(_user.followers)
+
+                expect(friends.length).to.equal(3)
+
+                
+            })
+
+            it('should fail on undefined id', () => {
+                
+                const id = undefined
+                expect(() => logic.retrieveFriends(id)).to.throw(TypeError, 'undefined is not a string')
+            })
+
+            it('should fail on empty id', () => {
+                const id = ''
+                expect(() => logic.retrieveFriends(id)).to.throw( ValueError, `${id} is empty or blank`)
+            })
+
+            it('should fail on blank id', () => {
+                const id = '  '
+                expect(() => logic.retrieveFriends(id)).to.throw( ValueError, `id is empty or blank`)
+            })
+
+            it('should fail on no string id (boolean)', () => {
+                const id = false    
+                expect(() => logic.retrieveFriends(id)).to.throw( TypeError, 'false is not a string')
+            })
+
+        })
+
+        describe('retrieve List Vinyls Friends', () => {
+            let user
+            
+            beforeEach(async () => {
+                user = new User({ email: 'Johnm@jon.com', username: 'jdmakk', password: '123' })
+
+                user.follows.length = 1
+                user.followers.length = 2
+
+  
+                await user.save()
+
+            })
+            
+
+            it('should succeed on correct data', async () => {
+
+                await logic.retrieveVinylsFriends(user._id.toString())
+
+                
+                const _user = await User.findById(user._id).lean()
+
+                let friends = _user.follows.concat(_user.followers)
+
+                expect(friends.length).to.equal(3)
+
+                
+            })
+
+            it('should fail on undefined id', () => {
+                
+                const id = undefined
+                expect(() => logic.retrieveVinylsFriends(id)).to.throw(TypeError, 'undefined is not a string')
+            })
+
+            it('should fail on empty id', () => {
+                const id = ''
+                expect(() => logic.retrieveVinylsFriends(id)).to.throw( ValueError, `${id} is empty or blank`)
+            })
+
+            it('should fail on blank id', () => {
+                const id = '  '
+                expect(() => logic.retrieveVinylsFriends(id)).to.throw( ValueError, `id is empty or blank`)
+            })
+
+            it('should fail on no string id (boolean)', () => {
+                const id = false    
+                expect(() => logic.retrieveVinylsFriends(id)).to.throw( TypeError, 'false is not a string')
+            })
+
+        })
+
         describe('retrieve ListFollowers', () => {
             let user, user2
             
@@ -813,6 +917,77 @@ describe('logic', () => {
 
         })
 
+        describe('add profile pictures ', ()=> {
+            let user
+            beforeEach(() => {
+                username = 'John'
+
+                email = `jd-${Math.random()}@example.com`
+                password = `jd-${Math.random()}`
+
+                user = new User({ email, username, password })
+
+                return user.save()
+
+            })
+            it('should succed on correct data', async () => {
+ 
+                let image = './data/test-images/icon-profile.png'
+
+                var file = fs.createReadStream(image)
+
+                const res = await logic.addProfilePicture(user._id.toString(), file)
+
+                expect(res).to.be.undefined
+
+                let _users = await User.find().lean()
+
+                expect(_users.length).to.equal(1)
+
+                let [_user] = _users
+
+                expect(_user._id.toString()).to.be.a('string')
+                expect(_user.email).to.equal(email)
+                expect(_user.password).to.equal(password)
+                expect(_user.imgProfileUrl).to.be.a('string')
+                
+            })
+
+            it('should fail on undefined id', () => {
+                
+                let image = './data/test-images/icon-profile.png'
+
+                var file = fs.createReadStream(image)
+                const id = undefined
+                expect(() => logic.addProfilePicture(id, file)).to.throw(TypeError, 'undefined is not a string')
+            })
+
+            it('should fail on empty id', () => {
+                let image = './data/test-images/icon-profile.png'
+
+                var file = fs.createReadStream(image)
+                const id = ''
+                expect(() => logic.addProfilePicture(id, file)).to.throw( ValueError, `${id} is empty or blank`)
+            })
+
+            it('should fail on blank id', () => {
+                let image = './data/test-images/icon-profile.png'
+
+                var file = fs.createReadStream(image)
+                const id = '  '
+                expect(() => logic.addProfilePicture(id, file)).to.throw( ValueError, `userId is empty or blank`)
+            })
+
+            it('should fail on no string id (boolean)', () => {
+                let image = './data/test-images/icon-profile.png'
+
+                var file = fs.createReadStream(image)
+                const id = false    
+                expect(() => logic.addProfilePicture(id, file)).to.throw( TypeError, 'false is not a string')
+            })
+        }) 
+
+
     })
 
     describe('vinyls', () => {
@@ -838,17 +1013,18 @@ describe('logic', () => {
 
                 const res = await logic.addVinyl(id, title, artist, year, imgVinylUrl, info )
 
-                expect(res).to.be.undefined
+                expect(res).not.to.be.undefined
 
-                const vinyls = await Vinyl.find()
+                const vinyls = await Vinyl.find().lean()
 
                 const [vinyl] = vinyls
+
 
                 expect(vinyl.title).to.equal(title)
                 expect(vinyl.artist).to.equal(artist)
                 expect(vinyl.year).to.equal(year)
 
-                expect(vinyl.id.toString()).to.equal(user.id)
+                expect(vinyl.id.toString()).to.equal(user._id.toString())
             })
 
             it('should fail on undefined id', () => {
@@ -995,6 +1171,88 @@ describe('logic', () => {
                 expect(() => logic.addVinyl(id, title, artist, year, imgVinylUrl, info )).to.throw( TypeError, 'false is not a number')
             })
         })
+
+        describe('add vinyl picture ',  ()=> {
+            let user, vinyl
+            beforeEach( async () => {
+                username = 'John'
+
+                email = `jd-${Math.random()}@example.com`
+                password = `jd-${Math.random()}`
+
+                user = new User({ email, username, password })
+
+                await user.save()
+
+                const id = user.id
+                const title = 'neverm'
+                const artist = 'nirvana'
+                const year = 1992
+                const imgVinylUrl = null
+                const info = null
+
+                vinyl = new Vinyl({ id, title, artist, year, imgVinylUrl, info })
+
+                await vinyl.save()
+
+            })
+            it('should succed on correct data', async () => {
+ 
+                let image = './data/test-images/icon-profile.png'
+
+                var file = fs.createReadStream(image)
+
+                const res = await logic.addVinylPicture(file, vinyl._id.toString())
+
+                expect(res).to.be.undefined
+
+                let _vinyls = await Vinyl.find().lean()
+
+                expect(_vinyls.length).to.equal(1)
+
+                let [_vinyl] = _vinyls
+
+                expect(_vinyl._id.toString()).to.be.a('string')
+                expect(_vinyl.title).to.equal(vinyl.title)
+                expect(_vinyl.artist).to.equal(vinyl.artist)
+                expect(_vinyl.info).to.equal(vinyl.info)
+                expect(_vinyl.imgVinylUrl).to.be.a('string')
+                
+            })
+
+            // it('should fail on undefined id', () => {
+                
+            //     let image = './data/test-images/icon-profile.png'
+
+            //     var file = fs.createReadStream(image)
+            //     const id = undefined
+            //     expect(() => logic.addVinylPicture(file, id)).to.throw(TypeError, 'undefined is not a string')
+            // })
+
+            // it('should fail on empty id', () => {
+            //     let image = './data/test-images/icon-profile.png'
+
+            //     var file = fs.createReadStream(image)
+            //     const id = ''
+            //     expect(() => logic.addVinylPicture(file, id)).to.throw( ValueError, `${id} is empty or blank`)
+            // })
+
+            // it('should fail on blank id', () => {
+            //     let image = './data/test-images/icon-profile.png'
+
+            //     var file = fs.createReadStream(image)
+            //     const id = '  '
+            //     expect(() => logic.addVinylPicture(file, id)).to.throw( ValueError, `userId is empty or blank`)
+            // })
+
+            // it('should fail on no string id (boolean)', () => {
+            //     let image = './data/test-images/icon-profile.png'
+
+            //     var file = fs.createReadStream(image)
+            //     const id = false    
+            //     expect(() => logic.addVinylPicture(file, id)).to.throw( TypeError, 'false is not a string')
+            // })
+        }) 
 
         describe('retrieve all vinyls', () => {
             let vinyl, user
