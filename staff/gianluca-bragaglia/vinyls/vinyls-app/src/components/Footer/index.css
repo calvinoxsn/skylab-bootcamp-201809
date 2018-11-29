@@ -1,0 +1,28 @@
+.footer-container {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: black;
+    color: white;
+    padding: 10px 0px;
+    text-align: center;
+    padding-top: 3vh;
+    z-index: 10;
+}
+
+.chat-btn{
+    border: 1px solid white;
+    border-radius: 10%;
+    background-color: black;
+    color: white;
+    padding: 6px 10px;
+    margin-top: 10px;
+}
+
+.fas.fa-comment-alt{
+    color: white;
+    font-size: 25px;
+
+    
+}

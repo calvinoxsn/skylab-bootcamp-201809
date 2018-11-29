@@ -52,7 +52,8 @@
     font-weight: 300;
     margin-left: 23px;
     font-size: 14px;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
+
 }
 
 .card-content {
@@ -61,6 +62,7 @@
     margin-right: 10px;
     margin-top: 5px;
     padding-bottom: 20px;
+   
 }
 
 .float{

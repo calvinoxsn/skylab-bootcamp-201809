@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { Button } from 'mdbreact'
 import  './index.css'
 
-function Landing(props) {
+function Landing() {
 
     return <section className='container-landing'>
         
@@ -12,12 +12,8 @@ function Landing(props) {
             <h1 className='landing-title'>Vinyls</h1>
 
             <Link to={'./register'} ><Button color='black darken-4'>Register</Button></Link>
-            
-            {/* <Button color="black darken-4" onClick={props.onRegisterClick}>Register</Button> */}
 
             <Link to={'./login'}><Button color='black darken-4'>Login</Button> </Link>
-
-            {/* <Button color="unique" onClick={props.onLoginClick}>Login</Button>   */}   
 
         </div>
         

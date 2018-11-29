@@ -1,13 +1,14 @@
-import React, { Component } from 'react'
+import React from 'react'
 import './index.css'
 
-class Comment extends Component {
 
 
-  render() {
-    const {username, imgProfile, text} = this.props
-        
-    return (<div className='comment-first-container'>
+const Comment = (props) => {
+
+  const {username, imgProfile, text} = props
+
+  return (
+            <div className='comment-first-container'>
                 <div>
                   <img className='img-profile-micro' src={imgProfile ? imgProfile : './img/icon-profile.png'}/>
                 </div>
@@ -17,10 +18,7 @@ class Comment extends Component {
                 </div>
 
             </div>
-        
-      
-    )
-  }
+  )
 }
 
 export default Comment

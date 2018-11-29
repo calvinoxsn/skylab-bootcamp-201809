@@ -4,12 +4,45 @@ input[type="file"] {
     padding: 6px 12px;
     cursor: pointer;
     font-size: 12px;
+    border: none;
 }
 
-.picture__preview {
-    width: 200px;
-}
 
 .upload-btn{
     margin: 30px auto;
 }
+
+.file-input-wrapper {
+    width: 200px;
+    height: 40px;
+    overflow: hidden;
+    position: relative;
+    margin: 20px auto 10px;
+}
+.file-input-wrapper > input[type="file"] {
+    font-size: 200px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    opacity: 0;
+}
+.file-input-wrapper > .btn-file-input {
+    display: inline-block;
+    width: 200px;
+    height: 40px;
+    border:none;
+    background-color:white;
+    border: 1px solid black;
+}
+.file-input-wrapper:hover > .btn-file-input {
+    background-color: white;
+}
+
+.img-load-container{
+    width: 300px;
+    height: auto;
+    margin: 0 auto;
+}
+
+
+

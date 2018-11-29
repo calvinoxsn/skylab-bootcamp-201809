@@ -69,9 +69,9 @@ class AddVinyl extends Component {
         return <div className='edit-profile-container'>
                 <h3>Add Vinyl</h3>
                 <img className='profile-img'  src={imgVinylUrl ? imgVinylUrl : './img/vinyl.png'} ></img>
-                <br></br>
+             
                 {error && <Error message={error} />}
-                {/* <Button type='button' onClick={this.uploadWidget} color='black' >Upload Image</Button> */}
+             
 
                 <form className='form-edit-profile' onSubmit={this.handleSubmit}>
                     <br></br>

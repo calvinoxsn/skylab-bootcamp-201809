@@ -32,9 +32,16 @@ class UploadImgProfile extends Component {
        return(   <div>
         <form encType="multipart/form-data" onSubmit={this.handleUploadImgProfile}>
 
-        <input type="file" className='inputfile' name="pic" accept="image/*" onChange={this.fileChangedHandler}></input>
+        <div class="file-input-wrapper">
+            <button class="btn-file-input">Select Image</button>
+            <input type="file" type="file" className='inputfile' name="pic" accept="image/*" onChange={this.fileChangedHandler} />
+        </div>
+
+        {/* <input type="file" className='inputfile' name="pic" accept="image/*" onChange={this.fileChangedHandler}></input> */}
         <br></br>
-        <img src={this.state.previewPicture} alt='' className='picture__preview'/>
+        <div className='img-load-container'>
+            <img src={this.state.previewPicture} alt='' className='picture__preview'/>
+        </div>
         <br></br>
         <Button type='submit' color='black' className='upload-btn' >Upload Image</Button>
         </form>

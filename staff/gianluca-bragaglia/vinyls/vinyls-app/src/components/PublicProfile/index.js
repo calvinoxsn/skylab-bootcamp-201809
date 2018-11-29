@@ -69,14 +69,14 @@ class PublicProfile extends Component {
         
         return<div className='profile-container'>
             <img className='profile-img' src={imgProfileUrl ? imgProfileUrl : './img/icon-profile.png'} ></img>
-            <br></br>
+            
 
                 <p className='profile-username'> {username}</p>
                 {error && <Error message={error} />}
                 <p className='follows'>Follow: {follows.length}</p> <p className='follows'>Followers: {followers.length}</p>
 
                 <a href="#" onClick={followSelected ? this.handleDontFollowClick : this.handleFollowClick}> {followSelected ? <span className='dont-follow-btn'>stop follow {username}</span> : <span className='follow-btn'>Follow</span>}</a>
-                <br></br> <br></br>
+
                 <p className='profile-bio'>{bio}</p>
                 <VinylsListProfilePublic id={this.props.id}/>
             

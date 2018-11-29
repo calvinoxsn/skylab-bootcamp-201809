@@ -59,31 +59,6 @@ class EditProfile2 extends Component {
         this.setState({ bio })
     }
 
-    
-    // fileChangedHandler = event => {
-    //     event.preventDefault()
-
-    //    this.setState({picture: event.target.files[0]})
-    // }
-
-
-    // handleUploadImgProfile = e => {
-    //   e.preventDefault()
-
-    //    console.log(this.state.picture)
-
-    //     try {
-    //         logic.uploadImgProfile(this.state.picture)
-    //         .then(res => {
-    //             this.setState({error: null})
-    //         })
-    //         .catch(err => this.setState({ error: err.message }))
-            
-            
-    //     } catch (err) {
-    //         this.setState({ error: err.message })
-    //     }
-    // }
 
     onEditProfile = ( username,  newPassword, password, imgProfileUrl, bio ) => {
         
@@ -124,16 +99,6 @@ class EditProfile2 extends Component {
         return <div className='edit-profile-container'>
                 <img className='profile-img' src={ imgProfileUrl ? imgProfileUrl : './img/icon-profile.png'} ></img>
                 <br></br>
-
-                {/* <div>
-                    <form encType="multipart/form-data" onSubmit={this.handleUploadImgProfile}>
-                    <input type="file" className='inputfile' name="pic" accept="image/*" onChange={this.fileChangedHandler}></input>
-                    <br></br>
-                    <Button type='submit' color='black' >Upload Image</Button>
-                    </form>
-                </div> */}
-
-                {/* <UploadImgProfile></UploadImgProfile> */}
 
                 <form className='form-edit-profile' onSubmit={this.handleSubmit}>
                     <br></br>

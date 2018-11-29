@@ -34,7 +34,7 @@ class Profile extends Component {
         return<div className='profile-container'>
 
             <img className='profile-img' src={imgProfileUrl ? imgProfileUrl : './img/icon-profile.png'} ></img>
-            <br></br>
+     
 
                 <p className='profile-username'> {username}</p>
 
@@ -43,7 +43,7 @@ class Profile extends Component {
                 {error && <Error message={error} />}
                 <p className='profile-bio'>{bio}</p>
                 <section><Button color='black' onClick={this.handleEditClick}>Edit Profile</Button></section>
-                <br></br>
+
                 <VinylsListProfile id={this.props.id}/>
             
             
