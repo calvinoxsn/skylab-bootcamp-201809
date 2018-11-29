@@ -42,7 +42,7 @@ class Profile extends Component {
                 <Link to={`/followers`}><p className='followers-btn-profile'>Followers {followers.length}</p></Link>
                 {error && <Error message={error} />}
                 <p className='profile-bio'>{bio}</p>
-                <section><Button color='black' onClick={this.handleEditClick}>Edit Profile</Button></section>
+                <section className='btn-edit-section'><Button color='black' onClick={this.handleEditClick}>Edit Profile</Button></section>
 
                 <VinylsListProfile id={this.props.id}/>
             
