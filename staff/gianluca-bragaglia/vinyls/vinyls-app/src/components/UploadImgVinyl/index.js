@@ -4,8 +4,9 @@ import { Link } from 'react-router-dom'
 import logic from '../../logic'
 
 
+
 class UploadImgVinyl extends Component {
-    state={ picture: null, previewPicture: null}
+    state={ picture: null, previewPicture: null, imgAdded: false}
 
   
     handleUploadImgVinyl = e => {
@@ -13,7 +14,7 @@ class UploadImgVinyl extends Component {
         
         try {
             logic.uploadImgVinyl(this.state.picture, this.props.id)
-            .then(() => this.setState({previewPicture: null, picture: this.state.picture}))
+            .then(() => this.setState({previewPicture: null, picture: this.state.picture, imgAdded: true}))
             .catch(err => this.setState({ error: err.message }))
         } catch (err) {
             this.setState({ error: err.message })
@@ -33,8 +34,8 @@ class UploadImgVinyl extends Component {
        return(   <div>
         <form encType="multipart/form-data" onSubmit={this.handleUploadImgVinyl}>
 
-        <div class="file-input-wrapper">
-            <button class="btn-file-input">Select Image</button>
+        <div className="file-input-wrapper">
+            <button className="btn-file-input">Select Image</button>
             <input type="file" type="file" className='inputfile' name="pic" accept="image/*" onChange={this.fileChangedHandler} />
         </div>
         <br></br>
@@ -42,9 +43,10 @@ class UploadImgVinyl extends Component {
             <img src={this.state.previewPicture} alt='' className='picture__preview'/>
         </div>}
         <br></br>
+        { this.state.imgAdded && <p className='image-added'>Image Added Succefully</p>}
         <Button type='submit' color='black' className='upload-btn' >Upload Image</Button>
         </form>
-         <Link to={`/index`} ><span className='edit-next-btn'>Save</span></Link> 
+        <Link to={`/vinyl/${this.props.id}/edit2`} ><span className='edit-next-btn'>Next</span></Link>
     </div>
 
        )

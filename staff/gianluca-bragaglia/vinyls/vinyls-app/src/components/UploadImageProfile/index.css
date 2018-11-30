@@ -44,5 +44,9 @@ input[type="file"] {
     margin: 0 auto;
 }
 
+.image-added{
+    font-weight: bold;
+}
+
 
 

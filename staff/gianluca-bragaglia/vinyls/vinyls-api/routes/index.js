@@ -124,7 +124,7 @@ router.patch('/users/:id', [bearerTokenParser, jwtVerifier, jsonBodyParser], (re
 
         if (id !== sub) throw Error('token sub does not match user id')
 
-        return logic.updateUser(id, username ? username : null, password,newPassword ? newPassword : null, imgProfileUrl ? imgProfileUrl : null, bio ? bio : null )
+        return logic.updateUser(id, username, password, newPassword ? newPassword : null, imgProfileUrl ? imgProfileUrl : null, bio ? bio : null )
             .then(() =>
                 res.json({
                     message: 'user updated'
@@ -202,6 +202,21 @@ router.get('/users/:id/followersList', [bearerTokenParser, jwtVerifier], (req, r
             .then(listFollowers => res.json({
 
                 data: listFollowers
+            }))
+            
+    }, res)
+})
+
+router.get('/users/:id/followeesVinyls', [bearerTokenParser, jwtVerifier], (req, res) => {
+    routeHandler(() => {
+        const { params: { id }, sub } = req
+
+        if (id !== sub) throw Error('token sub does not match user id')
+
+        return logic.retrieveVinylsFollowees(id)
+            .then(listVinylsFollowees => res.json({
+
+                data: listVinylsFollowees
             }))
             
     }, res)

@@ -80,7 +80,6 @@ class EditVinyl2 extends Component {
 
         return <div className='edit-vinyl-container'>
                 <img className='edit-vinyl-img'  src={imgVinylUrl ? imgVinylUrl : './img/vinyl.png'} alt={title}></img>
-                {error && <Error message={error} />}
                 <br></br>
                 <form className='form-edit-vinyl' onSubmit={this.handleSubmit}>
                     <input className='input' type='text'  id='title' value={title} placeholder='title' onChange={this.handleTitleChange} />
@@ -208,7 +207,7 @@ class EditVinyl2 extends Component {
                     </select>
                     <br></br>
                     <textarea className='textarea' type='text' value={info} placeholder='info' onChange={this.handleInfoChange} />  
-                                     
+                    {error && <Error message={error} />}           
                     <Button type='submit'color='black' >Save</Button> 
                 </form>
         </div>

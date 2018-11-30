@@ -1,3 +1,7 @@
+const validate = require('./utils/validate')
+
+const { AlreadyExistsError, AuthError, NotFoundError, ValueError } = require('./errors')
+
 
 //global.sessionStorage = require('sessionstorage')
 
@@ -276,23 +280,23 @@ const logic = {
      * 
      * @returns {Promise} Resolves on correct data, rejects on wrong data
      */
-    modifyUser(username, newPassword, password, imgProfileUrl, bio,) {
-
+    async modifyUser(username, password, newPassword, imgProfileUrl, bio) {
+    
         if (typeof username !== 'string') throw TypeError(`${username} is not a string`)
-        if (!username.trim().length) throw Error('username is empty or blank')
         if (typeof password !== 'string') throw TypeError(`${password} is not a string`)
-        if (!password.trim().length) throw Error('password is empty or blank')
         if (typeof newPassword !== 'string') throw TypeError(`${newPassword} is not a string`)
         if (bio != null && typeof bio !== 'string') throw TypeError(`${bio} is not a string`)
+        if (!username.trim().length) throw Error('username is empty or blank')  
+        if (!password.trim().length) throw Error('password is empty or blank')
 
-
+        
         return fetch(`${this.url}/users/${this._userId}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json; charset=utf-8',
                 'Authorization': `Bearer ${this._token}`
             },
-            body: JSON.stringify({username, password, bio, newPassword, imgProfileUrl })
+            body: JSON.stringify({username, password, newPassword, imgProfileUrl, bio })
         })
             .then(res => res.json())
             .then(res => {
@@ -458,6 +462,33 @@ const logic = {
                 const followsList = res.data
                 
                 return followsList
+                                     
+            })
+
+    },
+
+
+    /**
+     * Retrieve Followees Viyls
+     * 
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
+     */
+
+    retrieveFolloweesListVinyls() {
+
+        return fetch(`${this.url}/users/${this._userId}/followeesVinyls`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${this._token}`
+            }
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res.error) throw Error(res.error)
+                
+                const followeesVinyls = res.data
+                
+                return followeesVinyls
                                      
             })
 

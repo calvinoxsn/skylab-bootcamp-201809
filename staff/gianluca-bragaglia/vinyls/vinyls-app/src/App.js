@@ -20,7 +20,8 @@ import Vinyl from './components/Vinyl'
 import EditVinyl1 from './components/EditVinyl1'
 import EditVinyl2 from './components/EditVinyl2'
 import SearchListVinyls from './components/SearchListVinyls'
-import Footer from './components/Footer'
+import FolloweesVinyls from './components/FolloweesVinyls'
+//import Footer from './components/Footer'
 
 logic.url = 'http://localhost:5000/api'
 
@@ -76,7 +77,7 @@ class App extends Component {
 
         return  <div className='app-container'>
                   {logic.loggedIn && <NavbarComponent onLogout={this.handleLogoutClick}></NavbarComponent>}
-                  {logic.loggedIn && <Footer></Footer>}
+                  {/* {logic.loggedIn && <Footer></Footer>} */}
                   <Route exact path="/" render={() => !logic.loggedIn ? <Landing onRegisterClick={this.handleRegisterClick} onLoginClick={this.handleLoginClick}/> : <Redirect to="/index" />} /> 
                   <Route path="/register" render={() => !logic.loggedIn ? <Register onRegister={this.handleRegister} onGoBack={this.handleGoBack}  /> : <Redirect to="/index" />} /> 
                   <Route path="/login" render={() => !logic.loggedIn ? <Login onLogin={this.handleLogin} onGoBack={this.handleGoBack}  /> : <Redirect to="/index" />} /> 
@@ -96,6 +97,7 @@ class App extends Component {
                   <Route exact path="/vinyl/:id/edit1" render={(props) => logic.loggedIn ? <EditVinyl1 id={props.match.params.id}/> : <Redirect to="/login" />} />
                   <Route exact path="/vinyl/:id/edit2" render={(props) => logic.loggedIn ? <EditVinyl2 id={props.match.params.id}/> : <Redirect to="/login" />} />
                   {/* <Route exact path="/chat-list" render={() => logic.loggedIn ? <ChatList /> : <Redirect to="/login" />} /> */}
+                  <Route path="/followees-vinyl" render={() => logic.loggedIn ? <FolloweesVinyls /> : <Redirect to="/login" />} />
                 </div> 
 
            

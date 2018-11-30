@@ -1,9 +1,9 @@
 
 const { models: { User, Comment, Vinyl } } = require('vinyls-data')
 const { env: { PORT } } = process
+const { AlreadyExistsError, AuthError, NotFoundError, ValueError, NotAllowedError } = require('../errors')
 const validate = require('../utils/validate')
 var cloudinary = require('cloudinary')
-const { AlreadyExistsError, AuthError, NotFoundError, ValueError, NotAllowedError } = require('../errors')
 
 cloudinary.config({
     cloud_name: 'dmp64syaz',
@@ -243,8 +243,8 @@ const logic = {
             { key: 'id', value: id, type: String },
             { key: 'username', value: username, type: String },
             { key: 'password', value: password, type: String },
-            { key: 'newPassword', value: password, type: String, optional: true },
-            { key: 'imgProfileUrl', value: password, type: String, optional: true }           
+            { key: 'newPassword', value: newPassword, type: String, optional: true },
+            { key: 'imgProfileUrl', value: imgProfileUrl, type: String, optional: true }           
         ])
 
         return (async () => {
@@ -260,6 +260,7 @@ const logic = {
                 if (_user && _user.username != user.username) throw new AlreadyExistsError(`username ${username} already exists`)
   
                 user.username = username
+                user.password= password
                 newPassword != null && (user.password = newPassword)
                 user.imgProfileUrl = imgProfileUrl
                 user.bio = bio || ''
@@ -606,6 +607,58 @@ const logic = {
             })
             
             return listVinylsFriends
+
+
+
+        })()
+
+    },
+
+
+     /**
+     * Retrieve vinyls of followees
+     * 
+     * @param {string} id The current user id
+     *  
+     * @throws {TypeError} On non-string id
+     * @throws {Error} On empty or blank id
+     * @throws {NotFoundError} On user id not found
+     * 
+     * 
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
+     */
+
+    retrieveVinylsFollowees(id) {
+
+        validate([{ key: 'id', value: id, type: String }])
+
+
+        return (async () => {
+            const user = await User.findById(id)
+
+            if (!user) throw new NotFoundError(`user with id ${id} not found`)
+
+            const follows = user.follows
+
+            const listVinylsFollowees = await Vinyl.find({
+                'id': { $in: follows}
+            }, function(err, docs){
+                return docs
+            }).lean()
+
+
+            listVinylsFollowees.forEach(vinyl => {
+
+                vinyl.idVinyl = vinyl._id
+
+                delete vinyl._id
+                delete vinyl.__v
+
+                return vinyl
+
+            })
+            
+            return listVinylsFollowees
 
 
 
