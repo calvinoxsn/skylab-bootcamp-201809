@@ -84,8 +84,6 @@ class EditProfile2 extends Component {
 
         const { username, newPassword, password, imgProfileUrl, bio } = this.state
 
-        console.log(username, newPassword, password, imgProfileUrl, bio )
-
         this.onEditProfile(username, newPassword, password, imgProfileUrl, bio)
 
         this.setState({error: null})

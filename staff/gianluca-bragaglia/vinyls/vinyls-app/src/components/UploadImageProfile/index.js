@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import { Button } from 'mdbreact'
+import { Link } from 'react-router-dom'
 import logic from '../../logic'
 import './index.css'
 
@@ -37,14 +38,14 @@ class UploadImgProfile extends Component {
             <input type="file" type="file" className='inputfile' name="pic" accept="image/*" onChange={this.fileChangedHandler} />
         </div>
 
-        {/* <input type="file" className='inputfile' name="pic" accept="image/*" onChange={this.fileChangedHandler}></input> */}
         <br></br>
-        <div className='img-load-container'>
+        {this.state.previewPicture && <div className='img-load-container'>
             <img src={this.state.previewPicture} alt='' className='picture__preview'/>
-        </div>
+        </div>}
         <br></br>
         <Button type='submit' color='black' className='upload-btn' >Upload Image</Button>
         </form>
+        { this.state.previewPicture ? <Link to={`/edit-profile2`} ><span className='edit-next-btn'>Next</span></Link> : <Link to={`/edit-profile2`} ><span className='edit-next-btn'>Skip</span></Link>}
     </div>
 
        )

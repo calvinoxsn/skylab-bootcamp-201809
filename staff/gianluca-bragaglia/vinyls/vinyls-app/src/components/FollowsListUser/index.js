@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import FollowsListUserItem from '../FollowsListUserItem'
 import logic from '../../logic'
 
-//import './index.css'
 
 
 
@@ -27,7 +26,6 @@ class FollowsListUser extends Component {
         
         return ( 
             <React.Fragment>
-                {/* <p>followlistuser</p> */}
                 <div className='vinyls-list'>
                         <ul className='list-group-flush'>
                         {followsListUser.map(follow => (

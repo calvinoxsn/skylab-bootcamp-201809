@@ -54,25 +54,6 @@ class EditVinyl2 extends Component {
     }
 
 
-    // uploadWidget =() => {
-
-    //     let widget = window.cloudinary.openUploadWidget({ cloud_name: 'dmp64syaz', upload_preset: 'pd0ikih0'},
-    //         (error, result) => {
-               
-
-    //             if (result.event === 'success') {
-
-    //                 const imgVinylUrl = result.info.secure_url
-
-    //                 this.setState({ imgVinylUrl })
-                    
-    //                 widget.close()
-
-    //             }
-    //         })
-            
-    // }
-
     handleSubmit = e => {
 
         e.preventDefault()
@@ -101,7 +82,6 @@ class EditVinyl2 extends Component {
                 <img className='edit-vinyl-img'  src={imgVinylUrl ? imgVinylUrl : './img/vinyl.png'} alt={title}></img>
                 {error && <Error message={error} />}
                 <br></br>
-                {/* <Button type='button' onClick={this.uploadWidget} color='black' >Upload Image</Button> */}
                 <form className='form-edit-vinyl' onSubmit={this.handleSubmit}>
                     <input className='input' type='text'  id='title' value={title} placeholder='title' onChange={this.handleTitleChange} />
                     <input className='input' type='text'  id='artist' value={artist} placeholder='artist' onChange={this.handleArtistChange} />

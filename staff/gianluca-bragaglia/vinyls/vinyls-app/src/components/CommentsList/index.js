@@ -1,19 +1,17 @@
-import React, { Component } from 'react'
+import React from 'react'
 import Comment from '../Comment'
 import './index.css'
 
 
 
-class CommentsList extends Component {
 
-   
-    render() { 
+const CommentsList = (props) => {
 
-        const { comments } = this.props
+        const { comments } = props
 
         const commentsRev = comments.reverse()
-     
-        return ( 
+
+  return (
             <React.Fragment>
                 <div className='comments-list'>
                         <ul className='list-group-flush'>
@@ -23,9 +21,8 @@ class CommentsList extends Component {
                         </ul>
                 </div> 
             </React.Fragment>
-         )
-    }
+  )
 }
 
- 
+
 export default CommentsList

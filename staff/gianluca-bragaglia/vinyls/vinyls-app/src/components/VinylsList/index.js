@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import VinylsListItem from '../VinylsListItem'
 import VinylListCardItem from '../VinylListCardItem'
 import logic from '../../logic'
 import './index.css'
@@ -34,13 +33,7 @@ class VinylsList extends Component {
                             <VinylListCardItem key={vinyl.idVinyl} id={vinyl.idVinyl} userId={vinyl.id} title={vinyl.title} artist={vinyl.artist} img={vinyl.imgVinylUrl} comments={vinyl.comments.length} likes={vinyl.likes.length} year={vinyl.year}/>
                         ))}
                 </div>
-                {/* <div className='vinyls-list'>
-                        <ul className='list-group-flush'>
-                        {vinyls.map(vinyl => (
-                            <VinylsListItem key={vinyl.idVinyl} id={vinyl.idVinyl} userId={vinyl.id} title={vinyl.title} artist={vinyl.artist} img={vinyl.imgVinylUrl}/>
-                        ))}
-                        </ul>
-                </div>  */}
+
             </React.Fragment>
          )
     }

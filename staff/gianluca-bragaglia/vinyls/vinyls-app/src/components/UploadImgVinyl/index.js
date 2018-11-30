@@ -1,7 +1,8 @@
 import React, {Component} from 'react'
 import { Button } from 'mdbreact'
+import { Link } from 'react-router-dom'
 import logic from '../../logic'
-//import './index.css'
+
 
 class UploadImgVinyl extends Component {
     state={ picture: null, previewPicture: null}
@@ -36,15 +37,14 @@ class UploadImgVinyl extends Component {
             <button class="btn-file-input">Select Image</button>
             <input type="file" type="file" className='inputfile' name="pic" accept="image/*" onChange={this.fileChangedHandler} />
         </div>
-
-        {/* <input type="file" className='inputfile' name="pic" accept="image/*" onChange={this.fileChangedHandler}></input> */}
         <br></br>
-        <div className='img-load-container'>
+        { this.state.previewPicture && <div className='img-load-container'>
             <img src={this.state.previewPicture} alt='' className='picture__preview'/>
-        </div>
+        </div>}
         <br></br>
         <Button type='submit' color='black' className='upload-btn' >Upload Image</Button>
         </form>
+         <Link to={`/index`} ><span className='edit-next-btn'>Save</span></Link> 
     </div>
 
        )

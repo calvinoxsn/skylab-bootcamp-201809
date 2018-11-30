@@ -40,7 +40,7 @@ input[type="file"] {
 
 .img-load-container{
     width: 300px;
-    height: auto;
+    height: 300px;;
     margin: 0 auto;
 }
 

@@ -12,6 +12,21 @@ cloudinary.config({
 })
 
 const logic = {
+
+
+    /**
+     * Register User
+     * @param {string} email The user email
+     * @param {string} username The user username
+     * @param {string} password The user password
+     *  
+     * @throws {TypeError} On non-string email or username or password 
+     * @throws {Error} On empty or blank email, username, password
+     * @throws {AlreadyExistsError} On already exist username
+     * 
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
+     */
+
     registerUser(email, username, password) {
 
         validate([{ key: 'email', value: email, type: String }, { key: 'username', value: username, type: String }, { key: 'password', value: password, type: String }])
@@ -27,6 +42,21 @@ const logic = {
         })()
     },
 
+
+
+    /**
+     * Authenticate User
+     * 
+     * @param {string} username The user username
+     * @param {string} password The user password
+     *  
+     * @throws {TypeError} On non-string username or password 
+     * @throws {Error} On empty or blank username, password
+     * 
+     * 
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
+     */
+
     authenticateUser(username, password) {
 
         validate([{ key: 'username', value: username, type: String }, { key: 'password', value: password, type: String }])
@@ -40,6 +70,19 @@ const logic = {
         })()
     },
 
+
+    /**
+     * Add Profile Picture
+     * 
+     * @param {string} userId The current user id
+     * @param {string} file The picture
+     *  
+     * @throws {TypeError} On non-string user id
+     * @throws {Error} On empty or blank user id
+     * @throws {NotFoundError} On user not found
+     * 
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
+     */
 
     addProfilePicture(userId, file) {
         validate([
@@ -71,7 +114,17 @@ const logic = {
         })()
     },
 
-
+    /**
+     * Retrieve user by id
+     * 
+     * @param {string} id The user id
+     *  
+     * @throws {TypeError} On non-string user id
+     * @throws {Error} On empty or blank user id
+     * @throws {NotFoundError} On user not found
+     * 
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
+     */
 
     retrieveUser(id) {
 
@@ -88,6 +141,19 @@ const logic = {
         })()
     },
 
+
+
+     /**
+     * Retrieve users of gallery by current user id
+     * 
+     * @param {string} id The current user id
+     *  
+     * @throws {TypeError} On non-string id
+     * @throws {Error} On empty or blank id
+     * @throws {NotFoundError} On users not found
+     * 
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
+     */
 
     retrieveGalleryUsers(id) {
 
@@ -118,6 +184,15 @@ const logic = {
         })()
     },
 
+
+     /**
+     * Retrieve all users
+     * 
+     * @throws {NotFoundError} On users not found
+     * 
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
+     */
+
     retrieveUsers() {
       
         return (async () => {
@@ -141,6 +216,26 @@ const logic = {
 
         })()
     },
+
+
+    /**
+     * Update User
+     * 
+     * @param {string} id The user id
+     * @param {string} username The user username
+     * @param {string} password The user password
+     * @param {string} newPassword The user newPassword
+     * @param {string} imgProfileUrl The user image profile url
+     *  
+     * @throws {TypeError} On non-string id, username, password, newPassword, imgProfileUrl
+     * @throws {Error} On empty or blank id, username, password, newPassword, imgProfileUrl
+     * @throws {NotFoundError} On user not found
+     * @throws {AuthError} On password invalid
+     * @throws {AlreadyExistsError} On already exist username
+     * 
+     * 
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
+     */
 
     updateUser(id, username, password, newPassword, imgProfileUrl, bio) {
 
@@ -179,6 +274,15 @@ const logic = {
         })()
     },
 
+
+    /**
+     * Search Users
+     * 
+     * @param {string} query The query of a search box
+     *  
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
+     */
+
     searchUsers(query) {
 
         validate([{ key: 'query', value: query, type: String, optional: true  }])
@@ -186,7 +290,6 @@ const logic = {
         
         return (async () => {
             
-            if (!(query.trim().length)) throw new ValueError('You must enter at least one search term')
 
             const users = await User.find({ username: { $regex: query, $options: 'i' } }).lean()
 
@@ -206,6 +309,24 @@ const logic = {
         })()
 
     },
+
+
+    /**
+     * Add Follow
+     * 
+     * @param {string} id The current user id
+     * @param {string} followUsername The username of user that current user follows
+     *  
+     * @throws {TypeError} On non-string id
+     * @throws {Error} On empty or blank id
+     * @throws {NotFoundError} On user id or username of follow not found
+     * @throws {ValueError} On username of follow is empty or blank
+     * @throws {NotAllowedError} On current user can't follow himself
+     * @throws {AlreadyExistsError} On already follow this user
+     * 
+     * 
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
+     */
 
     addFollow(id, followUsername) {
 
@@ -244,6 +365,21 @@ const logic = {
 
     },
 
+
+    /**
+     * Remove Follow
+     * 
+     * @param {string} id The current user id
+     * @param {string} followUsername The username of user that current user follows
+     *  
+     * @throws {TypeError} On non-string id
+     * @throws {Error} On empty or blank id
+     * @throws {NotFoundError} On user id or username of follow not found
+     * 
+     * 
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
+     */
+
     removeFollow(id, followUsername) {
 
         validate([{ key: 'id', value: id, type: String }, { key: 'followUsername', value: followUsername, type: String }])
@@ -274,6 +410,20 @@ const logic = {
 
     },
 
+
+    /**
+     * Is Follow?
+     * 
+     * @param {string} id The id of user
+     *  
+     * @throws {TypeError} On non-string id
+     * @throws {Error} On empty or blank id
+     * @throws {NotFoundError} On user id not found
+     * 
+     * 
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
+     */
+
     isFollows(id) {
 
         validate([{ key: 'id', value: id, type: String }])
@@ -290,6 +440,20 @@ const logic = {
         })()
 
     },
+
+
+    /**
+     * Retrieve Follows
+     * 
+     * @param {string} id The current user id
+     *  
+     * @throws {TypeError} On non-string id
+     * @throws {Error} On empty or blank id
+     * @throws {NotFoundError} On user id not found
+     * 
+     * 
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
+     */
 
     retrieveListFollows(id) {
 
@@ -321,12 +485,23 @@ const logic = {
             
             return listFollows
 
-
-
         })()
 
     },
 
+
+    /**
+     * Retrieve friends(follows + followers)
+     * 
+     * @param {string} id The current user id
+     *  
+     * @throws {TypeError} On non-string id
+     * @throws {Error} On empty or blank id
+     * @throws {NotFoundError} On user id not found
+     * 
+     * 
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
+     */
 
     retrieveFriends(id) {
 
@@ -378,6 +553,20 @@ const logic = {
 
     },
 
+
+    /**
+     * Retrieve vinyls of friends(follows + followers)
+     * 
+     * @param {string} id The current user id
+     *  
+     * @throws {TypeError} On non-string id
+     * @throws {Error} On empty or blank id
+     * @throws {NotFoundError} On user id not found
+     * 
+     * 
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
+     */
+
     retrieveVinylsFriends(id) {
 
         validate([{ key: 'id', value: id, type: String }])
@@ -423,6 +612,21 @@ const logic = {
         })()
 
     },
+
+
+    /**
+     * Retrieve followers
+     * 
+     * @param {string} id The current user id
+     *  
+     * @throws {TypeError} On non-string id
+     * @throws {Error} On empty or blank id
+     * @throws {NotFoundError} On user id not found
+     * @throws {ValueError} On user id empty or blank
+     * 
+     * 
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
+     */
 
     retrieveListFollowers(id) {
 
@@ -471,10 +675,10 @@ const logic = {
      * @param {string} imgVinylUrl The vinyl image url
      *
      * 
-     * @throws {TypeError} On non-string user id, or non-string postit text
-     * @throws {Error} On empty or blank user id or postit text
+     * @throws {TypeError} On non-string id, title, artist, year, imgVinylUrl, info
+     * @throws {Error} On empty or blank id, title, artist, year, imgVinylUrl, info
      * 
-     * @returns {Promise} Resolves on correct data, rejects on wrong user id
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
      */
     addVinyl(id, title, artist, year, imgVinylUrl, info ) {
 
@@ -505,7 +709,22 @@ const logic = {
     },
 
 
+    /**
+     * Add Vinyl Picture
+     * 
+     * @param {string} id The vinyl id
+     * @param {string} file The picture
+     *  
+     * @throws {TypeError} On non-string vinyl id
+     * @throws {Error} On empty or blank vinyl id
+     * @throws {NotFoundError} On vinyl not found
+     * 
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
+     */
+
     addVinylPicture(file, id) {
+
+        validate([{ key: 'id', value: id, type: String }])
 
         return (async () => {
 
@@ -531,6 +750,15 @@ const logic = {
         })()
     },
 
+
+    /**
+     * Retrieve all vinyls
+     * 
+     * @throws {NotFoundError} On vinyls not found
+     * 
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
+     */
+
     retrieveVinyls() {
       
         return (async () => {
@@ -553,6 +781,19 @@ const logic = {
 
         })()
     },
+
+
+    /**
+     * Retrieve Vinyl by id
+     * 
+     * @param {string} id The vinyl id
+     *  
+     * @throws {TypeError} On non-string vinyl id
+     * @throws {Error} On empty or blank vinyl id
+     * @throws {NotFoundError} On vinyl not found
+     * 
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
+     */
 
     retrieveVinylById(id) {
 
@@ -588,6 +829,18 @@ const logic = {
     },
 
 
+   /**
+     * Retrieve Vinyl by user id
+     * 
+     * @param {string} id The user id
+     *  
+     * @throws {TypeError} On non-string user id
+     * @throws {Error} On empty or blank user id
+     * @throws {NotFoundError} On user not found
+     * 
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
+     */
+
     retrieveVinylsByUserId(id) {
 
         validate([{ key: 'id', value: id, type: String }])
@@ -596,7 +849,7 @@ const logic = {
 
             const vinyls = await Vinyl.find({id: id}).lean()
 
-            if (!vinyls) throw new NotFoundError(`vinyls with id ${id} not found`)
+            if (!vinyls) throw new NotFoundError(`vinyls with user id ${id} not found`)
 
             vinyls.forEach(vinyl => {
 
@@ -613,6 +866,15 @@ const logic = {
 
         })()
     },
+
+
+    /**
+     * Search Vinyls
+     * 
+     * @param {string} query The query of a search box
+     *  
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
+     */
 
     searchVinyls(query) {
 
@@ -641,6 +903,20 @@ const logic = {
 
     },
 
+
+    /**
+     * Remove Vinyl
+     * 
+     * @param {string} id The vinyl id
+     *  
+     * @throws {TypeError} On non-string id
+     * @throws {Error} On empty or blank id
+     * @throws {NotFoundError} On vinyl id not found
+     * 
+     * 
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
+     */
+
     removeVinyl(id) {
 
         validate([{ key: 'id', value: id, type: String }])
@@ -648,11 +924,30 @@ const logic = {
         return (async () => {
             const vinyl = await Vinyl.findById(id)
 
-            if (!vinyl) throw new NotFoundError(`user with id ${id} not found`)
+            if (!vinyl) throw new NotFoundError(`vinyl with id ${id} not found`)
 
             await vinyl.remove()
         })()
     },
+
+
+    /**
+     * Update Vinyl
+     * 
+     * @param {string} id The user id
+     * @param {string} title The vinyl title
+     * @param {string} artist The vinyl artist 
+     * @param {string} year The vinyl year
+     * @param {string} imgVinylUrl The vinyl image url
+     * @param {string} info The vinyl info
+     *  
+     * @throws {TypeError} On non-string id, title, artist, year, imgVinylUrl, info 
+     * @throws {Error} On empty or blank id, title, artist, year, imgVinylUrl, info 
+     * @throws {NotFoundError} On vinyl not found
+     * 
+     * 
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
+     */
 
     editVinyl(id, title, artist, year, imgVinylUrl, info ) {
 
@@ -679,6 +974,22 @@ const logic = {
             await vinyl.save()
         })()
     },
+
+
+     /**
+     * Add Like to Vinyl
+     * 
+     * @param {string} id The vinyl id
+     * @param {string} userId The id of the current user
+     *  
+     * @throws {TypeError} On non-string id or user id
+     * @throws {Error} On empty or blank id or user id
+     * @throws {NotFoundError} On vinyl id or user id not found
+     * @throws {AlreadyExistsError} On already like this vinyl
+     * 
+     * 
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
+     */
 
     addLikeToVinyl(id, userId) {
 
@@ -707,6 +1018,20 @@ const logic = {
     },
 
 
+    /**
+     * Remove Like to Vinyl
+     * 
+     * @param {string} id The vinyl id
+     * @param {string} userId The id of the current user
+     *  
+     * @throws {TypeError} On non-string id or user id
+     * @throws {Error} On empty or blank id or user id
+     * @throws {NotFoundError} On vinyl id or user id not found
+     * 
+     * 
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
+     */
+
     removeLikeToVinyl(id, userId) {
 
         validate([{ key: 'id', value: id, type: String }])
@@ -734,6 +1059,20 @@ const logic = {
 
     },
 
+
+    /**
+     * is Like?
+     * 
+     * @param {string} id The vinyl id
+     *  
+     * @throws {TypeError} On non-string id 
+     * @throws {Error} On empty or blank id 
+     * @throws {NotFoundError} On vinyl id not found
+     * 
+     * 
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
+     */
+
     isLikes(id) {
 
         validate([{ key: 'id', value: id, type: String }])
@@ -750,6 +1089,21 @@ const logic = {
         })()
 
     },
+
+    /**
+     * Add comment to Vinyl
+     * 
+     * @param {string} id The vinyl id
+     * @param {string} userId The id of the current user
+     * @param {string} text The comment text
+     *  
+     * @throws {TypeError} On non-string id or user id or text
+     * @throws {Error} On empty or blank id or user id or text
+     * @throws {NotFoundError} On user id not found
+     * 
+     * 
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
+     */
 
     addCommentToVinyl(vinylId, userId, text) {
 
@@ -777,6 +1131,20 @@ const logic = {
             await vinyl.save()
         })()
     },
+
+
+    /**
+     * Retrieve commentS of Vinyl
+     * 
+     * @param {string} id The vinyl id
+     *  
+     * @throws {TypeError} On non-string id 
+     * @throws {Error} On empty or blank id 
+     * @throws {NotFoundError} On vinyl id not found
+     * 
+     * 
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
+     */
 
     retrieveVinylComments(id) {
 

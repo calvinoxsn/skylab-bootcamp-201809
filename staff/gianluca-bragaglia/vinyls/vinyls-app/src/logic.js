@@ -10,15 +10,15 @@ const logic = {
     url: 'NO-URL',
 
      /**
+     * Register User
+     * @param {string} email The user email
+     * @param {string} username The user username
+     * @param {string} password The user password
+     *  
+     * @throws {TypeError} On non-string email or username or password 
+     * @throws {Error} On empty or blank email, username, password
      * 
-     * @param {string} surname Given email of user
-     * @param {string} username Given username of user
-     * @param {string} password Given password of user
-     * 
-     * @throws {Error in case of empty parameters}
-     * @throws {Error in case API detects repeated username} 
-     * 
-     *@returns {Promise}
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
      */
 
     registerUser(email, username, password) {
@@ -48,17 +48,16 @@ const logic = {
     },
 
     /**
+     * Login
+     * 
+     * @param {string} username The user username
+     * @param {string} password The user password
+     *  
+     * @throws {TypeError} On non-string username or password 
+     * @throws {Error} On empty or blank username, password
      * 
      * 
-     * @param {string} username Given username of user
-     * @param {string} password Given password of user
-     * 
-     * @throws {Error in case of empty parameters}
-     * @throws {Error in case API detects wrong credentials} 
-     * 
-     * @returns {Promise}
-     * 
-     * {Sets userId and Token to SessionStorage and to logic state if correct credentials}
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
      */
 
     login(username, password) {
@@ -118,6 +117,15 @@ const logic = {
 
 
 
+    /**
+     * Upload Profile Picture
+     * 
+     * @param {string} file The picture
+     *  
+     * 
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
+     */
+
     uploadImgProfile(picture) {
 
         let data = new FormData()
@@ -139,6 +147,13 @@ const logic = {
     },
 
 
+    /**
+     * Retrieve users of gallery 
+     * 
+     * 
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
+     */
+
     retrieveGalleryUsers() {
 
         return fetch(`${this.url}/users/user/${this._userId}`, {headers: { 'Authorization': `Bearer ${this._token}` } })
@@ -152,6 +167,14 @@ const logic = {
                 return users
             })
     },
+
+
+     /**
+     * Retrieve all users
+     * 
+     * 
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
+     */
 
     retrieveUsers() {
 
@@ -169,15 +192,12 @@ const logic = {
 
 
     /**
-     * 
+     * Retrieve current user
      * 
      * @param {string} userId  unique id of the user 
      * 
      * 
-     * @throws {Error in case user Id is not a string}
-     * 
-     * 
-     * @returns {string} string of the username given the userId
+     * @throws {TypeError} in case user Id is not a string
      * 
      * 
      */
@@ -205,6 +225,18 @@ const logic = {
             })
     },
 
+
+    /**
+     * Retrieve user by id
+     * 
+     * @param {string} id The user id
+     *  
+     * @throws {TypeError} On non-string user id
+     * @throws {Error} On empty or blank user id
+     * 
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
+     */
+
     retrieveUserById(id) {
 
         if (typeof id !== 'string') throw new TypeError(`${id} is not a string`)
@@ -228,6 +260,22 @@ const logic = {
     },
 
 
+
+    /**
+     * Update User
+     * 
+     * @param {string} id The user id
+     * @param {string} username The user username
+     * @param {string} password The user password
+     * @param {string} newPassword The user newPassword
+     * @param {string} imgProfileUrl The user image profile url
+     *  
+     * @throws {TypeError} On non-string id, username, password, newPassword, imgProfileUrl
+     * @throws {Error} On empty or blank id, username, password, newPassword, imgProfileUrl
+     * 
+     * 
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
+     */
     modifyUser(username, newPassword, password, imgProfileUrl, bio,) {
 
         if (typeof username !== 'string') throw TypeError(`${username} is not a string`)
@@ -253,6 +301,15 @@ const logic = {
     },
 
 
+
+    /**
+     * Search Users
+     * 
+     * @param {string} query The query of a search box
+     *  
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
+     */
+
     searchUsers(query) {
 
         return fetch(`${this.url}/users/search/${query}`, {
@@ -272,6 +329,19 @@ const logic = {
             })
 
     },
+
+
+
+     /**
+     * Add Follow
+     * 
+     * @param {string} followUsername The username of user that current user follows
+     *  
+     * @throws {TypeError} On non-string username of follow
+     * @throws {Error} On empty or blank username of follow
+     * 
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
+     */
 
     addFollow(followUsername) {
        
@@ -294,6 +364,17 @@ const logic = {
     },
 
 
+    /**
+     * Remove Follow
+     * 
+     * @param {string} followUsername The username of user that current user follows
+     *  
+     * @throws {TypeError} On non-string username of follow
+     * @throws {Error} On empty or blank username of follow
+     * 
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
+     */
+
     removeFollow(followUsername) {
       
         if (typeof followUsername !== 'string') throw TypeError(`${followUsername} is not a string`)
@@ -313,6 +394,19 @@ const logic = {
                 if (res.error) throw Error(res.error)
             })
     },
+
+
+
+    /**
+     * Is Follow?
+     * 
+     * @param {string} id The id of user
+     *  
+     * @throws {TypeError} On non-string id
+     * @throws {Error} On empty or blank id
+     * 
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
+     */
 
     itsInFollows(id) {
        
@@ -342,6 +436,13 @@ const logic = {
 
     },
 
+
+    /**
+     * Retrieve Follows
+     * 
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
+     */
+
     retrieveFollowsListUser() {
 
         return fetch(`${this.url}/users/${this._userId}/followsList`, {
@@ -361,6 +462,13 @@ const logic = {
             })
 
     },
+
+
+    /**
+     * Retrieve Followers
+     * 
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
+     */
 
     retrieveFollowersListUser() {
 
@@ -382,6 +490,15 @@ const logic = {
 
     },
 
+
+    /**
+     * Search Vinyls
+     * 
+     * @param {string} query The query of a search box
+     *  
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
+     */
+
     searchListVinyls(query) {
 
         return fetch(`${this.url}/vinyls/search/${query}`, {
@@ -401,6 +518,22 @@ const logic = {
             })
 
     },
+
+
+    /**
+     * Adds a vinyl
+     * @param {string} title The vinyl title
+     * @param {string} artist The vinyl artist
+     * @param {string} year The year of vinyl
+     * @param {string} info The vinyl info
+     * @param {string} imgVinylUrl The vinyl image url
+     *
+     * 
+     * @throws {TypeError} On non-string id, title, artist, year, imgVinylUrl, info
+     * @throws {Error} On empty or blank id, title, artist, year, imgVinylUrl, info
+     * 
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
+     */
 
     addVinyl(title, artist, year, imgVinylUrl, info) {
        
@@ -435,7 +568,27 @@ const logic = {
             })
     },
 
+
+
+     /**
+     * Upload Vinyl Picture
+     * 
+     * @param {string} id The vinyl id
+     * @param {string} file The picture
+     *  
+     * @throws {TypeError} On non-string vinyl id
+     * @throws {Error} On empty or blank vinyl id
+     * 
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
+     */
     uploadImgVinyl(picture, id) {
+
+        if (typeof id !== 'string') throw TypeError(`${id} is not a string`)
+        if (typeof id === 'number') throw TypeError(`${id} is not a string`)
+        if (id instanceof Array) throw TypeError(` is not a string`)
+        if (typeof id === 'boolean') throw TypeError(`${id} is not a string`)
+        if (typeof id === 'object') throw TypeError(`[object Object] is not a string`)
+        if (!id.trim().length) throw Error('id is empty or blank')
 
         let data = new FormData()
  
@@ -455,6 +608,13 @@ const logic = {
             })
     },
 
+
+    /**
+     * Retrieve all vinyls
+     * 
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
+     */
+
     retrieveVinyls() {
    
         return fetch(`${this.url}/vinyls`, {
@@ -472,6 +632,18 @@ const logic = {
             })
 
     },
+
+
+    /**
+     * Retrieve Vinyl by id
+     * 
+     * @param {string} id The vinyl id
+     *  
+     * @throws {TypeError} On non-string vinyl id
+     * @throws {Error} On empty or blank vinyl id
+     * 
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
+     */
 
     retrieveVinylById(id) {
 
@@ -494,7 +666,21 @@ const logic = {
             })
     },
 
+
+    /**
+     * Retrieve Vinyl by user id
+     * 
+     * @param {string} id The user id
+     *  
+     * @throws {TypeError} On non-string user id
+     * @throws {Error} On empty or blank user id
+     * 
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
+     */
     retrieveVinylsByUserId(id) {
+
+        if (typeof id !== 'string') throw new TypeError(`${id} is not a string`)
+        if (!id.trim().length) throw Error('id is empty or blank')
    
         return fetch(`${this.url}/vinyls/user/${id}`, {
             method: 'GET',
@@ -511,6 +697,13 @@ const logic = {
             })
 
     },
+
+    /**
+     * Retrieve Vinyl by current user id
+     * 
+     * 
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
+     */
 
     retrieveVinylsCurrentUser() {
    
@@ -530,6 +723,19 @@ const logic = {
 
     },
 
+
+    /**
+     * Delete Vinyl
+     * 
+     * @param {string} id The vinyl id
+     *  
+     * @throws {TypeError} On non-string id
+     * @throws {Error} On empty or blank id
+     * 
+     * 
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
+     */
+
     deleteVinyl(id) {
 
         if (typeof id !== 'string') throw new TypeError(`${id} is not a string`)
@@ -546,6 +752,24 @@ const logic = {
                 if (res.error) throw Error(res.error)
             })
     },
+
+
+    /**
+     * Modify Vinyl
+     * 
+     * @param {string} id The user id
+     * @param {string} title The vinyl title
+     * @param {string} artist The vinyl artist 
+     * @param {string} year The vinyl year
+     * @param {string} imgVinylUrl The vinyl image url
+     * @param {string} info The vinyl info
+     *  
+     * @throws {TypeError} On non-string id, title, artist, year, imgVinylUrl, info 
+     * @throws {Error} On empty or blank id, title, artist, year, imgVinylUrl, info 
+     * 
+     * 
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
+     */
 
     modifyVinyl(id, title, artist, year, imgVinylUrl, info) {
         
@@ -576,6 +800,19 @@ const logic = {
             })
     },
 
+
+    /**
+     * Add Like to Vinyl
+     * 
+     * @param {string} id The vinyl id
+     *  
+     * @throws {TypeError} On non-string id or user id
+     * @throws {Error} On empty or blank id or user id
+     * 
+     * 
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
+     */
+
     addLike(id) {
        
         if (typeof id !== 'string') throw TypeError(`${id} is not a string`)
@@ -597,6 +834,19 @@ const logic = {
             })
     },
 
+
+    /**
+     * Remove Like to Vinyl
+     * 
+     * @param {string} id The vinyl id
+     *  
+     * @throws {TypeError} On non-string id or user id
+     * @throws {Error} On empty or blank id or user id
+     * 
+     * 
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
+     */
+
     removeLike(id) {
        
         if (typeof id !== 'string') throw TypeError(`${id} is not a string`)
@@ -617,6 +867,19 @@ const logic = {
                 if (res.error) throw Error(res.error)
             })
     },
+
+
+     /**
+     * is Like?
+     * 
+     * @param {string} id The vinyl id
+     *  
+     * @throws {TypeError} On non-string id 
+     * @throws {Error} On empty or blank id 
+     * 
+     * 
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
+     */
 
     itsInLikes(id) {    
        
@@ -643,13 +906,23 @@ const logic = {
                 if(likes.includes(userId))
 
                 return true
-        
-                // if(res.data == 'TRUE') 
 
-                // return true
             })
     },
 
+
+    /**
+     * Add comment to Vinyl
+     * 
+     * @param {string} id The vinyl id
+     * @param {string} text The comment text
+     *  
+     * @throws {TypeError} On non-string id  or text
+     * @throws {Error} On empty or blank id or text
+     * 
+     * 
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
+     */
     addComment(id, text) {
        
         if (typeof id !== 'string') throw TypeError(`${id} is not a string`)
@@ -673,6 +946,18 @@ const logic = {
                 if (res.error) throw Error(res.error)
             })
     },
+
+    /**
+     * Retrieve commentS of Vinyl
+     * 
+     * @param {string} id The vinyl id
+     *  
+     * @throws {TypeError} On non-string id 
+     * @throws {Error} On empty or blank id 
+     * 
+     * 
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
+     */
 
     retrieveComments(id) {
 
