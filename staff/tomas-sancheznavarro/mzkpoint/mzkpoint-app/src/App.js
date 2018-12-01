@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
 import Error from './components/Error/Error'
 import Home from './components/Home/Home'
+import Landing from './components/Landing/Landing'
+import MyWishlist from './components/MyWishlist/MyWishlist'
+import MyShoppingCart from './components/MyShoppingCart/MyShoppingCart'
 import Login from './components/Login/Login'
 import Register from './components/Register/Register'
-import Landing from './components/Landing/Landing'
 
 import logic from './logic'
 
@@ -37,6 +39,8 @@ class App extends Component {
           <Route path="/login" render={() => !logic.loggedIn ? <Login onGoBack={this.handleGoBack} /> : <Redirect to="/home" />} />
           {error && <Error message={error} />}
           <Route path="/register" render={() => !logic.loggedIn ? <Register onGoBack={this.handleGoBack} /> : <Redirect to="/home" />} />
+          <Route path="/my-wishlist" render={() => !logic.loggedIn ? <Login onGoBack={this.handleGoBack} /> : <MyWishlist />} />
+          <Route path="/my-shoppingcart" render={() => !logic.loggedIn ? <Login onGoBack={this.handleGoBack} /> : <MyShoppingCart/>} />
           <Route path="/home" component={Home} />
         </Switch>
       </div>

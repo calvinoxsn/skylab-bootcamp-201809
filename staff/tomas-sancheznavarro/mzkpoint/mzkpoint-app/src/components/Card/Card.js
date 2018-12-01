@@ -6,19 +6,30 @@ import './Card.sass'
 class Card extends Component {
 
     state = {
-        error: null,
+        error: null
     }
 
     addItemToWishlist = (productId) => {
 
-        try {
-            logic.addItemToWishlist(productId)
-                .then(() => {
-                    this.props.pushToWishlist(this.props.product)
-                })
-                .catch(err => this.setState({ error: err.message }))
-        } catch (err) {
-            this.setState({ error: err.message })
+        let a = ''
+        logic.showWishlist()
+            .then(res => {
+                console.log(res)
+            })
+        console.log(a)
+
+
+        if (!productId) {
+
+            try {
+                logic.addItemToWishlist(productId)
+                    .then(() => {
+                        this.props.pushToWishlist(this.props.product)
+                    })
+                    .catch(err => this.setState({ error: err.message }))
+            } catch (err) {
+                this.setState({ error: err.message })
+            }
         }
     }
 
@@ -39,6 +50,13 @@ class Card extends Component {
         }
     }
 
+    handleRemoveProduct = (productId) => {
+
+        logic.removeItemInWishlist(productId)
+            .then(() => logic.showWishlist())
+            .then(userWishlist => this.setState({ userWishlist }))
+    }
+
     render() {
 
         const { error } = this.state
@@ -48,7 +66,7 @@ class Card extends Component {
         return (
             <div className="mycard">
                 <div className="card-pic">
-                    <img src={product.imageUrl} />
+                    <img src={product.imageUrl} onClick={() => this.props.toggleModal(product)} alt="" />
                     <hr className="line" />
                 </div>
                 <div className="container">
@@ -56,10 +74,14 @@ class Card extends Component {
                     <p>{product.price}€</p>
                     <div>
                         <button onClick={() => this.addItemToWishlist(product.productId)}>Add to Wishlist</button><i className="fa fa-heart"></i>
+
+                        <button onClick={() => this.handleRemoveProduct('5bfe72bdf95a1b4641fdfaf8')}>Remove item from Wishlist</button><i className="fa fa-heart"></i>
+
                         <button onClick={() => this.addItemToCart(product.productId)}>Add to Shopping Cart</button><i className="fa fa-shopping-cart"></i>
                     </div>
                     {error && <Error message={error} />}
                 </div>
+
             </div>
         )
     }

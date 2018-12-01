@@ -38,12 +38,11 @@ class SearchBar extends Component {
         return <form onSubmit={this.handleSubmit}>
             <div className="form-group">
                 <input className="search-bar" type="text" placeholder="Search by instrument or brand" onChange={this.handleSearchChange} />
-                <label for="search-bar">Search by instrument or brand</label>
+                <label htmlFor="search-bar">Search by instrument or brand</label>
 
                 {error && <Error message={error} />}
             </div>
         </form>
-
     }
 }
 

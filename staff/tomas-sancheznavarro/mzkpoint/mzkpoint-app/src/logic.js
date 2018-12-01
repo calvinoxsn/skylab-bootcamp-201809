@@ -122,7 +122,6 @@ const logic = {
         })
             .then(res => res.json())
             .then(res => {
-                console.log(res)
                 if (res.error) throw Error(res.error)
                 return res
             })
@@ -150,7 +149,7 @@ const logic = {
 
         if (!id.trim().length) throw Error('id is empty or blank')
 
-        return fetch(`${this.url}/users/product/${id}`, {
+        return fetch(`${this.url}/users/wishlist/${id}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${this._token}`
@@ -182,9 +181,9 @@ const logic = {
             })
     },
 
-    showCart(userId) {
-        if (typeof userId !== 'string') throw new TypeError(`${userId} is not a string`)
-        if (!userId.trim().length) throw Error('id is empty or blank')
+    showCart() {
+        // if (typeof userId !== 'string') throw new TypeError(`${userId} is not a string`)
+        // if (!userId.trim().length) throw Error('id is empty or blank')
 
         return fetch(`${this.url}/users/products/shopping-cart`, {
             method: 'GET',
@@ -209,7 +208,7 @@ const logic = {
         if (!productId.trim().length) throw Error('product id is empty or blank')
 
 
-        return fetch(`${this.url}/users/product/${productId}`, {
+        return fetch(`${this.url}/users/shopping-cart/${productId}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${this._token}`

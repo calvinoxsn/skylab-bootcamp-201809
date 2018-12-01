@@ -10,21 +10,21 @@
         font-size: .8em
         @include screen(480,"font-size", 1em)
         padding: 8px
-        width: 100%
+        width: 85%
         @include screen(480,"width", 72%)
         outline: none
 
     label 
         position: absolute
         top: 0
-        left: 3%
-        @include screen(480,"left", em)
+        left: 10%
+        @include screen(480,"left", 15%)
+        @include screen(1024,"left", 14.5%)
         font-family: inherit
         font-size: inherit
         opacity: 1
         transform: translateY(0)
         transition: all 0.2s ease-out
-
 
     input:placeholder-shown + label 
         opacity: 0

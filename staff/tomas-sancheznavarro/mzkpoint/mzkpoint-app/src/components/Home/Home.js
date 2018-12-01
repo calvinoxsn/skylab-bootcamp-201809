@@ -4,6 +4,7 @@ import SearchBar from '../Search/Search'
 import Sidebar from '../Sidebar/Sidebar'
 import CarrouselPage from '../Carrousel/Carrousel'
 import Main from '../Main/Main'
+import ModalPage from '../Popup/Popup'
 import './Home.sass'
 import '../Sidebar/Sidebar.sass'
 
@@ -22,6 +23,7 @@ class Home extends Component {
         return <section>
             <header>
                 <NavbarPage />
+                <ModalPage />
             </header>
 
             <section className="upper-bar">

@@ -1,13 +1,32 @@
 import React, { Component } from 'react'
 import Card from '../Card/Card'
 import logic from '../../logic'
+import ModalPage from '../Popup/Popup'
 import './Main.sass'
 
 class Main extends Component {
 
     state = {
         userWishlist: [],
-        userShoppingCart: []
+        userShoppingCart: [],
+        showModal: false,
+        activeProduct: null
+    }
+
+    toggle = (activeProduct) => {
+
+
+        this.setState({
+            showModal: !this.state.showModal,
+            activeProduct
+        })
+    }
+
+    resetToggle = () => {
+        this.setState({
+            showModal: false
+        })
+
     }
 
     componentDidMount() {
@@ -16,12 +35,14 @@ class Main extends Component {
     }
 
     pushToWishlist = (productId) => {
+
+
         let userWishlist = this.state.userWishlist
 
         userWishlist.push(productId)
 
         this.setState({ userWishlist })
-        console.log(this.state.userWishlist)
+
     }
 
     pushToCart = (productId) => {
@@ -30,7 +51,7 @@ class Main extends Component {
         userShoppingCart.push(productId)
 
         this.setState({ userShoppingCart })
-        console.log(this.state.userShoppingCart)
+        // console.log(this.state.userShoppingCart)
     }
 
     getUserWishlist = () => {
@@ -62,12 +83,14 @@ class Main extends Component {
     render() {
         return (
             <div>
+
                 <button>{this.state.userWishlist.length}</button>
                 <button>{this.state.userShoppingCart.length}</button>
+                <ModalPage activeProduct={this.state.activeProduct} resetToggle={this.resetToggle} showModal={this.state.showModal} />
 
                 <ul className="main-cards">
                     {(this.props.products || []).map(product => (
-                        <Card pushToWishlist={this.pushToWishlist} pushToCart={this.pushToCart} key={Math.random()} product={product} />
+                        <Card toggleModal={this.toggle} pushToWishlist={this.pushToWishlist} pushToCart={this.pushToCart} key={Math.random()} product={product} />
 
                     ))}
                 </ul>
