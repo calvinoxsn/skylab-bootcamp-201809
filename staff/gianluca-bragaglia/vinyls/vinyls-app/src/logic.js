@@ -131,7 +131,7 @@ const logic = {
         const connected = this._connected
 
         return fetch(`${this.url}/users/${this._userId}/connected`, {
-            method: 'POST',
+            method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json; charset=utf-8',
                 'Authorization': `Bearer ${this._token}`

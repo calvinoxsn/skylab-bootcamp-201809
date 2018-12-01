@@ -22,6 +22,10 @@ const User = new Schema({
         type: String
 
     },
+    connections: {
+        type: String
+
+    },
     followers: [{
         type: ObjectId,
         ref: 'User'
@@ -30,10 +34,7 @@ const User = new Schema({
         type: ObjectId,
         ref: 'User'
     }],
-    connected: {
-        type: String
-
-    }
+    
 
 })
 
