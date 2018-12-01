@@ -27,7 +27,7 @@ const logic = {
      * @returns {Promise} Resolves on correct data, rejects on wrong data
      */
 
-    registerUser(email, username, password) {
+    registerUser(email, username, password ) {
 
         validate([{ key: 'email', value: email, type: String }, { key: 'username', value: username, type: String }, { key: 'password', value: password, type: String }])
 
@@ -64,9 +64,99 @@ const logic = {
         return (async () => {
             const user = await User.findOne({ username })
 
+
             if (!user || user.password !== password) throw new AuthError('invalid username or password')
 
+
             return user.id
+        })()
+    },
+
+
+    /**
+     * Connected User
+     * 
+     * @param {string} id The user id
+
+     *  
+     * @throws {TypeError} On non-string id 
+     * @throws {Error} On empty or blank id
+     * 
+     * 
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
+     */
+
+    connectedUser(id, connected) {
+
+        validate([{ key: 'id', value: id, type: String }])
+
+        return (async () => {
+
+            const user = await User.findById(id)
+
+            if (!user) throw new NotFoundError(`user does not exist`)
+
+            user.connected = connected
+            console.log(user.connected)
+
+            await user.save()
+
+            
+        })()
+    },
+
+    /**
+     * Disconnected User
+     * 
+     * @param {string} id The user id
+     *  
+     * @throws {TypeError} On non-string id 
+     * @throws {Error} On empty or blank id
+     * 
+     * 
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
+     */
+
+    disconnectedUser(id) {
+
+        validate([{ key: 'id', value: id, type: String }])
+
+        return (async () => {
+            const user = await User.findOne({ _id: id })
+
+            if (!user) throw new NotFoundError(`user does not exist`)
+
+            user.connected = 'offline'
+
+            await user.save()
+        })()
+    },
+
+
+    /**
+     * Check User Connection
+     * 
+     * @param {string} id The user id
+
+     *  
+     * @throws {TypeError} On non-string id 
+     * @throws {Error} On empty or blank id
+     * 
+     * 
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
+     */
+
+    checkUserConnection(id) {
+
+        validate([{ key: 'id', value: id, type: String }])
+
+        return (async () => {
+            const user = await User.findOne({ _id: id })
+
+            if (!user) throw new NotFoundError(`user does not exist`)
+
+            return user.connected
+
         })()
     },
 

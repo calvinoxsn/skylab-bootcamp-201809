@@ -10,6 +10,7 @@ const logic = {
 
     _userId: sessionStorage.getItem('userId') || null,
     _token: sessionStorage.getItem('token') || null,
+    _connected: 'online',
 
     url: 'NO-URL',
 
@@ -36,8 +37,8 @@ const logic = {
         if (!email.trim()) throw Error('email is empty or blank')
         if (!username.trim()) throw Error('username is empty or blank')
         if (!password.trim()) throw Error('password is empty or blank')
-         
 
+        
         return fetch(`${this.url}/users`, {
             method: 'POST',
             headers: {
@@ -117,6 +118,32 @@ const logic = {
     get loggedIn() {
 
         return !!this._userId
+    },
+
+
+     /**
+     * Connected user
+     * 
+     *  
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
+     */
+    onlineUser() {
+        const connected = this._connected
+
+        return fetch(`${this.url}/users/${this._userId}/connected`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8',
+                'Authorization': `Bearer ${this._token}`
+            },
+            body: JSON.stringify({ connected })
+        })
+            .then(res => res.json())
+            .then(res => {
+               
+                if (res.error) throw Error(res.error)
+
+            })
     },
 
 

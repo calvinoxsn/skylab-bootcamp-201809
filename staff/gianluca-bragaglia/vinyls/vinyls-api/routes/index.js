@@ -21,7 +21,7 @@ router.post('/users', jsonBodyParser, (req, res) => {
     routeHandler(() => {
         const { email, username, password } = req.body
 
-        return logic.registerUser(email, username, password)
+        return logic.registerUser(email, username, password )
             .then(() => {
                 res.status(201)
 
@@ -59,6 +59,39 @@ router.get('/users/:id', [bearerTokenParser, jwtVerifier], (req, res) => {
             .then(user =>
                 res.json({
                     data: user
+                })
+            )
+    }, res)
+})
+
+
+
+router.post('/users/:id/connected', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, res) => {
+    routeHandler(() => {
+        const { params: { id }, sub, body: { connected } } = req
+
+        if (id !== sub) throw Error('token sub does not match user id')
+
+        return logic.connectedUser(id, connected)
+            .then(() =>
+                res.json({
+                    message: 'user online'
+                })
+            )
+    }, res)
+})
+
+
+router.patch('/users/:id/disconnected', [bearerTokenParser, jwtVerifier], (req, res) => {
+    routeHandler(() => {
+        const { params: { id }, sub } = req
+
+        if (id !== sub) throw Error('token sub does not match user id')
+
+        return logic.disconnectedUser(id)
+            .then(() =>
+                res.json({
+                    message: 'user offline'
                 })
             )
     }, res)

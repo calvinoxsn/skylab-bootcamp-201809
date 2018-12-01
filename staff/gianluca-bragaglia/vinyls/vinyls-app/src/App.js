@@ -28,7 +28,7 @@ logic.url = 'http://localhost:5000/api'
 class App extends Component {
 
     state = { error: null }
-   
+
    
     handleRegister = ( email, username, password, bio ) => {
   
@@ -44,18 +44,16 @@ class App extends Component {
     }
     
     handleLogin = (username, password) => {
+        
         try {
             logic.login(username, password)
-                .then(() =>  {
-                this.setState({ error: null }, () => this.props.history.push('/index'))
-            })
+                .then(() =>  this.setState({ error: null }))
                 .catch(err => this.setState({ error: err.message }))
         } catch (err) {
             this.setState({ error: err.message })
         }
     
     }
-
     
     
     handleLogoutClick = () => {

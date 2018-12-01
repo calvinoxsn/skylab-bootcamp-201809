@@ -29,8 +29,11 @@ const User = new Schema({
     follows: [{
         type: ObjectId,
         ref: 'User'
-    }]
+    }],
+    connected: {
+        type: String
 
+    }
 
 })
 
@@ -42,11 +45,6 @@ const Comment = new Schema({
     text: {
         type: String
     },
-    // date: {
-    //     type: Date,
-    //     required: true,
-    //     default: Date.now()
-    // },
     username:{
         type: String,
         required: true
