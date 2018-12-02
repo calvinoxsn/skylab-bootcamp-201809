@@ -1,16 +1,16 @@
 import React, { Component } from 'react'
-import FriendsListItem from '../FriendsListItem'
+import FollowsListUserItem from '../FollowsListUserItem'
 import logic from '../../logic'
 
 class ChatList extends Component {
 
-    state = { friendsList: [], error: null }
+    state = { followsListUser: [], error: null }
 
     componentDidMount() {
 
         try {              
-            logic.retrieveFriendsList()
-            .then(friendsList => { this.setState({ friendsList }) })
+            logic.retrieveFollowsListUser()
+            .then(followsListUser => { this.setState({ followsListUser }) })
             .catch(err => this.setState({ error: err.message }))
         } catch (err) {
             this.setState({ error: err.message })
@@ -20,17 +20,18 @@ class ChatList extends Component {
 
   render() {
 
-    const { friendsList } = this.state
+    const { followsListUser } = this.state
 
 
     return (
         <div>
             <h3>Start Chat With</h3>
             <div className='list-group-flush'>
-                    {friendsList.map(friend => (
-                        <FriendsListItem key={friend.username} id={friend.idUser} username={friend.username} imgProfileUrl={friend.imgProfileUrl}/>
-
+            <ul className='list-group-flush'>
+                    {followsListUser.map(follow => (
+                        <FollowsListUserItem key={follow.username} id={follow.idUser} username={follow.username} imgProfileUrl={follow.imgProfileUrl} />
                     ))}
+            </ul>
             </div>
         </div>
     )

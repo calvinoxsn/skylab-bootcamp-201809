@@ -20,11 +20,11 @@ const User = new Schema({
     },
     bio: {
         type: String
-
     },
     connection: {
-        type: String
-
+        type: String,
+        required: true,
+        default: 'offline'
     },
     followers: [{
         type: ObjectId,
@@ -34,11 +34,21 @@ const User = new Schema({
         type: ObjectId,
         ref: 'User'
     }],
+    chats: [Chat]
+          
     
 })
 
 const Chat = new Schema({
 
+    userId: {
+        type: ObjectId,
+        ref: 'User'
+    },
+    user2Id: {
+        type: ObjectId,
+        ref: 'User'
+    },  
     messages: [{
 
         text: {
@@ -47,21 +57,19 @@ const Chat = new Schema({
         user: {
             type: ObjectId,
             ref: 'User'
+        },
+        username:{
+            type: String,
+            required: true
+        },
+        imgProfileUrl: {
+            type: String
         }
     }]
 
 })
 
-const Message = new Schema({
-    text: {
-        type: String
-    },
-    user: {
-        type: ObjectId,
-        ref: 'User'
-    }
 
-})
 
 const Comment = new Schema({
     user: {
@@ -130,7 +138,6 @@ const Vinyl = new Schema({
 module.exports = {   
     User,
     Chat,
-    Message,
     Comment,
     Vinyl
     

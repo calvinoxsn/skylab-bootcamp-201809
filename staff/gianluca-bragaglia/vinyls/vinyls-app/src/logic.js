@@ -1013,6 +1013,40 @@ const logic = {
 
     },
 
+     /**
+     * Retrieve user favourites Vinyls
+     * 
+     * @param {string} id The vinyl id
+     * @param {string} userId The user id
+     *  
+     * @throws {TypeError} On non-string id or userId
+     * @throws {Error} On empty or blank id id or userId
+     * @throws {NotFoundError} On vinyl id not found
+     * 
+     * 
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
+     */
+
+    retrieveFavouritesVinyls() {
+
+        return fetch(`${this.url}/vinyls/user/${this._userId}/favourites`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${this._token}`
+            }
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res.error) throw Error(res.error)
+                
+                const favouritesVinylsList = res.data
+                
+                return favouritesVinylsList
+                                     
+            })
+
+    },
+
     /////////////CHAT///////////////////////////////////////////////////////
 
     /**

@@ -37,7 +37,6 @@ class Profile extends Component {
                     <p className='profile-username'> {username}</p>
                     <Link to={`/follows`}> <p className='follow-btn-profile'>Follow {follows.length}</p></Link> 
                     <Link to={`/followers`}><p className='followers-btn-profile'>Followers {followers.length}</p></Link>
-                    <Link to={`/followees-vinyl`}><p className='followees-btn-profile'>Followees Vinyls</p></Link>
                     {error && <Error message={error} />}
                     <p className='profile-bio'>{bio}</p>
                     <section className='btn-edit-section'><Button color='black' onClick={this.handleEditClick}>Edit Profile</Button></section>

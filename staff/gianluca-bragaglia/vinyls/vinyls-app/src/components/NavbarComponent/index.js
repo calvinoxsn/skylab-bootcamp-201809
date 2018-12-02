@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Navbar, NavbarBrand, NavbarNav, NavbarToggler, Collapse, NavItem } from 'mdbreact'
 import logic from '../../logic'
 import { withRouter } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import './index.css'
 import Event from '../../plugins/bus'
 
@@ -32,16 +33,6 @@ class NavbarComponent extends Component {
         this.props.history.push('/profile')
     }
 
-   goToSearchUsers = () => {
-        this.setState({error: null})
-        this.props.history.push('/users')
-    } 
-
-    goToSearchVinyls = () => {
-        this.setState({error: null})
-        this.props.history.push('/vinyls')
-    }
-
    goToIndex = () => {
         this.setState({error: null})
        this.props.history.push('/index')
@@ -66,15 +57,27 @@ class NavbarComponent extends Component {
 
                    <NavbarNav right>
 
-                        <NavItem className='icon-logout' onClick = { this.goToSearchVinyls  } >
+                        <NavItem className='icon-logout' >
 
-                            <a className="nav-link waves-effect waves-light" ><i className="fas fa-compact-disc"></i></a>
+                            <Link to={`/favourites-vinyl`}><p className="nav-link waves-effect waves-light" ><i className="fa fa-star"></i></p></Link>
 
                         </NavItem>
 
-                        <NavItem className='icon-users' onClick = { this.goToSearchUsers } >
+                        <NavItem className='icon-logout' >
 
-                            <a className="nav-link waves-effect waves-light search"  ><i className="fas fa-users"></i></a>
+                            <Link to={`/followees-vinyl`}><p className="nav-link waves-effect waves-light" ><i className="fas fa-user-check"></i></p></Link>
+
+                        </NavItem>
+
+                        <NavItem className='icon-logout' >
+
+                            <Link to={`/vinyls`}><p className="nav-link waves-effect waves-light" ><i className="fas fa-compact-disc"></i></p></Link>
+
+                        </NavItem>
+
+                        <NavItem className='icon-users' >
+
+                            <Link to={`/users`}><p className="nav-link waves-effect waves-light" ><i className="fas fa-users"></i></p></Link>
 
                         </NavItem >
 

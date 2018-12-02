@@ -10,7 +10,7 @@ import './index.css'
 
 
 class Vinyl extends Component {
-    state = { id: '', title: '', artist: '', year: 0, info:'', imgVinylUrl: null, comments:[], likes:[], likeSelected: false, text:'', error: null, addComment: false, user:{} }  
+    state = { id: '', title: '', artist: '', year: '', info:'', imgVinylUrl: null, comments:[], likes:[], likeSelected: false, text:'', error: null, addComment: false, user:{} }  
 
 
     componentDidMount() {

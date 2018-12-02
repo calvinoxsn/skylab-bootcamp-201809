@@ -16,7 +16,7 @@ const CommentsList = (props) => {
                 <div className='comments-list'>
                         <ul className='list-group-flush'>
                         {commentsRev.map(comment => (
-                            <Comment key={comment.idComment}  username={comment.username} text={comment.text}  imgProfile={comment.imgProfileUrl}/>
+                            <Comment key={comment.idComment}  id={comment.user} username={comment.username} text={comment.text}  imgProfile={comment.imgProfileUrl}/>
                         ))}
                         </ul>
                 </div> 

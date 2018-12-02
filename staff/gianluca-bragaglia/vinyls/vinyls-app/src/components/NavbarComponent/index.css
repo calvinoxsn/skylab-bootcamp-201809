@@ -16,8 +16,13 @@
 
 .icon-logout{
     margin-top: 3px;
+    
 }
 
 .user-name-navbar{
     font-size: 13px;
+}
+
+.nav-link.waves-effect.waves-light .fa.fa-star{
+    color: white;
 }

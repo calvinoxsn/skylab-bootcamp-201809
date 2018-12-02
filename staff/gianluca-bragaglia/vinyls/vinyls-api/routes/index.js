@@ -66,39 +66,6 @@ router.get('/users/:id', [bearerTokenParser, jwtVerifier], (req, res) => {
 
 
 
-router.patch('/users/:id/connected', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, res) => {
-    routeHandler(() => {
-        const { params: { id }, sub, body: { connected } } = req
-
-        if (id !== sub) throw Error('token sub does not match user id')
-
-        return logic.connectedUser(id, connected)
-            .then(() =>
-                res.json({
-                    message: 'user online'
-                })
-            )
-    }, res)
-})
-
-
-router.patch('/users/:id/disconnected', [bearerTokenParser, jwtVerifier], (req, res) => {
-    routeHandler(() => {
-        const { params: { id }, sub } = req
-
-        if (id !== sub) throw Error('token sub does not match user id')
-
-        return logic.disconnectedUser(id)
-            .then(() =>
-                res.json({
-                    message: 'user offline'
-                })
-            )
-    }, res)
-})
-
-
-
 router.post('/users/:id/profilePicture', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, res) => {
     routeHandler(() => {
         const { params: { id }, sub } = req
@@ -255,35 +222,9 @@ router.get('/users/:id/followeesVinyls', [bearerTokenParser, jwtVerifier], (req,
     }, res)
 })
 
-router.get('/users/:id/friends', [bearerTokenParser, jwtVerifier], (req, res) => {
-    routeHandler(() => {
-        const { params: { id }, sub } = req
 
-        if (id !== sub) throw Error('token sub does not match user id')
 
-        return logic.retrieveFriends(id)
-            .then(friends => res.json({
 
-                data: friends
-            }))
-            
-    }, res)
-})
-
-router.get('/users/:id/friendsVinyls', [bearerTokenParser, jwtVerifier], (req, res) => {
-    routeHandler(() => {
-        const { params: { id }, sub } = req
-
-        if (id !== sub) throw Error('token sub does not match user id')
-
-        return logic.retrieveVinylsFriends(id)
-            .then(friendsVinyls => res.json({
-
-                data: friendsVinyls
-            }))
-            
-    }, res)
-})
 
 router.get(`/users/search/:query`, [bearerTokenParser, jwtVerifier], (req, res) => {
 
@@ -485,6 +426,86 @@ router.get('/vinyls/:id/comments', [bearerTokenParser, jwtVerifier], (req, res) 
             .then(comments => res.json({
                 data: comments
             }))
+    }, res)
+})
+
+
+router.get('/vinyls/user/:id/favourites', [bearerTokenParser, jwtVerifier], (req, res) => {
+    routeHandler(() => {
+        const { params: { id }, sub } = req
+
+        if (id !== sub) throw Error('token sub does not match user id')
+
+        return logic.retrieveUserFavouritesVinyls(id)
+            .then(favouritesVinyls => res.json({
+
+                data: favouritesVinyls
+            }))
+            
+    }, res)
+})
+
+
+//////////CHAT//////////////////////
+
+router.get('/users/:id/friendsVinyls', [bearerTokenParser, jwtVerifier], (req, res) => {
+    routeHandler(() => {
+        const { params: { id }, sub } = req
+
+        if (id !== sub) throw Error('token sub does not match user id')
+
+        return logic.retrieveVinylsFriends(id)
+            .then(friendsVinyls => res.json({
+
+                data: friendsVinyls
+            }))
+            
+    }, res)
+})
+
+router.get('/users/:id/friends', [bearerTokenParser, jwtVerifier], (req, res) => {
+    routeHandler(() => {
+        const { params: { id }, sub } = req
+
+        if (id !== sub) throw Error('token sub does not match user id')
+
+        return logic.retrieveFriends(id)
+            .then(friends => res.json({
+
+                data: friends
+            }))
+            
+    }, res)
+})
+
+router.patch('/users/:id/connected', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, res) => {
+    routeHandler(() => {
+        const { params: { id }, sub, body: { connected } } = req
+
+        if (id !== sub) throw Error('token sub does not match user id')
+
+        return logic.connectedUser(id, connected)
+            .then(() =>
+                res.json({
+                    message: 'user online'
+                })
+            )
+    }, res)
+})
+
+
+router.patch('/users/:id/disconnected', [bearerTokenParser, jwtVerifier], (req, res) => {
+    routeHandler(() => {
+        const { params: { id }, sub } = req
+
+        if (id !== sub) throw Error('token sub does not match user id')
+
+        return logic.disconnectedUser(id)
+            .then(() =>
+                res.json({
+                    message: 'user offline'
+                })
+            )
     }, res)
 })
 

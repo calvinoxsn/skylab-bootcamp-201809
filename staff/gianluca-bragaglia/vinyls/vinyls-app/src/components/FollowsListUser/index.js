@@ -7,13 +7,13 @@ import logic from '../../logic'
 
 class FollowsListUser extends Component {
 
-    state = { username: '', imgProfileUrl: null, bio: '', error: null, followsListUser: [] }
+    state = { error: null, followsListUser: [] }
     
     componentDidMount() {
         try {       
             logic.retrieveFollowsListUser()        
             .then(res => {
-                this.setState ({ username: res.username, imgProfileUrl: res.imgProfileUrl, followsListUser: res })
+                this.setState ({  followsListUser: res })
             })
             .catch(err => this.setState({ error: err.message }))
         } catch (err) {

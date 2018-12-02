@@ -1,5 +1,5 @@
 
-const { models: { User, Comment, Vinyl } } = require('vinyls-data')
+const { models: { User, Chat, Comment, Vinyl } } = require('vinyls-data')
 const { env: { PORT } } = process
 const { AlreadyExistsError, AuthError, NotFoundError, ValueError, NotAllowedError } = require('../errors')
 const validate = require('../utils/validate')
@@ -359,8 +359,14 @@ const logic = {
                 if (_followersId == id) throw new AlreadyExistsError(`already follow this user`)
             })
 
+            const followId = follow.id
+
             user.follows.push(follow.id)
             follow.followers.push(id)
+
+            const chat = await new Chat({ id, followId, messages })
+
+            user.chats.push(chat)
 
             await user.save()
             await follow.save()
@@ -1048,14 +1054,15 @@ const logic = {
   
 
         return (async () => {
-            const user = await User.findById(userId).lean()
+            const _user = await User.findById(userId).lean()
 
-            if (!user) throw new NotFoundError(`user with id ${userId} not found`)
+            if (!_user) throw new NotFoundError(`user with id ${userId} not found`)
 
-            const username = user.username
-            const imgProfileUrl = user.imgProfileUrl
+            const username = _user.username
+            const imgProfileUrl = _user.imgProfileUrl
+            const user = userId
 
-            const comment = new Comment({ id: user.id, text, username, imgProfileUrl })
+            const comment = new Comment({ user, text, username, imgProfileUrl })
 
             const vinyl = await Vinyl.findById(vinylId)
 
@@ -1108,6 +1115,49 @@ const logic = {
 
     },
 
+    /**
+     * Retrieve user favourites Vinyls
+     * 
+     * @param {string} id The vinyl id
+     * @param {string} userId The user id
+     *  
+     * @throws {TypeError} On non-string id or userId
+     * @throws {Error} On empty or blank id id or userId
+     * @throws {NotFoundError} On vinyl id not found
+     * 
+     * 
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
+     */
+
+    retrieveUserFavouritesVinyls(id) {
+
+
+        validate([{ key: 'id', value: id, type: String }])
+
+        return (async () => {
+
+
+            const _vinyls =  await Vinyl.find( { likes : { $elemMatch :  { $eq: id } } } ).lean()
+    
+            
+            _vinyls.forEach(vinyl => {
+
+                vinyl.idVinyl = vinyl._id
+                delete vinyl._id
+                delete vinyl.__v
+
+                return vinyl
+
+            })
+            
+            return _vinyls
+
+        })()
+
+    },
+
+
+
 
     ///CHAT/////////////////////////////////////////////////////////
 
@@ -1130,13 +1180,18 @@ const logic = {
 
         return (async () => {
 
-            const user = await User.findById(id)
+            await User.findOneAndUpdate(
+                {_id: id },
+                {connection: connected},
+                {upsert: false, new: true}).lean()
 
-            if (!user) throw new NotFoundError(`user does not exist`)
+            // const user = await User.findById(id)
 
-            user.connection = connected 
+            // if (!user) throw new NotFoundError(`user does not exist`)
 
-            await user.save()
+            // user.connection = connected 
+
+            // await user.save()
 
             
         })()
@@ -1312,11 +1367,48 @@ const logic = {
             
             return listVinylsFriends
 
-
-
         })()
 
     },
+
+    /**
+     * new Chat
+     * 
+     * @param {string} id The vinyl id
+     * @param {string} userId The id of the current user
+     * @param {string} text The comment text
+     *  
+     * @throws {TypeError} On non-string id or user id or text
+     * @throws {Error} On empty or blank id or user id or text
+     * @throws {NotFoundError} On user id not found
+     * 
+     * 
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
+     */
+
+    addNewChat(user1Id, user2Id) {
+
+        validate([
+
+            { key: 'user1Id', value: user1Id, type: String },   
+            { key: 'user2Id', value: user2Id, type: String }       
+        ])
+  
+
+        return (async () => {
+            const _user1 = await User.findById(user1Id).lean()
+
+            if (!_user1) throw new NotFoundError(`user with id ${user1Id} not found`)
+
+            const _user2 = await User.findById(user2Id).lean()
+
+            if (!_user2) throw new NotFoundError(`user with id ${user2Id} not found`)
+
+            const chat = await new Chat({ user1Id, user2Id, messages })
+
+        })()
+    },
+
 
 }
 
