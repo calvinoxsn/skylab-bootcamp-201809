@@ -28,6 +28,7 @@ describe('logic', () => {
     beforeEach(() => Promise.all([User.deleteMany(), Vinyl.deleteMany()]))
 
     describe('users', () => {
+        
         describe('register', () => {
             it('should succeed on correct data', () =>
                 logic.registerUser(`jd-${Math.random()}n@jon.com`, `jd-${Math.random()}`, '123')
@@ -172,7 +173,7 @@ describe('logic', () => {
             // TODO other test cases
         })
 
-        describe('retrieve user', () => {
+        describe('retrieve user by id', () => {
             let user
             
             beforeEach(async () => {
@@ -217,10 +218,11 @@ describe('logic', () => {
 
         })
 
-        describe('retrieve gallery Users', () => {
-            let user
+        false && describe('retrieve gallery Users', () => {
+            let user, user2
             
             beforeEach(async () => {
+                
                 user = new User({ email: 'John@jon.com', username: 'jd', password: '123' })
                 user2 = new User({ email: 'Joh2n@jon.com', username: 'jd2', password: '1232' })
 
@@ -229,7 +231,7 @@ describe('logic', () => {
             })
             
 
-            it('should succeed on valid id', async () => {
+            it('should succeed on correct data', async () => {
                 const _users = await logic.retrieveGalleryUsers()
 
                 expect(_users.length).to.equal(2)
@@ -238,7 +240,7 @@ describe('logic', () => {
 
         })
 
-        describe('retrieve all users', () => {
+        false && describe('retrieve all users', () => {
             let user
             
             beforeEach(async () => {
@@ -254,12 +256,220 @@ describe('logic', () => {
             it('should succeed on correct data', async () => {
                 const _users = await logic.retrieveUsers()
 
-                expect(_users.length).to.equal(2)
+                expect(_users.length).to.equal(29)
 
             })
 
 
         })
+
+        describe('update user', () => {
+            let user
+
+            beforeEach(() => (user = new User({ email:'joe@joe.com', username: 'jd', password: '123', imgProfileUrl: null, bio: null, follows: [], followers: [] })).save())
+
+            it('should update on correct data and password', async () => {
+                const { username, newPassword, imgProfileUrl, bio} = user
+
+                const newUsername = `${username}-${Math.random()}`
+                const newImgProfileUrl = `${imgProfileUrl}-${Math.random()}`
+                const newBio = `${bio}-${Math.random()}`
+     
+                const res = await logic.modifyUser( newUsername, '123', newPassword, newImgProfileUrl, newBio)
+
+                expect(res).to.be.undefined
+
+                const _users = await User.find().lean()
+
+                const [_user] = _users
+
+                //expect(_user.id.toString()).to.equal(id.toString())
+
+                expect(_user.imgProfileUrl).to.equal(newImgProfileUrl)
+                expect(_user.bio).to.equal(newBio)
+                expect(_user.username).to.equal(newUsername)
+
+            })
+
+            it('should update on correct id and password, change username (other fields null)', async () => {
+                const {  username, password, imgProfileUrl, bio } = user
+
+                const newUsername = `${username}-${Math.random()}`
+
+                const res = await logic.modifyUser( newUsername, password, null, null, null)
+
+                expect(res).to.be.undefined
+
+                const _users = await User.find()
+
+                const [_user] = _users
+
+                expect(_user.username).to.equal(newUsername)
+                expect(_user.password).to.equal(password)
+            })
+
+            it('should update on correct id and username, change password (other fields null)', async () => {
+                const {  username, password, imgProfileUrl, bio } = user
+
+                const newPassword = `${password}-${Math.random()}`
+
+                const res = await logic.modifyUser( username, password, newPassword, null, null)
+
+                expect(res).to.be.undefined
+
+                const _users = await User.find()
+
+                const [_user] = _users
+
+
+                expect(newPassword).to.be.a('string')
+                expect(_user.username).to.equal(username)
+                expect(_user.password).to.equal(newPassword)
+            })
+
+            it('should update on correct  username and password, adding profile photo (other fields null)', async () => {
+                const {  username, password, imgProfileUrl, bio  } = user
+
+                const newImgProfileUrl = `${imgProfileUrl}-${Math.random()}`
+
+                const res = await logic.modifyUser( username, password, null, newImgProfileUrl, null)
+
+                expect(res).to.be.undefined
+
+                const _users = await User.find()
+
+                const [_user] = _users
+
+                expect(newImgProfileUrl).to.be.a('string')
+                expect(_user.username).to.equal(username)
+                expect(_user.password).to.equal(password)
+                expect(_user.imgProfileUrl).to.equal(newImgProfileUrl)
+            })
+
+            it('should update on correct  username and password, adding bio (other fields null)', async () => {
+                const {  username, password, imgProfileUrl, bio  } = user
+
+                const newBio = `${bio}-${Math.random()}`
+
+                const res = await logic.modifyUser( username, password, null, null, newBio)
+
+                expect(res).to.be.undefined
+
+                const _users = await User.find()
+
+                const [_user] = _users
+
+                expect(newBio).to.be.a('string')
+                expect(_user.username).to.equal(username)
+                expect(_user.password).to.equal(password)
+                expect(_user.imgProfileUrl).to.equal(imgProfileUrl)
+                expect(_user.bio).to.equal(newBio)
+            })
+
+
+            it('should update on correct  username and password, adding bio and photo profile', async () => {
+                const {  username, password, imgProfileUrl, bio  } = user
+
+                const newBio = `${bio}-${Math.random()}`
+                const newImgProfileUrl = `${imgProfileUrl}-${Math.random()}`
+
+                const res = await logic.modifyUser( username, password, null, newImgProfileUrl, newBio)
+
+                expect(res).to.be.undefined
+
+                const _users = await User.find()
+
+                const [_user] = _users
+
+                expect(newBio).to.be.a('string')
+                expect(newImgProfileUrl).to.be.a('string')
+                expect(_user.username).to.equal(username)
+                expect(_user.password).to.equal(password)
+                expect(_user.imgProfileUrl).to.equal(newImgProfileUrl)
+                expect(_user.bio).to.equal(newBio)
+            })
+
+            it('should update on correct  username and password, adding new password, bio and photo profile', async () => {
+                const {  username, password, imgProfileUrl, bio  } = user
+
+                const newBio = `${bio}-${Math.random()}`
+                const newImgProfileUrl = `${imgProfileUrl}-${Math.random()}`
+                const newPassword = `${password}-${Math.random()}`
+
+                const res = await logic.modifyUser( username, password, newPassword, newImgProfileUrl, newBio)
+
+                expect(res).to.be.undefined
+
+                const _users = await User.find()
+
+                const [_user] = _users
+
+
+                expect(newBio).to.be.a('string')
+                expect(newImgProfileUrl).to.be.a('string')
+                expect(newPassword).to.be.a('string')
+                expect(_user.username).to.equal(username)
+                expect(_user.password).to.equal(newPassword)
+                expect(_user.imgProfileUrl).to.equal(newImgProfileUrl)
+                expect(_user.bio).to.equal(newBio)
+            })
+
+
+            // it('should fail on undefined id', () => {
+            //     const {username, password, imgProfileUrl, bio } = user
+
+            //     expect(() => logic.modifyUser(undefined, username, password, imgProfileUrl, bio)).to.throw(TypeError, 'undefined is not a string')
+            // })
+
+            // it('should fail on empty id', () => {
+            //     const { username, password, imgProfileUrl, bio } = user
+
+            //     expect(() => logic.modifyUser('',  username, password, imgProfileUrl, bio)).to.throw( ValueError, 'id is empty or blank')
+            // })
+
+            // it('should fail on blank id', () => {
+            //     const { username, password, imgProfileUrl, bio } = user
+
+            //     expect(() => logic.modifyUser('  ',  username, password, imgProfileUrl, bio)).to.throw( ValueError, 'id is empty or blank')
+            // })
+
+            // it('should fail on no string id (boolean)', () => {
+            //     const { username, password, imgProfileUrl, bio } = user
+
+            //     expect(() => logic.modifyUser(false,  username, password, imgProfileUrl, bio)).to.throw( TypeError, 'false is not a string')
+            // })
+
+
+        describe('with existing user', () => {
+                let user2
+
+   
+
+            beforeEach(() => (user2 = new User({ email:'joe@hhhhjoe.com', username: 'jdyyy', password: '123', imgProfileUrl: null, bio: null, follows: [], followers: [], comments: [] })).save())
+
+                it('should fail on existing username', async () => {
+                    const { password, imgProfileUrl, bio } = user2
+
+                    const newUsername = 'jdyyy'
+
+                    try {
+                        const res = await logic.updateUser(id, newUsername, password, imgProfileUrl, bio)
+
+                        expect(false).to.be.false
+                    } catch (err) {
+                        expect(err).to.be.instanceof(AlreadyExistsError)
+                    } finally {
+                        const _user = await User.findById(id)
+
+                        expect(_user.id).to.equal(id)
+
+                        expect(_user.username).to.equal(newUsername)
+                        expect(_user.password).to.equal(password)
+                    }
+                })
+            })
+        })
+
     })
 
     after(() => mongoose.disconnect())

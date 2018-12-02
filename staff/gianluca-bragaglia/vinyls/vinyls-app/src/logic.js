@@ -121,31 +121,6 @@ const logic = {
     },
 
 
-     /**
-     * Connected user
-     * 
-     *  
-     * @returns {Promise} Resolves on correct data, rejects on wrong data
-     */
-    onlineUser() {
-        const connected = this._connected
-
-        return fetch(`${this.url}/users/${this._userId}/connected`, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json; charset=utf-8',
-                'Authorization': `Bearer ${this._token}`
-            },
-            body: JSON.stringify({ connected })
-        })
-            .then(res => res.json())
-            .then(res => {
-               
-                if (res.error) throw Error(res.error)
-
-            })
-    },
-
 
 
     /**
@@ -311,7 +286,6 @@ const logic = {
     
         if (typeof username !== 'string') throw TypeError(`${username} is not a string`)
         if (typeof password !== 'string') throw TypeError(`${password} is not a string`)
-        if (typeof newPassword !== 'string') throw TypeError(`${newPassword} is not a string`)
         if (bio != null && typeof bio !== 'string') throw TypeError(`${bio} is not a string`)
         if (!username.trim().length) throw Error('username is empty or blank')  
         if (!password.trim().length) throw Error('password is empty or blank')
@@ -496,7 +470,7 @@ const logic = {
 
 
     /**
-     * Retrieve Followees Viyls
+     * Retrieve Followees Vinyls
      * 
      * @returns {Promise} Resolves on correct data, rejects on wrong data
      */
@@ -547,6 +521,7 @@ const logic = {
             })
 
     },
+
 
 
     /**
@@ -601,7 +576,7 @@ const logic = {
         if (typeof artist !== 'string') throw TypeError(`${artist} is not a string`)
         if (!artist.trim().length) throw TypeError('artist is empty or blank')
 
-        if (typeof year !== 'number') throw TypeError(`${year} is not a number`)
+        if (typeof year !== 'string') throw TypeError(`${year} is not a number`)
         if ( year == 0) throw TypeError(`year is not a number`)
 
         if (info != null && typeof info !== 'string') throw TypeError(`${info} is not a string`)
@@ -837,7 +812,7 @@ const logic = {
         if (typeof artist !== 'string') throw TypeError(`${artist} is not a string`)
         if (!artist.trim().length) throw TypeError('artist is empty or blank')
 
-        if (typeof year !== 'number') throw TypeError(`${year} is not a number`)
+        if (typeof year !== 'string') throw TypeError(`${year} is not a number`)
         if ( year == 0) throw TypeError(`year is not a number`)
 
         if (info != null && typeof info !== 'string') throw TypeError(`${info} is not a string`)
@@ -1036,10 +1011,63 @@ const logic = {
                                      
             })
 
-    }
+    },
+
+    /////////////CHAT///////////////////////////////////////////////////////
+
+    /**
+     * Connected user
+     * 
+     *  
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
+     */
+    onlineUser() {
+        const connected = this._connected
+
+        return fetch(`${this.url}/users/${this._userId}/connected`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8',
+                'Authorization': `Bearer ${this._token}`
+            },
+            body: JSON.stringify({ connected })
+        })
+            .then(res => res.json())
+            .then(res => {
+               
+                if (res.error) throw Error(res.error)
+
+            })
+    },
+
+        /**
+     * Retrieve Friends (followers+follwees)
+     * 
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
+     */
+
+    retrieveFriendsList() {
+
+        return fetch(`${this.url}/users/${this._userId}/friends`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${this._token}`
+            }
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res.error) throw Error(res.error)
+                
+                const friends = res.data
+                
+                return friends
+                                     
+            })
+
+    },
    
     
 }
 
 export default logic
-//module.exports = logic
+// module.exports = logic

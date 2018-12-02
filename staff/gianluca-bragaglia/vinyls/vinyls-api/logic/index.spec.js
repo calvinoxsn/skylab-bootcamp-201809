@@ -137,7 +137,7 @@ describe('logic', () => {
 
         })
 
-        describe('retrieve user', () => {
+        describe('retrieve user by id', () => {
             let user
             
             beforeEach(async () => {

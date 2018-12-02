@@ -22,7 +22,7 @@ const User = new Schema({
         type: String
 
     },
-    connections: {
+    connection: {
         type: String
 
     },
@@ -35,6 +35,31 @@ const User = new Schema({
         ref: 'User'
     }],
     
+})
+
+const Chat = new Schema({
+
+    messages: [{
+
+        text: {
+            type: String
+        },
+        user: {
+            type: ObjectId,
+            ref: 'User'
+        }
+    }]
+
+})
+
+const Message = new Schema({
+    text: {
+        type: String
+    },
+    user: {
+        type: ObjectId,
+        ref: 'User'
+    }
 
 })
 
@@ -76,7 +101,7 @@ const Vinyl = new Schema({
     },
 
     year: {
-        type: Number,
+        type: String,
         required: true
     },
 
@@ -100,10 +125,15 @@ const Vinyl = new Schema({
 
 
 
+
+
 module.exports = {   
     User,
+    Chat,
+    Message,
     Comment,
     Vinyl
+    
 }
 
 

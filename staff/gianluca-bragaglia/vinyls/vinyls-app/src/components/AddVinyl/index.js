@@ -26,7 +26,7 @@ class AddVinyl extends Component {
     dropDownHandleYear = e => {
         const yearValue = e.target.value
 
-        const year = Number(yearValue)
+        const year = yearValue.toString()
 
         this.setState({ year })
     }
