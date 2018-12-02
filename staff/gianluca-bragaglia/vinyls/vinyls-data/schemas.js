@@ -1,5 +1,36 @@
 const { Schema, SchemaTypes: { ObjectId } } = require('mongoose')
 
+
+const Chat = new Schema({
+
+    userId: {
+        type: ObjectId,
+        ref: 'User'
+    },
+    user2Id: {
+        type: ObjectId,
+        ref: 'User'
+    },  
+    messages: [{
+
+        text: {
+            type: String
+        },
+        user: {
+            type: ObjectId,
+            ref: 'User'
+        },
+        username:{
+            type: String,
+            required: true
+        },
+        imgProfileUrl: {
+            type: String
+        }
+    }]
+
+})
+
 const User = new Schema({
     email: {
         type: String,
@@ -34,41 +65,13 @@ const User = new Schema({
         type: ObjectId,
         ref: 'User'
     }],
-    chats: [Chat]
+    chats: [{
+        type: ObjectId,
+        ref: 'Chat'
+    }]
           
     
 })
-
-const Chat = new Schema({
-
-    userId: {
-        type: ObjectId,
-        ref: 'User'
-    },
-    user2Id: {
-        type: ObjectId,
-        ref: 'User'
-    },  
-    messages: [{
-
-        text: {
-            type: String
-        },
-        user: {
-            type: ObjectId,
-            ref: 'User'
-        },
-        username:{
-            type: String,
-            required: true
-        },
-        imgProfileUrl: {
-            type: String
-        }
-    }]
-
-})
-
 
 
 const Comment = new Schema({
@@ -142,7 +145,5 @@ module.exports = {
     Vinyl
     
 }
-
-
 
 

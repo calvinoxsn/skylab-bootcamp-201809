@@ -5,7 +5,6 @@ const jwt = require('jsonwebtoken')
 const bearerTokenParser = require('../utils/bearer-token-parser')
 const jwtVerifier = require('./jwt-verifier')
 const routeHandler = require('./route-handler')
-//const fileUpload = require('express-fileupload')
 const Busboy = require('busboy')
 
 const jsonBodyParser = bodyParser.json()
@@ -494,13 +493,13 @@ router.patch('/users/:id/connected', [bearerTokenParser, jwtVerifier, jsonBodyPa
 })
 
 
-router.patch('/users/:id/disconnected', [bearerTokenParser, jwtVerifier], (req, res) => {
+router.patch('/users/:id/disconnected', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, res) => {
     routeHandler(() => {
-        const { params: { id }, sub } = req
+        const { params: { id }, sub, body: { connected } } = req
 
         if (id !== sub) throw Error('token sub does not match user id')
 
-        return logic.disconnectedUser(id)
+        return logic.disconnectedUser(id, connected)
             .then(() =>
                 res.json({
                     message: 'user offline'

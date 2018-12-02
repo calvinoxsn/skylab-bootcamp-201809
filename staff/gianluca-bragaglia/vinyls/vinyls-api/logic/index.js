@@ -359,14 +359,15 @@ const logic = {
                 if (_followersId == id) throw new AlreadyExistsError(`already follow this user`)
             })
 
-            const followId = follow.id
+            // const user2Id = follow.id
+            // const userId = id
 
             user.follows.push(follow.id)
             follow.followers.push(id)
 
-            const chat = await new Chat({ id, followId, messages })
+            // const chat = await new Chat({ userId, user2Id })
 
-            user.chats.push(chat)
+            // user.chats.push(chat)
 
             await user.save()
             await follow.save()
@@ -411,8 +412,13 @@ const logic = {
                 return _index == id
             })
 
+            // const index3 = user.chats.findIndex(_index => {
+            //     return _index.userId == id && _index.user2Id == follow.id
+            // })
+
             user.follows.splice(index,1)
             follow.followers.splice(index2,1)
+            //user.chats.splice(index3,1)
 
             await user.save()
             await follow.save()
@@ -1177,21 +1183,22 @@ const logic = {
     connectedUser(id, connected) {
 
         validate([{ key: 'id', value: id, type: String }])
+        validate([{ key: 'connected', value: connected, type: String }])
 
         return (async () => {
 
-            await User.findOneAndUpdate(
-                {_id: id },
-                {connection: connected},
-                {upsert: false, new: true}).lean()
+            // await User.findOneAndUpdate(
+            //     {_id: id },
+            //     {connection: connected},
+            //     {upsert: false, new: true}).lean()
 
-            // const user = await User.findById(id)
+            const user = await User.findById(id)
 
-            // if (!user) throw new NotFoundError(`user does not exist`)
+            if (!user) throw new NotFoundError(`user does not exist`)
 
-            // user.connection = connected 
+            user.connection = connected 
 
-            // await user.save()
+            await user.save()
 
             
         })()
@@ -1209,16 +1216,17 @@ const logic = {
      * @returns {Promise} Resolves on correct data, rejects on wrong data
      */
 
-    disconnectedUser(id) {
+    disconnectedUser(id, connected) {
 
         validate([{ key: 'id', value: id, type: String }])
+        validate([{ key: 'connected', value: connected, type: String }])
 
         return (async () => {
             const user = await User.findOne({ _id: id })
 
             if (!user) throw new NotFoundError(`user does not exist`)
 
-            user.connection = 'offline'
+            user.connection = connected
 
             await user.save()
         })()
@@ -1371,43 +1379,6 @@ const logic = {
 
     },
 
-    /**
-     * new Chat
-     * 
-     * @param {string} id The vinyl id
-     * @param {string} userId The id of the current user
-     * @param {string} text The comment text
-     *  
-     * @throws {TypeError} On non-string id or user id or text
-     * @throws {Error} On empty or blank id or user id or text
-     * @throws {NotFoundError} On user id not found
-     * 
-     * 
-     * @returns {Promise} Resolves on correct data, rejects on wrong data
-     */
-
-    addNewChat(user1Id, user2Id) {
-
-        validate([
-
-            { key: 'user1Id', value: user1Id, type: String },   
-            { key: 'user2Id', value: user2Id, type: String }       
-        ])
-  
-
-        return (async () => {
-            const _user1 = await User.findById(user1Id).lean()
-
-            if (!_user1) throw new NotFoundError(`user with id ${user1Id} not found`)
-
-            const _user2 = await User.findById(user2Id).lean()
-
-            if (!_user2) throw new NotFoundError(`user with id ${user2Id} not found`)
-
-            const chat = await new Chat({ user1Id, user2Id, messages })
-
-        })()
-    },
 
 
 }

@@ -63,6 +63,13 @@ class App extends Component {
     handleLogoutClick = () => {
         this.setState({error: null})
         logic.logout()
+        try {
+            logic.offlineUser()
+                .then(() =>  this.setState({ error: null }))
+                .catch(err => this.setState({ error: err.message }))
+        } catch (err) {
+            this.setState({ error: err.message })
+        }
         this.props.history.push('/')
     }
 
