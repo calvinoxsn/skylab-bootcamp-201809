@@ -1,7 +1,5 @@
 
-
-
-global.sessionStorage = require('sessionstorage')
+//global.sessionStorage = require('sessionstorage')
 
 
 const logic = {
@@ -536,6 +534,11 @@ const logic = {
 
     searchListVinyls(query) {
 
+        if (typeof query !== 'string') throw TypeError(`${query} is not a string`)
+        if (typeof query === 'number') throw Error(`${query} is not a string`)
+        if (typeof query === 'boolean') throw Error(`${query} is not a string`)
+        if (typeof query === 'object') throw Error(`[object Object] is not a string`)
+
         return fetch(`${this.url}/vinyls/search/${query}`, {
             method: 'GET',
             headers: {
@@ -807,6 +810,9 @@ const logic = {
      */
 
     modifyVinyl(id, title, artist, year, imgVinylUrl, info) {
+
+        if (typeof id !== 'string') throw TypeError(`${id} is not a string`)
+        if (!id.trim().length) throw TypeError('id is empty or blank') 
         
         if (typeof title !== 'string') throw TypeError(`${title} is not a string`)
         if (!title.trim().length) throw TypeError('title is empty or blank')        
@@ -851,7 +857,7 @@ const logic = {
     addLike(id) {
        
         if (typeof id !== 'string') throw TypeError(`${id} is not a string`)
-        if (!id.trim()) throw Error('followUsername is empty or blank')
+        if (!id.trim()) throw Error('id is empty or blank')
 
         const userId = this._userId
 
@@ -885,7 +891,7 @@ const logic = {
     removeLike(id) {
        
         if (typeof id !== 'string') throw TypeError(`${id} is not a string`)
-        if (!id.trim()) throw Error('followUsername is empty or blank')
+        if (!id.trim()) throw Error('id is empty or blank')
 
         const userId = this._userId
       
@@ -923,6 +929,7 @@ const logic = {
         if (id instanceof Array) throw Error(` is not a string`)
         if (typeof id === 'boolean') throw Error(`${id} is not a string`)
         if (typeof id === 'object') throw Error(`[object Object] is not a string`)
+        if (!id.trim()) throw Error('id is empty or blank')
 
         return fetch(`${this.url}/vinyls/${id}/likes`, {
             method: 'GET',
@@ -1131,5 +1138,5 @@ const logic = {
     
 }
 
-//export default logic
-module.exports = logic
+export default logic
+// module.exports = logic

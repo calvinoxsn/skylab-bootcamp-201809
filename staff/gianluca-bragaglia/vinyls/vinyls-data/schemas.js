@@ -1,35 +1,6 @@
 const { Schema, SchemaTypes: { ObjectId } } = require('mongoose')
 
 
-const Chat = new Schema({
-
-    userId: {
-        type: ObjectId,
-        ref: 'User'
-    },
-    user2Id: {
-        type: ObjectId,
-        ref: 'User'
-    },  
-    messages: [{
-
-        text: {
-            type: String
-        },
-        user: {
-            type: ObjectId,
-            ref: 'User'
-        },
-        username:{
-            type: String,
-            required: true
-        },
-        imgProfileUrl: {
-            type: String
-        }
-    }]
-
-})
 
 const User = new Schema({
     email: {
@@ -64,12 +35,8 @@ const User = new Schema({
     follows: [{
         type: ObjectId,
         ref: 'User'
-    }],
-    chats: [{
-        type: ObjectId,
-        ref: 'Chat'
     }]
-          
+  
     
 })
 
@@ -140,7 +107,6 @@ const Vinyl = new Schema({
 
 module.exports = {   
     User,
-    Chat,
     Comment,
     Vinyl
     

@@ -20,18 +20,6 @@ class VinylsListProfile extends Component {
         }
     }
 
-    handleRemoveVinyl = () => {
-
-        console.log('handleremove')
-        
-        try {       
-            
-            logic.removeVinyl(this.props.id)
-            .catch(err => this.setState({ error: err.message }))
-        } catch (err) {
-            this.setState({ error: err.message })
-        }
-    }
 
     render() { 
 
