@@ -3,10 +3,41 @@ import logic from '../../logic'
 import { withRouter } from 'react-router-dom'
 import { Navbar, NavbarBrand, NavbarNav, NavItem, NavLink, NavbarToggler, Collapse, Fa } from 'mdbreact'
 
+import './Navbar.sass'
 class NavbarPage extends Component {
     state = {
-        collapseID: ""
+        collapseID: "",
+        error: null,
+        userWishlist: [],
+        userShoppingCart: []
     }
+
+    componentDidMount() {
+        try {
+            logic.showWishlist()
+                .then(userWishlist => { this.setState({ userWishlist: userWishlist.wishlist }) })
+                .catch(err => this.setState({ error: err.message }))
+            logic.showCart()
+                .then(userShoppingCart => { this.setState({ userShoppingCart: userShoppingCart.shoppingCart }) })
+                .catch(err => this.setState({ error: err.message }))
+        } catch (err) {
+            this.setState({ error: err.message })
+        }
+    }
+
+    componentWillReceiveProps(props) {
+        try {
+            logic.showWishlist()
+                .then(userWishlist => { this.setState({ userWishlist: userWishlist.wishlist }) })
+                .catch(err => this.setState({ error: err.message }))
+            logic.showCart()
+                .then(userShoppingCart => { this.setState({ userShoppingCart: userShoppingCart.shoppingCart }) })
+                .catch(err => this.setState({ error: err.message }))
+        } catch (err) {
+            this.setState({ error: err.message })
+        }
+    }
+
 
     toggleCollapse = collapseID => () =>
         this.setState(prevState => ({
@@ -18,15 +49,17 @@ class NavbarPage extends Component {
             return (
                 <NavbarNav right>
                     <NavItem>
-                        <NavLink to="/my-wishlist" className="waves-effect waves-light"><Fa icon="heart" className="mr-1" />My Wishlist</NavLink>
+                        <NavLink to="/my-wishlist" className="waves-effect waves-light"><Fa icon="heart" className="mr-1" />My Wishlist  <span>({this.state.userWishlist.length})</span></NavLink>
+
                     </NavItem>
                     <NavItem>
-                        <NavLink to="/my-shoppingcart" className="waves-effect waves-light"><Fa icon="shopping-cart" className="mr-1" />My Shopping Cart</NavLink>
+                        <NavLink to="/my-shoppingcart" className="waves-effect waves-light"><Fa icon="shopping-cart" className="mr-1" />My Shopping Cart <span>({this.state.userShoppingCart.length})</span></NavLink>
                     </NavItem>
+
                     <NavItem>
-                        <NavItem onClick={this.handleLogoutClick}>
-                            <Fa icon="door" className="mr-1" />Log Out</NavItem>
+                        <NavLink onClick={this.handleLogoutClick} to="#" className="waves-effect waves-light"><Fa icon="sign-out-alt" className="mr-1" />Log Out</NavLink>
                     </NavItem>
+
                 </NavbarNav>
             )
         } else {
@@ -46,7 +79,7 @@ class NavbarPage extends Component {
     handleLogoutClick = () => {
         logic.logout()
 
-        this.props.history.push('/')
+        this.props.history.push('/home')
     }
 
 
@@ -55,6 +88,7 @@ class NavbarPage extends Component {
             <Navbar color="stylish-color" dark expand="md">
                 <NavbarBrand>
                     <strong className="white-text">Welcome to MusicPoint!</strong>
+                    <img alt="logo" className="logo" src="icons/mezzopiano.svg"></img>
                 </NavbarBrand>
                 <NavbarToggler onClick={this.toggleCollapse("navbarCollapse3")} />
                 <Collapse id="navbarCollapse3" isOpen={this.state.collapseID} navbar>

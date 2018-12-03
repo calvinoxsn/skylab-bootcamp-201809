@@ -4,6 +4,7 @@ import Home from './components/Home/Home'
 import Landing from './components/Landing/Landing'
 import MyWishlist from './components/MyWishlist/MyWishlist'
 import MyShoppingCart from './components/MyShoppingCart/MyShoppingCart'
+import Checkout from './components/Checkout/Checkout'
 import Login from './components/Login/Login'
 import Register from './components/Register/Register'
 
@@ -42,6 +43,7 @@ class App extends Component {
           <Route path="/my-wishlist" render={() => !logic.loggedIn ? <Login onGoBack={this.handleGoBack} /> : <MyWishlist />} />
           <Route path="/my-shoppingcart" render={() => !logic.loggedIn ? <Login onGoBack={this.handleGoBack} /> : <MyShoppingCart/>} />
           <Route path="/home" component={Home} />
+          <Route path="/checkout" component={Checkout}/>
         </Switch>
       </div>
     )

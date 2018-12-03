@@ -51,7 +51,7 @@ class Main extends Component {
         userShoppingCart.push(productId)
 
         this.setState({ userShoppingCart })
-        // console.log(this.state.userShoppingCart)
+
     }
 
     getUserWishlist = () => {
@@ -83,9 +83,6 @@ class Main extends Component {
     render() {
         return (
             <div>
-
-                <button>{this.state.userWishlist.length}</button>
-                <button>{this.state.userShoppingCart.length}</button>
                 <ModalPage activeProduct={this.state.activeProduct} resetToggle={this.resetToggle} showModal={this.state.showModal} />
 
                 <ul className="main-cards">

@@ -1,29 +1,46 @@
 import React, { Component } from 'react'
+import CartContent from '../CartContent/CartContent'
 import logic from '../../logic'
+import { NavLink } from 'react-router-dom'
 
 class MyShoppingCart extends Component {
-    state = { shoppingCart: [] }
+
+    state = {
+        userShoppingCart: [],
+        error: null
+    }
 
     componentDidMount() {
-        logic.showCart()
-            .then(shoppingCart => { this.setState({ shoppingCart }) })
+        try {
+            logic.showCart()
+                .then(userShoppingCart => { this.setState({ userShoppingCart: userShoppingCart.shoppingCart }) })
+                .catch(err => this.setState({ error: err.message }))
+        } catch (err) {
+            this.setState({ error: err.message })
+        }
     }
 
     handleRemoveProduct = id =>
         logic.removeItemInCart(id)
             .then(() => logic.showCart())
-            .then(wishlist => this.setState({ wishlist }))
+            .then(shoppingCart => this.setState({ shoppingCart }))
 
     render() {
         return <div>
             <h1>My Shopping Cart</h1>
-            <a href="#" onClick={this.props.onGoBack}>Go back</a>
+            <NavLink to="home"><span><strong>Go Back</strong></span></NavLink>
 
             <section>
-                {/* {this.state.postits.map(postit => <Post key={postit.id} text={postit.text} id={postit.id} onDeletePost={this.handleRemovePostit} onUpdatePost={this.handleModifyPostit} />)} */}
+                {this.state.userShoppingCart.map(item => {
+                    return (
+                        <CartContent brand={item.brand} model={item.model} id={item.productId} />
+                    )
+                })}
             </section>
+            <NavLink to="checkout"><span>Take Me to Checkout Area</span></NavLink>
         </div>
     }
 }
 
 export default MyShoppingCart
+

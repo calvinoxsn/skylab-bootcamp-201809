@@ -169,10 +169,14 @@ const logic = {
 
             let user = await User.findById(userId)
 
+            user.wishlist.forEach(item => {
+
+                if (item == productId) throw Error('Item already added to wishlist!')
+
+            })
+
             user.wishlist.push(productId)
-
             await user.save()
-
         })()
     },
 
@@ -239,6 +243,8 @@ const logic = {
             let user = await User.findById(userId)
 
             user.shoppingCart.push(productId)
+
+            console.log(user.shoppingCart)
 
             await user.save()
 

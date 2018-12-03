@@ -2,10 +2,11 @@ import React, { Component } from 'react'
 import { NavLink, withRouter } from 'react-router-dom'
 import logic from '../../logic'
 import Error from '../Error/Error'
+import Success from '../Success/Success'
 import './Register.sass'
 
 class Register extends Component {
-    state = { error: null, name: '', surname: '', username: '', email: '', password: '' }
+    state = { error: null, name: '', surname: '', username: '', email: '', password: '', title: 'Registered' }
 
     handleNameChange = event => {
         const name = event.target.value
@@ -49,11 +50,14 @@ class Register extends Component {
         try {
             logic.registerUser(name, surname, username, email, password)
                 .then(() => {
-                    this.setState({ error: null }, () => this.props.history.push('/login'))
+                    Success(this.state.title).then(() => { this.setState({ error: null }, () => this.props.history.push('/login')) })
+
+
                 })
                 .catch(err => this.setState({ error: err.message }))
         } catch (err) {
             this.setState({ error: err.message })
+            Error(err.message)
         }
     }
 
@@ -72,40 +76,15 @@ class Register extends Component {
                         <input type="password" placeholder="Password" onChange={this.handlePasswordChange} />
                         <button type="submit">Register</button>
                         <div className="goto-login">
-                            <NavLink to="/login">Already have an account? Login here!</NavLink>
+                            <p className="message">Already have an account? <NavLink to='/login'><a href="#">Log in here!</a></NavLink></p>
                         </div>
-                        <a href="#" onClick={this.props.onGoBack}>Go back</a>
-                        {error && <Error message={error} />}
+                        <span className="go-back" onClick={this.props.onGoBack}>Go back</span>
+                        {/* {error && <Error message={error} />} */}
                     </form>
                 </div>
             </div>
-
         )
-
-        {/* <input type="text" placeholder="name" onChange={this.handleNameChange} />
-            <input type="text" placeholder="surname" onChange={this.handleSurnameChange} />
-            <input type="text" placeholder="username" onChange={this.handleUsernameChange} />
-            <input type="text" placeholder="email" onChange={this.handleEmailChange} />
-            <input type="password" placeholder="password" onChange={this.handlePasswordChange} />
-            <button type="submit">Register</button> <a href="#" onClick={this.props.onGoBack}>back</a>
-            <div className="goto-login">
-                <NavLink to="/login">Already have an account? Login here!</NavLink>
-            </div>
-            {error && <Error message={error} />} */}
-        // </form >
     }
 }
-
-{/* <input type="text" placeholder="name" onChange={this.handleNameChange} />
-            <input type="text" placeholder="surname" onChange={this.handleSurnameChange} />
-            <input type="text" placeholder="username" onChange={this.handleUsernameChange} />
-            <input type="text" placeholder="email" onChange={this.handleEmailChange} />
-            <input type="password" placeholder="password" onChange={this.handlePasswordChange} />
-            <button type="submit">Register</button> <a href="#" onClick={this.props.onGoBack}>back</a>
-            <div className="goto-login">
-                <NavLink to="/login">Already have an account? Login here!</NavLink>
-            </div>
-            {error && <Error message={error} />} */}
-
 
 export default withRouter(Register)

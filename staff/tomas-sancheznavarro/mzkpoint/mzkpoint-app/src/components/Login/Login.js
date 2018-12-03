@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { withRouter } from 'react-router-dom'
+import { NavLink, withRouter } from 'react-router-dom'
 import Error from '../Error/Error'
 import logic from '../../logic'
 import './Login.sass'
@@ -26,6 +26,7 @@ class Login extends Component {
                 .catch(err => this.setState({ error: err.message }))
         } catch (err) {
             this.setState({ error: err.message })
+            Error(err.message)
         }
     }
 
@@ -48,9 +49,12 @@ class Login extends Component {
                         <input type="text" placeholder="username" onChange={this.handleUsernameChange} />
                         <input type="password" placeholder="password" onChange={this.handlePasswordChange} />
                         <button type="submit">Login</button>
-                        <p className="message">Not registered? <a href="#">Create an account</a></p>
-                        <a href="#" onClick={this.props.onGoBack}>Go back</a>
-                        {error && <Error message={error} />}
+                        <div className="goto-register">
+                            <p className="message">Not registered? <NavLink to='/register'><a href="#">Create an account</a></NavLink></p>
+
+                        </div>
+                        <span className="go-back" onClick={this.props.onGoBack}>Go back</span>
+                        {/* {error && <Error message={error} />} */}
                     </form>
 
                 </div>

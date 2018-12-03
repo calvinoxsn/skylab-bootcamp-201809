@@ -3,6 +3,7 @@ import Error from '../Error/Error'
 import logic from '../../logic'
 import './Card.sass'
 
+
 class Card extends Component {
 
     state = {
@@ -11,33 +12,19 @@ class Card extends Component {
 
     addItemToWishlist = (productId) => {
 
-        let a = ''
-        logic.showWishlist()
-            .then(res => {
-                console.log(res)
-            })
-        console.log(a)
+        try {
+            logic.addItemToWishlist(productId)
+                .then(() => {
+                    this.props.pushToWishlist(this.props.product)
+                })
+                .catch(({ message }) => Error(message))
 
-
-        if (!productId) {
-
-            try {
-                logic.addItemToWishlist(productId)
-                    .then(() => {
-                        this.props.pushToWishlist(this.props.product)
-                    })
-                    .catch(err => this.setState({ error: err.message }))
-            } catch (err) {
-                this.setState({ error: err.message })
-            }
+        } catch (err) {
+            this.setState({ error: err.message })
         }
     }
 
     addItemToCart = (productId) => {
-
-        // if (!logic.loggedIn) {
-
-        // }
 
         try {
             logic.addItemToCart(productId)
@@ -50,16 +37,21 @@ class Card extends Component {
         }
     }
 
-    handleRemoveProduct = (productId) => {
+    handleRemoveItemfromWishlist = (productId) => {
 
         logic.removeItemInWishlist(productId)
-            .then(() => logic.showWishlist())
+            .then(() => logic.showCart())
             .then(userWishlist => this.setState({ userWishlist }))
     }
 
-    render() {
+    handleRemoveItemFromCart = (productId) => {
 
-        const { error } = this.state
+        logic.removeItemInCart(productId)
+            .then(() => logic.showWishlist())
+            .then(userShoppingCart => this.setState({ userShoppingCart }))
+    }
+
+    render() {
 
         const { product } = this.props
 
@@ -71,15 +63,17 @@ class Card extends Component {
                 </div>
                 <div className="container">
                     <p>{product.brand} {product.model}</p>
-                    <p>{product.price}€</p>
+                    <p className="price-tag">{product.price}€</p>
                     <div>
-                        <button onClick={() => this.addItemToWishlist(product.productId)}>Add to Wishlist</button><i className="fa fa-heart"></i>
+                        <button className="card-button" onClick={() => this.addItemToWishlist(product.productId)}>Add to Wishlist<i className="fa fa-heart"></i></button>
 
-                        <button onClick={() => this.handleRemoveProduct('5bfe72bdf95a1b4641fdfaf8')}>Remove item from Wishlist</button><i className="fa fa-heart"></i>
+                        <button className="card-button" onClick={() => this.handleRemoveItemfromWishlist(product.productId)}>Remove from Wishlist</button>
 
-                        <button onClick={() => this.addItemToCart(product.productId)}>Add to Shopping Cart</button><i className="fa fa-shopping-cart"></i>
+                        <button className="card-button" onClick={() => this.addItemToCart(product.productId)}>Add to Shopping Cart<i className="fa fa-shopping-cart"></i></button>
+
+                        <button className="card-button" onClick={() => this.handleRemoveItemFromCart(product.productId)}>Remove from Shopping Cart</button>
                     </div>
-                    {error && <Error message={error} />}
+              
                 </div>
 
             </div>

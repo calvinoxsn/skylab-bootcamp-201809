@@ -31,10 +31,10 @@ class Sidebar extends Component {
         return (
             <aside className="aside">
                 <ul>
-                    <li><button className="aside-button" onClick={() => this.handleSearch('guitar')}>Our Guitars</button></li>
-                    <li><button className="aside-button" onClick={() => this.handleSearch('bass')}>Our Basses</button></li>
-                    <li><button className="aside-button" onClick={() => this.handleSearch('keyboard')}>Our Keyboards</button></li>
-                    <li><button className="aside-button" onClick={() => this.handleSearch('drums')}>Our Drums</button></li>
+                    <li><button className="aside-button" onClick={() => this.handleSearch('guitar')}>Guitars</button></li>
+                    <li><button className="aside-button" onClick={() => this.handleSearch('bass')}> Basses</button></li>
+                    <li><button className="aside-button" onClick={() => this.handleSearch('keyboard')}>Keyboards</button></li>
+                    <li><button className="aside-button" onClick={() => this.handleSearch('drums')}> Drums</button></li>
                 </ul>
                 <span>{this.state.error}</span>
             </aside>

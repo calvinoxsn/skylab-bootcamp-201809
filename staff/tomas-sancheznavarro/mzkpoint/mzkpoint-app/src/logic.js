@@ -144,12 +144,12 @@ const logic = {
 
     },
 
-    removeItemInWishlist(id) {
-        if (typeof id !== 'string') throw new TypeError(`${id} is not a string`)
+    removeItemInWishlist(productId) {
+        if (typeof productId !== 'string') throw new TypeError(`${productId} is not a string`)
 
-        if (!id.trim().length) throw Error('id is empty or blank')
+        if (!productId.trim().length) throw Error('productId is empty or blank')
 
-        return fetch(`${this.url}/users/wishlist/${id}`, {
+        return fetch(`${this.url}/users/wishlist/${productId}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${this._token}`
@@ -169,6 +169,7 @@ const logic = {
 
         return fetch(`${this.url}/users/shopping-cart`, {
             method: 'POST',
+            body: JSON.stringify({ productId }),
             headers: {
                 'Authorization': `Bearer ${this._token}`,
                 'Content-Type': 'application/json; charset=utf-8'
@@ -200,12 +201,12 @@ const logic = {
 
     },
 
-    removeItemInCart(userId, productId) {
-        if (typeof userId !== 'string') throw new TypeError(`${userId} is not a string`)
+    removeItemInCart(productId) {
         if (typeof productId !== 'string') throw new TypeError(`${productId} is not a string`)
-
-        if (!userId.trim().length) throw Error('user id is empty or blank')
         if (!productId.trim().length) throw Error('product id is empty or blank')
+
+        // if (typeof userId !== 'string') throw new TypeError(`${userId} is not a string`)
+        // if (!userId.trim().length) throw Error('user id is empty or blank')
 
 
         return fetch(`${this.url}/users/shopping-cart/${productId}`, {
