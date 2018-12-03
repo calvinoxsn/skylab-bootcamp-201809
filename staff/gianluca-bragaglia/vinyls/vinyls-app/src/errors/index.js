@@ -4,18 +4,18 @@ const NotFoundError = require('./not-found-error')
 const ValueError = require('./value-error')
 const NotAllowedError = require('./not-allowed-error')
 
-// module.exports = {
-//     AlreadyExistsError,
-//     AuthError,
-//     NotFoundError,
-//     ValueError,
-//     NotAllowedError
-// }
-
-export default {
+module.exports = {
     AlreadyExistsError,
     AuthError,
-    NotAllowedError,
     NotFoundError,
-    ValueError
+    ValueError,
+    NotAllowedError
 }
+
+// export default {
+//     AlreadyExistsError,
+//     AuthError,
+//     NotAllowedError,
+//     NotFoundError,
+//     ValueError
+// }

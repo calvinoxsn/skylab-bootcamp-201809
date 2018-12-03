@@ -359,15 +359,10 @@ const logic = {
                 if (_followersId == id) throw new AlreadyExistsError(`already follow this user`)
             })
 
-            // const user2Id = follow.id
-            // const userId = id
 
             user.follows.push(follow.id)
             follow.followers.push(id)
 
-            // const chat = await new Chat({ userId, user2Id })
-
-            // user.chats.push(chat)
 
             await user.save()
             await follow.save()
@@ -412,13 +407,8 @@ const logic = {
                 return _index == id
             })
 
-            // const index3 = user.chats.findIndex(_index => {
-            //     return _index.userId == id && _index.user2Id == follow.id
-            // })
-
             user.follows.splice(index,1)
             follow.followers.splice(index2,1)
-            //user.chats.splice(index3,1)
 
             await user.save()
             await follow.save()

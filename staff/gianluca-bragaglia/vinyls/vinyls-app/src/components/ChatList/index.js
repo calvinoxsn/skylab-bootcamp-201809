@@ -29,7 +29,7 @@ class ChatList extends Component {
             <div className='list-group-flush'>
             <ul className='list-group-flush'>
                     {followsListUser.map(follow => (
-                        <FollowsListUserItem key={follow.username} id={follow.idUser} username={follow.username} imgProfileUrl={follow.imgProfileUrl} />
+                        <FollowsListUserItem key={follow.username} connection={follow.connection} id={follow.idUser} username={follow.username} imgProfileUrl={follow.imgProfileUrl} />
                     ))}
             </ul>
             </div>

@@ -1,9 +1,7 @@
-const validate = require('./utils/validate')
-
-const { AlreadyExistsError, AuthError, NotFoundError, ValueError } = require('./errors')
 
 
-//global.sessionStorage = require('sessionstorage')
+
+global.sessionStorage = require('sessionstorage')
 
 
 const logic = {
@@ -103,11 +101,13 @@ const logic = {
      */
     logout() {
         
+        this.offlineUser()
         this._userId = null
         this._token = null
 
         sessionStorage.removeItem('userId')
         sessionStorage.removeItem('token')
+       
     },
 
      /**
@@ -415,11 +415,13 @@ const logic = {
 
     itsInFollows(id) {
        
-        if (typeof id !== 'string') throw Error(`${id} is not a string`)
+        if (typeof id !== 'string') throw TypeError(`${id} is not a string`)
         if (typeof id === 'number') throw Error(`${id} is not a string`)
         if (id instanceof Array) throw Error(` is not a string`)
         if (typeof id === 'boolean') throw Error(`${id} is not a string`)
         if (typeof id === 'object') throw Error(`[object Object] is not a string`)
+
+        if (!id.trim()) throw Error('id is empty or blank')
 
         return fetch(`${this.url}/users/${this._userId}/follows`, {
             method: 'GET',
@@ -1129,5 +1131,5 @@ const logic = {
     
 }
 
-export default logic
-// module.exports = logic
+//export default logic
+module.exports = logic
