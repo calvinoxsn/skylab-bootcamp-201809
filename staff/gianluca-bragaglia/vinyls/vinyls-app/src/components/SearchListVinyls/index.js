@@ -3,7 +3,7 @@ import logic from '../../logic'
 import Error from '../Error'
 import VinylsSearchListItem from '../VinylsSearchListItem'
 import { Input } from 'mdbreact'
-import './index.css'
+
 
 
 

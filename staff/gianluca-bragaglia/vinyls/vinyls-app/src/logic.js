@@ -6,7 +6,7 @@ const logic = {
 
     _userId: sessionStorage.getItem('userId') || null,
     _token: sessionStorage.getItem('token') || null,
-    _connected: 'online',
+
 
     url: 'NO-URL',
 
@@ -99,7 +99,6 @@ const logic = {
      */
     logout() {
         
-        this.offlineUser()
         this._userId = null
         this._token = null
 
@@ -1054,86 +1053,7 @@ const logic = {
                                      
             })
 
-    },
-
-    /////////////CHAT///////////////////////////////////////////////////////
-
-    /**
-     * Connected user
-     * 
-     *  
-     * @returns {Promise} Resolves on correct data, rejects on wrong data
-     */
-    onlineUser() {
-        let connected = this._connected
-
-        return fetch(`${this.url}/users/${this._userId}/connected`, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json; charset=utf-8',
-                'Authorization': `Bearer ${this._token}`
-            },
-            body: JSON.stringify({ connected })
-        })
-            .then(res => res.json())
-            .then(res => {
-               
-                if (res.error) throw Error(res.error)
-
-            })
-    },
-
-     /**
-     * Disonnected user
-     * 
-     *  
-     * @returns {Promise} Resolves on correct data, rejects on wrong data
-     */
-
-    offlineUser() {
-        const connected = 'offline'
-
-        return fetch(`${this.url}/users/${this._userId}/disconnected`, {
-            method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json; charset=utf-8',
-                'Authorization': `Bearer ${this._token}`
-            },
-            body: JSON.stringify({ connected })
-        })
-            .then(res => res.json())
-            .then(res => {
-               
-                if (res.error) throw Error(res.error)
-
-            })
-    },
-
-        /**
-     * Retrieve Friends (followers+follwees)
-     * 
-     * @returns {Promise} Resolves on correct data, rejects on wrong data
-     */
-
-    retrieveFriendsList() {
-
-        return fetch(`${this.url}/users/${this._userId}/friends`, {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${this._token}`
-            }
-        })
-            .then(res => res.json())
-            .then(res => {
-                if (res.error) throw Error(res.error)
-                
-                const friends = res.data
-                
-                return friends
-                                     
-            })
-
-    },
+    }
    
     
 }

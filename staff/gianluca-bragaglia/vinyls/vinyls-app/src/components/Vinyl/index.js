@@ -117,7 +117,7 @@ class Vinyl extends Component {
                     <a href="#" onClick={likeSelected ? this.handleDontLikeClick : this.handleLikeClick}> {likeSelected ? <span className='dont-like-btn'><i className='fa fa-star'><span className='likes-count'>{likes.length}</span></i></span> : <span className='like-btn'><i className='far fa-star'><span className='likes-count'>{likes.length}</span></i></span>}</a>
                     <br></br>
                     <div className='profile-vinyl'>
-                        <Link to={`/profile/${id}`}><img className='profile-img-list' src={user.imgProfileUrl ? user.imgProfileUrl : './img/icon-profile.png'} ></img>{user.connection === 'online' ? <span className='dot'></span> : <span className='dot-offline'></span>} <span className='profile-username-list'>{user.username}</span></Link>
+                        <Link to={`/profile/${id}`}><img className='profile-img-list' src={user.imgProfileUrl ? user.imgProfileUrl : './img/icon-profile.png'} ></img> <span className='profile-username-list'>{user.username}</span></Link>
                     </div>
                     <p className='vinyl-info'>{info}</p>
                     <div className='msg-button'>

@@ -23,11 +23,6 @@ const User = new Schema({
     bio: {
         type: String
     },
-    connection: {
-        type: String,
-        required: true,
-        default: 'offline'
-    },
     followers: [{
         type: ObjectId,
         ref: 'User'

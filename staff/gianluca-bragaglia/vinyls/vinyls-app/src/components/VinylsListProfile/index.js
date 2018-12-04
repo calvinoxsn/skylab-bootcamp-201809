@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import VinylsListProfileItem from '../VinylsListProfileItem'
 import logic from '../../logic'
-import './index.css'
+
 
 
 

@@ -23,8 +23,7 @@ import SearchListVinyls from './components/SearchListVinyls'
 import FolloweesVinyls from './components/FolloweesVinyls'
 import FavouritesVinyls from './components/FavouritesVinyls'
 import CommentersList from './components/CommentersList'
-import ChatList from './components/ChatList'
-import Footer from './components/Footer'
+
 
 
 logic.url = 'http://localhost:5000/api'
@@ -79,7 +78,6 @@ class App extends Component {
 
         return  <div className='app-container'>
                   {logic.loggedIn && <NavbarComponent onLogout={this.handleLogoutClick}></NavbarComponent>}
-                  {logic.loggedIn && <Footer></Footer>}
                   <Route exact path="/" render={() => !logic.loggedIn ? <Landing onRegisterClick={this.handleRegisterClick} onLoginClick={this.handleLoginClick}/> : <Redirect to="/index" />} /> 
                   <Route path="/register" render={() => !logic.loggedIn ? <Register onRegister={this.handleRegister} onGoBack={this.handleGoBack}  /> : <Redirect to="/index" />} /> 
                   <Route path="/login" render={() => !logic.loggedIn ? <Login onLogin={this.handleLogin} onGoBack={this.handleGoBack}  /> : <Redirect to="/index" />} /> 
@@ -99,7 +97,6 @@ class App extends Component {
                   <Route exact path="/vinyl/:id/edit1" render={(props) => logic.loggedIn ? <EditVinyl1 id={props.match.params.id}/> : <Redirect to="/login" />} />
                   <Route exact path="/vinyl/:id/edit2" render={(props) => logic.loggedIn ? <EditVinyl2 id={props.match.params.id}/> : <Redirect to="/login" />} />
                   <Route exact path="/vinyl/:id/commenters-list" render={(props) => logic.loggedIn ? <CommentersList id={props.match.params.id}/> : <Redirect to="/login" />} />
-                  <Route exact path="/chat-list" render={() => logic.loggedIn ? <ChatList /> : <Redirect to="/login" />} />
                   <Route path="/followees-vinyl" render={() => logic.loggedIn ? <FolloweesVinyls /> : <Redirect to="/login" />} />
                   <Route path="/favourites-vinyl" render={() => logic.loggedIn ? <FavouritesVinyls /> : <Redirect to="/login" />} />
                 </div> 

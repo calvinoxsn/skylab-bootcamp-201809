@@ -67,7 +67,7 @@ class VinylListCardItem extends Component {
                 
                   <div className='card'>
                   <div className='card-user'>
-                    <Link to={`/profile/${userId}`}><img className='profile-img-card' src={user.imgProfileUrl ? user.imgProfileUrl : './img/icon-profile.png'} ></img> {user.connection === 'online' ? <span className='dot'></span> : <span className='dot-offline'></span>} <span className='profile-username-card'>{user.username}</span></Link>
+                    <Link to={`/profile/${userId}`}><img className='profile-img-card' src={user.imgProfileUrl ? user.imgProfileUrl : './img/icon-profile.png'} ></img> <span className='profile-username-card'>{user.username}</span></Link>
                   </div>
                     <div className='card-image'>
                       <img src={img ? img : './img/vinyl.png'} alt='vinyls'/>

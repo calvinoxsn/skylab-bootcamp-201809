@@ -65,9 +65,9 @@ class CommentersList extends Component {
     return (
             <div className='commenters-list'>
             
-                    <div className='msg-button'>
-                        <span><i className="far fa-comment-alt"></i></span>
-                        <a onClick={this.handleaddCmtBtn}><p className='add-comment-icon-text'>Add Comment</p></a>
+                    <div className='msg-btn'>
+                        
+                        <a onClick={this.handleaddCmtBtn}><p className='add-comment-btn'>Add Comment</p></a>
                     </div>
                     {addComment ? <AddComment onAddComment={this.handleAddComment} /> : null }
                     <CommentsList comments={comments} /> 
