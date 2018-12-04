@@ -26,7 +26,7 @@ import CommentersList from './components/CommentersList'
 
 
 logic.url = process.env.REACT_APP_API_URL
-//logic.url = 'http://localhost:5000/api'
+// logic.url = 'http://localhost:5000/api'
 
 class App extends Component {
 

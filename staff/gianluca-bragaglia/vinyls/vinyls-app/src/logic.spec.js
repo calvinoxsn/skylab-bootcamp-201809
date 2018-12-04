@@ -1,16 +1,18 @@
 //import logic from './logic'
 const { mongoose, models: { User, Vinyl} } = require('vinyls-data')
+
 require('dotenv').config()
+
 const logic = require('./logic')
 const { expect } = require('chai')
 require('isomorphic-fetch')
 global.sessionStorage = require('sessionstorage')
-const MONGO_URL = process.env.REACT_APP_MONGO_URL
 
+const MONGO_URL = process.env.REACT_APP_MONGO_URL
 logic.url = process.env.REACT_APP_API_URL
 
-
-//logic.url = 'http://localhost:5000/api'
+// const MONGO_URL = 'mongodb://localhost:27017/vinyls-test'
+// logic.url = 'http://localhost:5000/api'
 // logic.url = 'http://192.168.0.82:5000' // DEV server!
 
 

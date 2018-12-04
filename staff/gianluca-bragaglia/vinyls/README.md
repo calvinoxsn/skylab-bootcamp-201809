@@ -15,6 +15,8 @@ View the [Documentation](./docs/README.md)
 
 ![](./docs/images/mobile.PNG)
 
+![](./docs/images/mobile2.PNG)
+
 ## Instructions
 
 ### Running the application

@@ -28,7 +28,7 @@ class FolloweesVinyls extends Component {
         return ( 
             <React.Fragment>
 
-                <h2 className='text-center my-5'>Followees Vinyls</h2> 
+                <h3 className='text-center my-4'>Followees Vinyls</h3> 
                 
                 <div className='list-card'>
                         {_followeesVinyls.map(vinyl => (

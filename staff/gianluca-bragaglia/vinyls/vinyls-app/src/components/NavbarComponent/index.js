@@ -43,7 +43,7 @@ class NavbarComponent extends Component {
        
     
        return (
-           <Navbar color="black darken-4" dark expand="md"  scrolling>
+           <Navbar className='navbar-top' color="black darken-4" dark expand="md"  scrolling >
 
                <NavbarBrand >
 
