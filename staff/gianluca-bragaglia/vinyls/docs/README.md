@@ -2,14 +2,15 @@
 
 ## Introduction
 
-This application lets you find, save and access a link to buy tickets for events in Spain searching by keyword or field (music, sports). You can add and delete favourite events to your favourites list.
-It was developed as a front-end project for the Skylab Coders bootcamp (Barcelona, 2018). The objective was to apply the following technologies in a real-life application:
+The application allows its use by registering users. The user can upload their vinyls, follow other users, likes vinyls, add comment to vinyls.
 
-## Functional Description
+You can also searches for users and serach for vinyls
+
+Each user has a profile page where they can see their data as related vinyls.
+
+The user can have a section where they can edit their personal data, profile photo, edit or delete his vinyls.
 
 ### Use cases diagram
-
-To use this application the user needs to register and login. The application lets the user find, save and access a link to buy tickets for events in Spain searching by keyword or field (music, sports). The user can click on an event for more information. The application also displays three random clickable events when accessing the Home page. In addition, the user can add events to a list of favourite events and delete them later on.
 
 ![Use cases](images/use-cases.png)
 

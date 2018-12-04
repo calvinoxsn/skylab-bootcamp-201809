@@ -1,17 +1,44 @@
-# Dev Commands
-Install dependenicies 
+# Vinyls
 
-``` $bash
+Vinyls is social networking service. You can publish your collection of vinyls and sharing with other users. 
+
+It will be developed for the presentation of the final project of the bootcamp in [Skylab Coders](https://skylabcoders.com/).
+
+Live demo [https://inskygram.surge.sh/](https://inskygram.surge.sh/)
+
+View the [Documentation](./docs/README.md)
+
+## Screenshoot
+
+![](./docs/images/screenshot1.PNG)
+
+
+![](./docs/images/mobile.PNG)
+
+## Instructions
+
+### Running the application
+
+__Server__
+
+```
+$ cd vinyls-api
 $ npm i
-
-```
-
-To start app
-
-
-``` $bash
+$ npm run build
 $ npm start
-
 ```
 
-[Documentation](./docs/README.md)
+__Frontend__
+
+```
+$ cd vinyls-app
+$ npm i
+$ npm run build
+$ npm start
+```
+
+
+## Authors
+
+- Gianluca Bragaglia [https://github.com/b-rage](https://github.com/b-rage)
+
