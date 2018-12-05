@@ -16,12 +16,12 @@ The user can have a section where they can edit their personal data, profile pho
 
 ## Activity Diagram
 
-The application has two main activities: search for an event and save an event in a favourites list. You can click on an event for more information. With regard to the favourites list, you can also delete the event any time.
+The application has one main activity: publish your vinyls, and other cativities like a search users, search vinyls, follow users, likes vinyls, comment vinyls.
 
 ![Use cases](images/activity-diagram.png)
 
 ## Block diagram
-The front end of the application was built using React. The back end is connected to 2 APIs: the first one to manage the users and store the favourite events of each user, and the second one to retrieve the information from all the available events that are shown to the user.
+The front end of the application was built using React. The back end is connected to an API that is connected to data module DATA for make change on the Database(CRUD)
 
 ![Block Diagram](images/block-diagram.png)
 
@@ -51,4 +51,11 @@ The most significant tasks of the application are those that use the APIs. Skyla
 * React
 * React Router
 * MD Bootstrap React
-* APIs
+* Node js
+* Express
+* Mongoose
+* MongoDB
+* TDD Mocha - Chai
+
+
+

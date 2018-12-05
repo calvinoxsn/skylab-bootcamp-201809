@@ -48,7 +48,6 @@ class App extends Component {
         try {
             logic.onBeforeUnload()
                 .then(() => {
-                    console.log('before')
                     
                     this.setState({ error: null })
                 })
