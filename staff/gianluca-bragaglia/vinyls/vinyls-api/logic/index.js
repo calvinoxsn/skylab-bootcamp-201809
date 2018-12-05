@@ -1150,7 +1150,69 @@ const logic = {
 
         })()
 
+    },
+
+           /**
+     * Connected User
+     * 
+     * @param {string} id The user id
+
+     *  
+     * @throws {TypeError} On non-string id 
+     * @throws {Error} On empty or blank id
+     * 
+     * 
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
+     */
+
+    connectedUser(id, connected) {
+
+        validate([{ key: 'id', value: id, type: String }])
+        validate([{ key: 'connected', value: connected, type: String }])
+
+        return (async () => {
+
+            const user = await User.findById(id)
+
+            if (!user) throw new NotFoundError(`user does not exist`)
+
+            user.connection = connected 
+
+            await user.save()
+
+            
+        })()
+    },
+
+    /**
+     * Disconnected User
+     * 
+     * @param {string} id The user id
+     *  
+     * @throws {TypeError} On non-string id 
+     * @throws {Error} On empty or blank id
+     * 
+     * 
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
+     */
+
+    disconnectedUser(id, connected) {
+
+        validate([{ key: 'id', value: id, type: String }])
+        validate([{ key: 'connected', value: connected, type: String }])
+
+        return (async () => {
+            const user = await User.findOne({ _id: id })
+
+            if (!user) throw new NotFoundError(`user does not exist`)
+
+            user.connection = connected
+
+            await user.save()
+        })()
     }
+
+
 
 
 }

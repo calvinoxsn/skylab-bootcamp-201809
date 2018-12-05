@@ -41,10 +41,10 @@ class SearchListUsers extends Component {
                 <div className='search-user'>
                     <Input label='search' icon='search' type='text' onChange={this.searchUserChange} /> 
                 </div>
-                {error && <Error message={error} />}
+                
                 <div className='list-group-flush'>
                         {users.map(user => (
-                            <UserListItem key={user.idUser}  id={user.idUser} username={user.username} imgProfileUrl={user.imgProfileUrl}/>
+                            <UserListItem key={user.idUser} connection={user.connection}  id={user.idUser} username={user.username} imgProfileUrl={user.imgProfileUrl}/>
                         ))}
                 </div>
                

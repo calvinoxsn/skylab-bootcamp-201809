@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { Route, withRouter, Redirect } from 'react-router-dom'
 import logic from './logic'
 import Index from './components/Index'
@@ -32,6 +32,36 @@ class App extends Component {
 
     state = { error: null }
 
+    componentDidMount() {
+        window.addEventListener('beforeunload', this.handleLeavePage);
+      }
+    
+      componentWillUnmount() {
+        window.removeEventListener('beforeunload', this.handleLeavePage);
+      }
+    
+
+
+    
+    handleLeavePage = (e) => {
+        e.preventDefault()
+        try {
+            logic.onBeforeUnload()
+                .then(() => {
+                    console.log('before')
+                    
+                    this.setState({ error: null })
+                })
+                .catch(err => this.setState({ error: err.message }))
+            
+        } catch (err) {
+            this.setState({ error: err.message })
+        }
+
+        const confirmationMessage = ''
+        e.returnValue = confirmationMessage     // Gecko, Trident, Chrome 34+
+        return confirmationMessage
+    }
    
     handleRegister = ( email, username, password, bio ) => {
   
@@ -77,6 +107,7 @@ class App extends Component {
         const { error } = this.state
 
         return  <div className='app-container'>
+                {/* <Beforeunload onBeforeunload={this.handleLeavePage} /> */}
                   {logic.loggedIn && <NavbarComponent onLogout={this.handleLogoutClick}></NavbarComponent>}
                   <Route exact path="/" render={() => !logic.loggedIn ? <Landing onRegisterClick={this.handleRegisterClick} onLoginClick={this.handleLoginClick}/> : <Redirect to="/index" />} /> 
                   <Route path="/register" render={() => !logic.loggedIn ? <Register onRegister={this.handleRegister} onGoBack={this.handleGoBack}  /> : <Redirect to="/index" />} /> 

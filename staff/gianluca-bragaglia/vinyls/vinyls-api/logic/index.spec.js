@@ -584,6 +584,7 @@ describe('logic', () => {
             })
 
 
+
         })
 
         describe('remove follow', () => {
@@ -932,6 +933,165 @@ describe('logic', () => {
             })
         }) 
 
+        describe('connected user', () => {
+            let user, connected
+            
+            beforeEach(async () => {
+                user = new User({ email: 'John@jon.com', username: 'jdakk', password: '123' })
+            
+                await user.save()
+     
+            })
+            
+
+            it('should succeed on correct data', async () => {
+
+                connected = 'online'
+
+                const res = await logic.connectedUser(user.id, connected)
+
+                const _user = await User.findById(user.id)
+
+                expect(_user.id).to.equal(user.id)
+
+                expect(_user.connection).to.equal('online')
+
+       
+            })
+
+            it('should fail on undefined id', () => {
+                
+                const id = undefined
+                const connected = 'online'
+                expect(() => logic.connectedUser(id, connected)).to.throw(TypeError, 'undefined is not a string')
+            })
+
+            it('should fail on empty id', () => {
+                const id = ''
+                const connected = 'online'
+                expect(() => logic.connectedUser(id, connected)).to.throw( ValueError, `${id} is empty or blank`)
+            })
+
+            it('should fail on blank id', () => {
+                const id = '  '
+                const connected = 'online'
+                expect(() => logic.connectedUser(id, connected)).to.throw( ValueError, `id is empty or blank`)
+            })
+
+            it('should fail on no string id (boolean)', () => {
+                const id = false    
+                const connected = 'online'
+                expect(() => logic.connectedUser(id, connected)).to.throw( TypeError, 'false is not a string')
+            })
+
+            it('should fail on empty connected', () => {
+                const connected = ''
+                const id = user.id
+                expect(() => logic.connectedUser(id, connected)).to.throw( ValueError, `${connected} is empty or blank`)
+            })
+
+            it('should fail on blank connected', () => {
+                const connected = '  '
+                const id = user.id
+                expect(() => logic.connectedUser(id, connected)).to.throw( ValueError, `connected is empty or blank`)
+            })
+
+            it('should fail on undefined connected', () => {
+                const connected = undefined
+                const id = user.id
+                expect(() => logic.connectedUser(id, connected)).to.throw( TypeError, 'undefined is not a string')
+            })
+
+            it('should fail on no string connected (boolean)', () => {
+                const id = user.id  
+                const connected = false
+                expect(() => logic.connectedUser(id, connected)).to.throw( TypeError, 'false is not a string')
+            })
+
+            
+
+        })
+
+        describe('disconnected user', () => {
+            let user, connected
+            
+            beforeEach(async () => {
+                user = new User({ email: 'John@jon.com', username: 'jdakk', password: '123' })
+            
+                await user.save()
+     
+            })
+            
+
+            it('should succeed on correct data', async () => {
+
+                connected = 'offline'
+
+                const res = await logic.connectedUser(user.id, connected)
+
+                const _user = await User.findById(user.id)
+
+                expect(_user.id).to.equal(user.id)
+
+                expect(_user.connection).to.equal('offline')
+
+       
+            })
+
+            it('should fail on undefined id', () => {
+                
+                const id = undefined
+                connected = 'offline'
+                expect(() => logic.disconnectedUser(id, connected)).to.throw(TypeError, 'undefined is not a string')
+            })
+
+            it('should fail on empty id', () => {
+                const id = ''
+                connected = 'offline'
+                expect(() => logic.disconnectedUser(id, connected)).to.throw( ValueError, `${id} is empty or blank`)
+            })
+
+            it('should fail on blank id', () => {
+                const id = '  '
+                connected = 'offline'
+                expect(() => logic.disconnectedUser(id, connected)).to.throw( ValueError, `id is empty or blank`)
+            })
+
+            it('should fail on no string id (boolean)', () => {
+                const id = false    
+                connected = 'offline'
+                expect(() => logic.disconnectedUser(id, connected)).to.throw( TypeError, 'false is not a string')
+            })
+
+            it('should fail on empty connected', () => {
+                connected = ''
+                const id = user.id
+                expect(() => logic.disconnectedUser(id, connected)).to.throw( ValueError, `${connected} is empty or blank`)
+            })
+
+            it('should fail on blank connected', () => {
+                connected = '  '
+                const id = user.id
+                expect(() => logic.disconnectedUser(id, connected)).to.throw( ValueError, `connected is empty or blank`)
+            })
+
+            it('should fail on undefined connected', () => {
+                connected = undefined
+                const id = user.id
+                expect(() => logic.disconnectedUser(id, connected)).to.throw( TypeError, 'undefined is not a string')
+            })
+
+            it('should fail on no string connected (boolean)', () => {
+                const id = user.id  
+                connected = false
+                expect(() => logic.disconnectedUser(id, connected)).to.throw( TypeError, 'false is not a string')
+            })
+
+            
+
+        })
+
+
 
     })
 
@@ -951,7 +1111,7 @@ describe('logic', () => {
                 const id = user.id
                 const title = 'neverm'
                 const artist = 'nirvana'
-                const year = 1992
+                const year = '1992'
                 const imgVinylUrl = null
                 const info = null
 
@@ -1103,7 +1263,7 @@ describe('logic', () => {
                 const year = undefined
                 const imgVinylUrl = null
                 const info = null
-                expect(() => logic.addVinyl(id, title, artist, year, imgVinylUrl, info )).to.throw( TypeError, `undefined is not a number`)
+                expect(() => logic.addVinyl(id, title, artist, year, imgVinylUrl, info )).to.throw( TypeError, `undefined is not a string`)
             })
 
             it('should fail on no string year (boolean)', () => {
@@ -1113,7 +1273,7 @@ describe('logic', () => {
                 const year = false
                 const imgVinylUrl = null
                 const info = null   
-                expect(() => logic.addVinyl(id, title, artist, year, imgVinylUrl, info )).to.throw( TypeError, 'false is not a number')
+                expect(() => logic.addVinyl(id, title, artist, year, imgVinylUrl, info )).to.throw( TypeError, 'false is not a string')
             })
         })
 
@@ -1499,7 +1659,7 @@ describe('logic', () => {
                 const id = user._id.toString()
                 const title = 'neveggrmindhh'
                 const artist = 'nirvgganahh'
-                const year = 1992
+                const year = '1992'
                 const imgVinylUrl = null
                 const info = null
 
@@ -1520,7 +1680,7 @@ describe('logic', () => {
                 const newArtist = `${artist}-${Math.random()}`
                 const newimgVinylUrl = null
                 const newInfo = null
-                const newYear = 1993
+                const newYear = '1993'
 
 
                 const res = await logic.editVinyl( vinylId, newTitle, newArtist, newYear, newimgVinylUrl, newInfo)

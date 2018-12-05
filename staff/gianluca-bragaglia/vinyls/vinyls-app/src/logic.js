@@ -1,11 +1,12 @@
 
-//global.sessionStorage = require('sessionstorage')
+// global.sessionStorage = require('sessionstorage')
 
 
 const logic = {
 
     _userId: sessionStorage.getItem('userId') || null,
     _token: sessionStorage.getItem('token') || null,
+    _connected: 'online',
 
 
     url: 'NO-URL',
@@ -98,13 +99,15 @@ const logic = {
      *
      */
     logout() {
-        
+
+        this.offlineUser()
+                
         this._userId = null
         this._token = null
 
         sessionStorage.removeItem('userId')
         sessionStorage.removeItem('token')
-       
+               
     },
 
      /**
@@ -313,6 +316,12 @@ const logic = {
      */
 
     searchUsers(query) {
+
+        if (typeof query !== 'string') throw TypeError(`${query} is not a string`)
+        if (typeof query === 'number') throw Error(`${query} is not a string`)
+        if (typeof query === 'boolean') throw Error(`${query} is not a string`)
+        if (typeof query === 'object') throw Error(`[object Object] is not a string`)
+
 
         return fetch(`${this.url}/users/search/${query}`, {
             method: 'GET',
@@ -1053,7 +1062,75 @@ const logic = {
                                      
             })
 
-    }
+    },
+
+
+
+    onlineUser() {
+        let connected = this._connected
+
+        return fetch(`${this.url}/users/${this._userId}/connected`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8',
+                'Authorization': `Bearer ${this._token}`
+            },
+            body: JSON.stringify({ connected })
+        })
+            .then(res => res.json())
+            .then(res => {
+               
+                if (res.error) throw Error(res.error)
+
+            })
+    },
+
+     /**
+     * Disonnected user
+     * 
+     *  
+     * @returns {Promise} Resolves on correct data, rejects on wrong data
+     */
+
+    offlineUser() {
+        const connected = 'offline'
+
+        return fetch(`${this.url}/users/${this._userId}/disconnected`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8',
+                'Authorization': `Bearer ${this._token}`
+            },
+            body: JSON.stringify({ connected })
+        })
+            .then(res => res.json())
+            .then(res => {
+               
+                if (res.error) throw Error(res.error)
+
+            })
+    },
+
+ 
+
+   onBeforeUnload(){
+        const connected = 'offline'
+
+        return fetch(`${this.url}/users/${this._userId}/disconnected/close`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8',
+                'Authorization': `Bearer ${this._token}`
+            },
+            body: JSON.stringify({ connected })
+        })
+            .then(res => res.json())
+            .then(res => {
+               
+                if (res.error) throw Error(res.error)
+
+            })
+      }
    
     
 }

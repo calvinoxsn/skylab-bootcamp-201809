@@ -30,7 +30,7 @@ class VinylsList extends Component {
                 
                 <div className='list-card'>
                         {_vinyls.map(vinyl => (
-                            <VinylListCardItem key={vinyl.idVinyl} id={vinyl.idVinyl} userId={vinyl.id} title={vinyl.title} artist={vinyl.artist} img={vinyl.imgVinylUrl} comments={vinyl.comments.length} likes={vinyl.likes.length} year={vinyl.year}/>
+                            <VinylListCardItem key={vinyl.idVinyl} id={vinyl.idVinyl}  userId={vinyl.id} title={vinyl.title} artist={vinyl.artist} img={vinyl.imgVinylUrl} comments={vinyl.comments.length} likes={vinyl.likes.length} year={vinyl.year}/>
                         ))}
                 </div>
 

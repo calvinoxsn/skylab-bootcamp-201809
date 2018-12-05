@@ -30,7 +30,12 @@ const User = new Schema({
     follows: [{
         type: ObjectId,
         ref: 'User'
-    }]
+    }],
+    connection: {
+        type: String,
+        required: true,
+        default: 'offline'
+    }
   
     
 })

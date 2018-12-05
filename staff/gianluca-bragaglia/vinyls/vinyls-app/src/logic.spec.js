@@ -7,6 +7,7 @@ const logic = require('./logic')
 const { expect } = require('chai')
 require('isomorphic-fetch')
 global.sessionStorage = require('sessionstorage')
+const fs = require('fs')
 
 const MONGO_URL = process.env.REACT_APP_MONGO_URL
 logic.url = process.env.REACT_APP_API_URL
@@ -773,7 +774,7 @@ describe('logic', () => {
 
         false && describe('add profile pictures ', ()=> {
             let user
-            beforeEach(() => {
+            beforeEach(async () => {
                 username = 'John'
 
                 email = `jd-${Math.random()}@example.com`
@@ -783,6 +784,8 @@ describe('logic', () => {
 
                 return user.save()
 
+                await logic.login(username, password)
+
             })
             it('should succed on correct data', async () => {
  
@@ -790,7 +793,7 @@ describe('logic', () => {
 
                 var file = fs.createReadStream(image)
 
-                const res = await logic.addProfilePicture(user._id.toString(), file)
+                const res = await logic.uploadImgProfile(file)
 
                 expect(res).to.be.undefined
 
@@ -813,7 +816,7 @@ describe('logic', () => {
 
                 var file = fs.createReadStream(image)
                 const id = undefined
-                expect(() => logic.addProfilePicture(id, file)).to.throw(TypeError, 'undefined is not a string')
+                expect(() => logic.uploadImgProfile(file)).to.throw(TypeError, 'undefined is not a string')
             })
 
             it('should fail on empty id', () => {
@@ -821,7 +824,7 @@ describe('logic', () => {
 
                 var file = fs.createReadStream(image)
                 const id = ''
-                expect(() => logic.addProfilePicture(id, file)).to.throw( Error, `${id} is empty or blank`)
+                expect(() => logic.uploadImgProfile(file)).to.throw( Error, `${id} is empty or blank`)
             })
 
             it('should fail on blank id', () => {
@@ -829,7 +832,7 @@ describe('logic', () => {
 
                 var file = fs.createReadStream(image)
                 const id = '  '
-                expect(() => logic.addProfilePicture(id, file)).to.throw( Error, `userId is empty or blank`)
+                expect(() => logic.uploadImgProfile(file)).to.throw( Error, `userId is empty or blank`)
             })
 
             it('should fail on no string id (boolean)', () => {
@@ -837,9 +840,67 @@ describe('logic', () => {
 
                 var file = fs.createReadStream(image)
                 const id = false    
-                expect(() => logic.addProfilePicture(id, file)).to.throw( TypeError, 'false is not a string')
+                expect(() => logic.uploadImgProfile(file)).to.throw( TypeError, 'false is not a string')
             })
         }) 
+
+        describe('connected user', () => {
+            let user
+            
+            beforeEach(async () => {
+                user = new User({ email: 'John@jon.com', username: 'jdakk', password: '123' })
+            
+                await user.save()
+
+                await logic.login('jdakk', '123')
+     
+            })
+            
+
+            it('should succeed on correct data', async () => {
+
+
+                const res = await logic.onlineUser()
+
+                const _user = await User.findById(user.id)
+
+                expect(_user.id).to.equal(user.id)
+
+                expect(_user.connection).to.equal('online')
+
+       
+            })     
+
+        })
+
+        describe('disconnected user', () => {
+            let user
+            
+            beforeEach(async () => {
+                user = new User({ email: 'John@jon.com', username: 'jdakk', password: '123' })
+            
+                await user.save()
+
+                await logic.login('jdakk', '123')
+     
+            })
+            
+
+            it('should succeed on correct data', async () => {
+
+
+                const res = await logic.offlineUser()
+
+                const _user = await User.findById(user.id)
+
+                expect(_user.id).to.equal(user.id)
+
+                expect(_user.connection).to.equal('offline')
+
+       
+            }) 
+
+        })
     })
 
     describe('vinyls', () => {

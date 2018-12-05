@@ -4,14 +4,13 @@ Vinyls is social networking service. You can publish your collection of vinyls a
 
 It will be developed for the presentation of the final project of the bootcamp in [Skylab Coders](https://skylabcoders.com/).
 
-Live demo [https://inskygram.surge.sh/](https://inskygram.surge.sh/)
+Live demo [https://vinyls.surge.sh/](https://vinyls.surge.sh/)
 
 View the [Documentation](./docs/README.md)
 
 ## Screenshoot
 
 ![](./docs/images/screenshot1.PNG)
-
 
 ![](./docs/images/mobile.PNG)
 
