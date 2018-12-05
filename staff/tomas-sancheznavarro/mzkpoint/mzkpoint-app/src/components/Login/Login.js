@@ -61,18 +61,6 @@ class Login extends Component {
             </div>
 
         )
-
-
-
-
-
-        {/* // return <form onSubmit={this.handleSubmit}>
-        //     <input type="text" placeholder="Username" onChange={this.handleUsernameChange} />
-        //     <input type="password" placeholder="Password" onChange={this.handlePasswordChange} />
-        //     <button type="submit">Login</button> <a href="#" onClick={this.props.onGoBack}>back</a>
-        //     {error && <Error message={error} />}
-
-        // </form> */}
     }
 }
 

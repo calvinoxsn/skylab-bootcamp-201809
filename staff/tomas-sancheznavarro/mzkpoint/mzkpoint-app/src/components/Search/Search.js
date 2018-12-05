@@ -26,9 +26,10 @@ class SearchBar extends Component {
                 .then(products => {
                     this.props.pushProducts(products.data)
                 })
-                .catch(err => this.setState({ error: err.message }))
+                .catch(({ message }) => Error(message))
         } catch (err) {
             this.setState({ error: err.message })
+    
         }
     }
 
@@ -40,7 +41,7 @@ class SearchBar extends Component {
                 <input className="search-bar" type="text" placeholder="Search by instrument or brand" onChange={this.handleSearchChange} />
                 <label htmlFor="search-bar">Search by instrument or brand</label>
 
-                {error && <Error message={error} />}
+                {/* {error && <Error message={error} />} */}
             </div>
         </form>
     }

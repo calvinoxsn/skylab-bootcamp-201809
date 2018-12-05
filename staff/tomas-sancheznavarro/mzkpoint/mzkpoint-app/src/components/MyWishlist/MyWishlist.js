@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
+import { NavLink } from 'react-router-dom'
 import WishlistContent from '../WishlistContent/WishlistContent'
 import logic from '../../logic'
-import { NavLink } from 'react-router-dom'
+import './MyWishlist.sass'
 
 class MyWishlist extends Component {
     state = {
@@ -14,26 +15,19 @@ class MyWishlist extends Component {
             .then(userWishlist => { this.setState({ userWishlist: userWishlist.wishlist }) })
     }
 
-    handleRemoveProduct = id => {
-        logic.removeItemInWishlist(id)
-            .then(() => logic.showWishlist())
-            .then(userWishlist => this.setState({ userWishlist }))
-    }
-
-
-
     render() {
-        return <div>
-            <h1>My Wishlist</h1>
-            <NavLink to="home"><span><span>Go Back</span></span></NavLink>
+        return <div className="my-wishlist-container">
+            <h1 className="page-title">My Wishlist</h1>
+            <span><NavLink to="home"><span>Go Back</span></NavLink></span>
 
             <section>
                 {this.state.userWishlist.map(item => {
                     return (
-                        <WishlistContent brand={item.brand} model={item.model} id={item.productId} />
+                        <ul><WishlistContent image={item.imageUrl} brand={item.brand} model={item.model} price={item.price} id={item.productId} />
+                        </ul>
                     )
                 })}
-                <NavLink to="my-shoppingcart"><span>Go To My Shopping Cart</span></NavLink>
+                <NavLink to="my-shoppingcart"><span><strong>Go To My Shopping Cart</strong></span></NavLink>
             </section>
         </div>
     }

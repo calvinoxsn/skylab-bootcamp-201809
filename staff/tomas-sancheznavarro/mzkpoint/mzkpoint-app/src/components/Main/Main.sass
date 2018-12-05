@@ -4,8 +4,21 @@
     display: flex
     flex-wrap: wrap
     justify-content: space-around
+    flex-direction: row
     @include screen(1024,"justify-content", flex-start) 
     padding: 0
     width: 100%
     @include screen(1024,"width", 90%)
     @include screen(1024,"margin", 0 auto)
+
+.features
+    display: flex
+    justify-content: center
+    align-items: center
+    flex-direction: column
+    margin: 0
+
+    .features-li
+        width: 100%
+        text-align: center
+        margin: 5px

@@ -82,12 +82,12 @@ class Main extends Component {
 
     render() {
         return (
-            <div>
+            <div className="cards__container">
                 <ModalPage activeProduct={this.state.activeProduct} resetToggle={this.resetToggle} showModal={this.state.showModal} />
 
                 <ul className="main-cards">
                     {(this.props.products || []).map(product => (
-                        <Card toggleModal={this.toggle} pushToWishlist={this.pushToWishlist} pushToCart={this.pushToCart} key={Math.random()} product={product} />
+                        <Card toggleModal={this.toggle} pushToWishlist={this.pushToWishlist} pushToCart={this.pushToCart} key={Math.random()} product={product} onHandleRefresh={this.props.onHandleRefresh} />
 
                     ))}
                 </ul>

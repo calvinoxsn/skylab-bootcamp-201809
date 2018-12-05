@@ -1,14 +1,54 @@
 import React, { Component } from 'react'
+import logic from '../../logic'
+import { NavLink, withRouter } from 'react-router-dom'
 import './Checkout.sass'
 
 class Checkout extends Component {
 
+    state = {
+        error: null,
+        userCheckout: [],
+        successMessage: 'Your order has been processed'
+    }
+
+    componentDidMount() {
+        try {
+            logic.showCheckout()
+                .then(userCheckout => { this.setState({ userCheckout: userCheckout.checkout }) })
+                .catch(err => this.setState({ error: err.message }))
+        } catch (err) {
+            this.setState({ error: err.message })
+        }
+    }
+
+    handleCreateOrder = event => {
+        event.preventDefault()
+        let total = 0
+        this.state.userCheckout.map(item => {
+            total += item.price
+        })
+
+        const products = this.state.userCheckout.map(ob => ob.productId)
+        logic.createOrder(logic._userId, products)
+            .then(() => this.props.history.push('/my-orders'))
+
+    }
+
     render() {
+
+        const prices = []
+        this.state.userCheckout.forEach(item => {
+            return prices.push(item.price)
+        })
+
+        let total = 0
+        for (let i in prices) { total += prices[i] }
+
         return (
             <div className="row">
                 <div className="col-75">
-                    <div className="container">
-                        <form className="checkout-form">
+                    <div className="container_checkout">
+                        <form className="checkout-form" onSubmit={this.handleCreateOrder}>
 
                             <div className="row">
                                 <div className="col-50">
@@ -66,18 +106,28 @@ class Checkout extends Component {
                                 <input type="checkbox" defaultChecked="checked" name="sameadr" /> Shipping address same as billing
                             </label>
                             <input type="submit" value="Make Purchase" className="btn" />
+                            <NavLink to='/home'><input type="submit" value="No, I changed my mind, take me home!" className="btn-regret" /></NavLink>
                         </form>
                     </div>
                 </div>
                 <div className="col-25">
-                    <div className="container">
-                        <h4>Cart <span className="price"><i className="fa fa-shopping-cart"></i> <b>4</b></span></h4>
-                        <p><a href="#">Product 1</a> <span className="price">$15</span></p>
-                        <p><a href="#">Product 2</a> <span className="price">$5</span></p>
-                        <p><a href="#">Product 3</a> <span className="price">$8</span></p>
-                        <p><a href="#">Product 4</a> <span className="price">$2</span></p>
-                        <hr />
-                        <p>Total<span className="price"><b>$30</b></span></p>
+                    <div className="container-cart">
+                        <h4>Cart <span className="price"><i className="fa fa-shopping-cart"></i> <b>{this.state.userCheckout.length}</b></span></h4>
+
+                        {this.state.userCheckout.map(item => {
+                            return (
+                                <div>
+                                    <ul>
+                                        <span>{item.brand} {item.model}</span>
+                                        <span className="price">{item.price} €</span>
+                                        <br></br>
+                                        <hr></hr>
+                                    </ul>
+                                </div>
+                            )
+                        })}
+                        <br></br>
+                        <p>Total <span className="price"><b>{total}€</b></span></p>
                     </div>
                 </div>
             </div>
@@ -85,4 +135,4 @@ class Checkout extends Component {
     }
 }
 
-export default Checkout
+export default withRouter(Checkout)

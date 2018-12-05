@@ -11,18 +11,21 @@ import '../Sidebar/Sidebar.sass'
 class Home extends Component {
 
     state = {
-        products: []
+        products: [],
+        refresh: 0
     }
 
     pushProducts = (products) => {
         this.setState({ products })
     }
 
+    handleRefresh = () => this.setState({ refresh: this.state.refresh + 1 })
+
     render() {
 
         return <section>
             <header>
-                <NavbarPage />
+                <NavbarPage refresh={this.state.refresh} />
                 <ModalPage />
             </header>
 
@@ -41,7 +44,7 @@ class Home extends Component {
                 <Sidebar className="aside" pushProducts={this.pushProducts} />
 
                 <main className="main">
-                    <Main products={this.state.products} />
+                    <Main products={this.state.products} onHandleRefresh={this.handleRefresh} />
                 </main>
             </section>
 

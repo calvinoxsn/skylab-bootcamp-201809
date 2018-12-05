@@ -55,6 +55,28 @@ const Product = new Schema({
     }
 })
 
+const Order = new Schema({
+
+    products: [{
+        type: ObjectId,
+        ref: 'Product',
+        required: true
+    }],
+    total: {
+        type: String,
+        required: true
+
+    },
+    date: {
+        type: Date,
+        default: Date.now
+    },
+    user: {
+        type: ObjectId,
+        ref: 'User'
+    }
+})
+
 const User = new Schema({
     name: {
         type: String,
@@ -78,20 +100,31 @@ const User = new Schema({
         type: String,
         required: true
     },
-    
+
     wishlist: [{
         type: ObjectId,
-        ref: 'Product'    
+        ref: 'Product'
     }],
 
     shoppingCart: [{
         type: ObjectId,
         ref: 'Product'
+    }],
+
+    checkout: [{
+        type: ObjectId,
+        ref: 'Product'
+    }],
+
+    orders: [{
+        type: ObjectId,
+        ref: 'Order'
     }]
 })
 
 module.exports = {
     Product,
-    User
+    User,
+    Order
 }
 

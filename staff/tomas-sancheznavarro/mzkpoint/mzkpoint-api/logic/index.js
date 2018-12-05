@@ -1,8 +1,6 @@
-const { User, Product } = require('../data')
+const { User, Product, Order } = require('../data')
 const { AlreadyExistsError, AuthError, NotAllowedError, NotFoundError, ValueError } = require('../errors')
 const validate = require('../utils/validate')
-// const fs = require('fs')
-// const path = require('path')
 
 const logic = {
     registerUser(name, surname, username, email, password) {
@@ -176,6 +174,7 @@ const logic = {
             })
 
             user.wishlist.push(productId)
+
             await user.save()
         })()
     },
@@ -200,10 +199,13 @@ const logic = {
                 return items
             }).lean()
 
+
             products.forEach(item => {
                 item.productId = item._id
                 delete item._id
             })
+
+
 
             return products
 
@@ -229,6 +231,7 @@ const logic = {
 
             user.wishlist = items
 
+
             await user.save()
 
         })()
@@ -243,8 +246,6 @@ const logic = {
             let user = await User.findById(userId)
 
             user.shoppingCart.push(productId)
-
-            console.log(user.shoppingCart)
 
             await user.save()
 
@@ -299,6 +300,127 @@ const logic = {
             user.shoppingCart = items
 
             await user.save()
+        })()
+    },
+
+    // CHECKOUT
+
+    addItemToCheckout(userId, productId) {
+
+        return (async () => {
+
+            let user = await User.findById(userId)
+
+            user.checkout.push(productId)
+
+            await user.save()
+
+        })()
+    },
+
+    showCheckout(userId) {
+
+        validate([
+            { key: 'userId', value: userId, type: String }
+        ])
+
+        return (async () => {
+
+            const user = await User.findById(userId).lean()
+
+            if (!user) throw new NotFoundError(`user with id number ${id} not found`)
+
+            const _items = user.checkout
+
+            const products = await Product.find({
+                '_id': { $in: _items }
+            }, function (err, items) {
+                return items
+            }).lean()
+
+            products.forEach(item => {
+                item.productId = item._id
+                delete item._id
+            })
+
+            return products
+
+        })()
+    },
+
+    removeItemInCheckout(userId, productId) {
+        validate([
+            { key: 'userId', value: userId, type: String },
+            { key: 'productId', value: productId, type: String }
+        ])
+
+        return (async () => {
+            const user = await User.findById(userId)
+
+            if (!user) throw new NotFoundError(`user with id ${userId} not found`)
+
+            let checkout = user.checkout
+
+            let items = checkout.filter(item => item != productId)
+
+            user.checkout = items
+
+            await user.save()
+        })()
+    },
+
+    // ORDERS
+
+    createOrder(user, products) {
+
+        return (async () => {
+            const _products = await Product.find({ _id: { $in: products } })
+
+            const _user = await User.findById(user)
+
+            let total = _products.reduce((acc, product) => acc + product.price, 0)
+
+            const newOrder = await new Order({
+                products,
+                user,
+                date: Date.now(),
+                total
+            })
+
+            await newOrder.save()
+
+            _user.checkout = []
+
+            _user.shoppingCart = []
+
+            await User.updateOne({ _id: user }, { $push: { orders: newOrder._id } })
+
+            await _user.save()
+        })()
+    },
+
+    async showOrders(userId) {
+
+        validate([
+            { key: 'userId', value: userId, type: String }
+        ])
+
+        return (async () => {
+
+            const user = await User.findById(userId).lean()
+
+            if (!user) throw new NotFoundError(`user not found`)
+
+            const orderIds = user.orders
+
+            const orders = await Order.find({
+                _id: { $in: orderIds }
+            }, function (err, orders) {
+                return orders
+            }).populate('products').lean().exec()
+
+            return orders
+
         })()
     }
 }

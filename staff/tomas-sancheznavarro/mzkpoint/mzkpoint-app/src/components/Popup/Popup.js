@@ -38,8 +38,8 @@ class ModalPage extends Component {
                         {this.props.activeProduct &&
                             this.props.activeProduct.features.map(item => {
                                 return (
-                                    <ul key={Math.random()}>
-                                        <li>{item}</li>
+                                    <ul className="features" key={Math.random()}>
+                                        <li className="features-li">{item}</li>
                                     </ul>
                                 )
                             })

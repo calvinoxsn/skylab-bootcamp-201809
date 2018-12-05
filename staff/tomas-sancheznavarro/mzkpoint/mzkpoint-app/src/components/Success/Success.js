@@ -4,7 +4,7 @@ function Success(message) {
 
     return swal({
         type: 'success',
-        title: `Succesfully ${message}`,
+        title: message,
         showConfirmButton: false,
         timer: 1500
     })

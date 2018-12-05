@@ -6,7 +6,7 @@ import Success from '../Success/Success'
 import './Register.sass'
 
 class Register extends Component {
-    state = { error: null, name: '', surname: '', username: '', email: '', password: '', title: 'Registered' }
+    state = { error: null, name: '', surname: '', username: '', email: '', password: '', successMessage: 'User succesfully registered!' }
 
     handleNameChange = event => {
         const name = event.target.value
@@ -50,7 +50,7 @@ class Register extends Component {
         try {
             logic.registerUser(name, surname, username, email, password)
                 .then(() => {
-                    Success(this.state.title).then(() => { this.setState({ error: null }, () => this.props.history.push('/login')) })
+                    Success(this.state.successMessage).then(() => { this.setState({ error: null }, () => this.props.history.push('/login')) })
 
 
                 })

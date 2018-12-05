@@ -2,6 +2,8 @@
 
 .mycard
     transition: box-shadow 0.3s linear
+    height: 732px
+    overflow-y: auto
     &:hover
         box-shadow: 0 2px 25px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12)
         cursor: pointer
@@ -32,12 +34,13 @@
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2)
 
 
-.container 
+.card-container 
     padding: 2px 16px
     
 .price-tag
     display: flex
     justify-content: center
+    color: green
     font-size: 2em
     font-weight: bold
     font-style: oblique
@@ -55,9 +58,10 @@
     margin: 4px 2px
     cursor: pointer
     transition-duration: 0.4s
+    width: 100%
 .card-button:hover
     box-shadow: 0 5px 5px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19)
     
 .fa-heart, .fa-shopping-cart
     padding-left: 15px
-.fa-
+

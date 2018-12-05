@@ -101,7 +101,6 @@ const logic = {
         })
             .then(res => res.json())
             .then(res => {
-                console.log(res)
                 if (res.error) throw Error(res.error)
                 return res
             })
@@ -196,7 +195,7 @@ const logic = {
             .then(res => {
                 if (res.error) throw Error(res.error)
 
-                return res.data
+                return res
             })
 
     },
@@ -204,10 +203,6 @@ const logic = {
     removeItemInCart(productId) {
         if (typeof productId !== 'string') throw new TypeError(`${productId} is not a string`)
         if (!productId.trim().length) throw Error('product id is empty or blank')
-
-        // if (typeof userId !== 'string') throw new TypeError(`${userId} is not a string`)
-        // if (!userId.trim().length) throw Error('user id is empty or blank')
-
 
         return fetch(`${this.url}/users/shopping-cart/${productId}`, {
             method: 'DELETE',
@@ -220,6 +215,105 @@ const logic = {
                 if (res.error) throw Error(res.error)
             })
     },
+
+    ////// CHECKOUT AREA //////
+
+    addItemToCheckout(productId) {
+        if (typeof productId !== 'string') throw new TypeError(`${productId} is not a string`)
+        if (!productId.trim().length) throw Error('product id is empty or blank')
+
+        return fetch(`${this.url}/users/checkout`, {
+            method: 'POST',
+            body: JSON.stringify({ productId }),
+            headers: {
+                'Authorization': `Bearer ${this._token}`,
+                'Content-Type': 'application/json; charset=utf-8'
+            }
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res.error) throw Error(res.error)
+                return res
+            })
+    },
+
+    showCheckout() {
+
+        return fetch(`${this.url}/users/products/checkout`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${this._token}`
+            }
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res.error) throw Error(res.error)
+
+                return res
+            })
+
+    },
+
+    removeItemInCheckout(productId) {
+        if (typeof productId !== 'string') throw new TypeError(`${productId} is not a string`)
+        if (!productId.trim().length) throw Error('product id is empty or blank')
+
+        return fetch(`${this.url}/users/checkout/${productId}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${this._token}`
+            }
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res.error) throw Error(res.error)
+            })
+    },
+
+    ////// ORDERS //////
+
+    createOrder(user, products) {
+
+
+        // if (typeof products !== 'array') throw new TypeError(`${products} is not an array`)
+        // if (!products.length) throw Error('product field is empty')
+
+        // if (typeof total !== 'string') throw new TypeError(`${total} is not a string`)
+        // if (!total.trim().length) throw Error('product id is empty or blank')
+
+        // if (typeof userId !== 'string') throw new TypeError(`${userId} is not a string`)
+        // if (!userId.trim().length) throw Error('product id is empty or blank')
+
+        return fetch(`${this.url}/users/orders`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${this._token}`,
+                'Content-Type': 'application/json; charset=utf-8'
+            },
+            body: JSON.stringify({ user, products })
+        })
+            .then(res =>
+                res.json())
+            .then(res => {
+                if (res.error) throw Error(res.error)
+            })
+    },
+
+    showOrders() {
+        return fetch(`${this.url}/users/custom/orders`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${this._token}`
+            }
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res.error) throw Error(res.error)
+
+                return res
+            })
+
+    }
 }
 
 export default logic

@@ -2,16 +2,20 @@ import React, { Component } from 'react'
 import Error from '../Error/Error'
 import logic from '../../logic'
 import './Card.sass'
+import { withRouter } from 'react-router-dom'
+
 
 
 class Card extends Component {
 
     state = {
-        error: null
+        error: null,
+
     }
 
-    addItemToWishlist = (productId) => {
+    handleLoginClick = () => this.props.history.push('/login')
 
+    addItemToWishlist = (productId) => {
         try {
             logic.addItemToWishlist(productId)
                 .then(() => {
@@ -22,6 +26,8 @@ class Card extends Component {
         } catch (err) {
             this.setState({ error: err.message })
         }
+
+        this.props.onHandleRefresh()
     }
 
     addItemToCart = (productId) => {
@@ -35,6 +41,8 @@ class Card extends Component {
         } catch (err) {
             this.setState({ error: err.message })
         }
+
+        this.props.onHandleRefresh()
     }
 
     handleRemoveItemfromWishlist = (productId) => {
@@ -42,6 +50,8 @@ class Card extends Component {
         logic.removeItemInWishlist(productId)
             .then(() => logic.showCart())
             .then(userWishlist => this.setState({ userWishlist }))
+
+        this.props.onHandleRefresh()
     }
 
     handleRemoveItemFromCart = (productId) => {
@@ -49,6 +59,8 @@ class Card extends Component {
         logic.removeItemInCart(productId)
             .then(() => logic.showWishlist())
             .then(userShoppingCart => this.setState({ userShoppingCart }))
+
+        this.props.onHandleRefresh()
     }
 
     render() {
@@ -61,19 +73,27 @@ class Card extends Component {
                     <img src={product.imageUrl} onClick={() => this.props.toggleModal(product)} alt="" />
                     <hr className="line" />
                 </div>
-                <div className="container">
+                <div className="card-container">
                     <p>{product.brand} {product.model}</p>
                     <p className="price-tag">{product.price}€</p>
                     <div>
-                        <button className="card-button" onClick={() => this.addItemToWishlist(product.productId)}>Add to Wishlist<i className="fa fa-heart"></i></button>
+                        {logic.loggedIn ?
+                            <button className="card-button" onClick={() => this.addItemToWishlist(product.productId)}>Add to Wishlist<i className="fa fa-heart"></i></button> : null}
+                        {logic.loggedIn ?
+                            <button className="card-button" onClick={() => this.handleRemoveItemfromWishlist(product.productId)}>Remove from Wishlist</button> : null}
 
-                        <button className="card-button" onClick={() => this.handleRemoveItemfromWishlist(product.productId)}>Remove from Wishlist</button>
+                        {logic.loggedIn ?
+                            <button className="card-button"
+                                onClick={() => this.addItemToCart(product.productId)}>Add to Shopping Cart<i className="fa fa-shopping-cart"></i></button> :
 
-                        <button className="card-button" onClick={() => this.addItemToCart(product.productId)}>Add to Shopping Cart<i className="fa fa-shopping-cart"></i></button>
+                            <button className="card-button"
+                                onClick={() => this.handleLoginClick()}>Add to Shopping Cart<i className="fa fa-shopping-cart"></i></button>
+                        }
 
-                        <button className="card-button" onClick={() => this.handleRemoveItemFromCart(product.productId)}>Remove from Shopping Cart</button>
+                        {logic.loggedIn ?
+                            <button className="card-button" onClick={() => this.handleRemoveItemFromCart(product.productId)}>Remove from Shopping Cart</button> : null}
                     </div>
-              
+
                 </div>
 
             </div>
@@ -81,5 +101,5 @@ class Card extends Component {
     }
 }
 
-export default Card
+export default withRouter(Card)
 

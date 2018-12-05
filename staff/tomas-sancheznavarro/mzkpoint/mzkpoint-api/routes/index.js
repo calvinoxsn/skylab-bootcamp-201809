@@ -200,4 +200,89 @@ router.delete('/users/shopping-cart/:productId', [bearerTokenParser, jwtVerifier
             }))
     }, res)
 })
+
+// CHECKOUT AREA
+
+router.post('/users/checkout', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, res) => {
+
+    routeHandler(() => {
+
+        const { sub, body: { productId } } = req
+
+        if (!sub) throw Error('Invalid token!')
+
+
+        return logic.addItemToCheckout(sub, productId)
+            .then(() =>
+                res.json({
+                    message: `Item ${productId} succesfully added to checkout area`
+                })
+            )
+    }, res)
+})
+
+router.get('/users/products/checkout', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, res) => {
+
+    routeHandler(() => {
+        const { sub } = req
+
+        if (!sub) throw Error('Please enter a valid token!')
+
+        return logic.showCheckout(sub)
+            .then(checkout =>
+                res.json({ checkout })
+            )
+    }, res)
+})
+
+router.delete('/users/checkout/:productId', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, res) => {
+    routeHandler(() => {
+        const { sub, params: { productId } } = req
+
+        if (!sub) throw Error('Invalid token')
+
+        return logic.removeItemInCheckout(sub, productId)
+            .then(() => res.json({
+                message: 'Item succesfully removed from checkout area'
+            }))
+    }, res)
+})
+
+// ORDERS
+
+//CREATE ORDER
+
+router.post('/users/orders', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, res) => {
+
+    routeHandler(() => {
+
+        const { sub, body: { products } } = req
+
+        if (!sub) throw Error('Invalid token!')
+
+
+        return logic.createOrder(sub, products)
+            .then(() => {
+                return res.json({
+                    message: `Order succesfully created`
+                })
+            }
+            )
+    }, res)
+})
+
+//RETRIEVE ORDER
+router.get('/users/custom/orders', [bearerTokenParser, jwtVerifier, jsonBodyParser], (req, res) => {
+
+    routeHandler(() => {
+        const { sub } = req
+
+        if (!sub) throw Error('Please enter a valid token!')
+
+        return logic.showOrders(sub)
+            .then(orders =>
+                res.json({ orders })
+            )
+    }, res)
+})
 module.exports = router

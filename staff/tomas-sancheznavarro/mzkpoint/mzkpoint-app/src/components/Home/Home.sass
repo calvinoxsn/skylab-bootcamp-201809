@@ -9,8 +9,9 @@
     flex-direction: column
     flex-wrap: wrap
     @include screen(1024,"flex-direction", row)
+    margin-top: 30px
     .aside
-        background: lightgrey
+        background: white
         @include screen(1024,"width", 20%)
         @include screen(1024,"margin-right", 1em)
        
@@ -23,6 +24,7 @@
             display: flex
             flex-wrap: wrap
             justify-content: space-around
+            align-items: start
             @include screen(1024,"justify-content", flex-start) 
             padding: 0
             width: 100%

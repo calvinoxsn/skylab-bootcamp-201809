@@ -18,25 +18,33 @@ class NavbarPage extends Component {
                 .then(userWishlist => { this.setState({ userWishlist: userWishlist.wishlist }) })
                 .catch(err => this.setState({ error: err.message }))
             logic.showCart()
-                .then(userShoppingCart => { this.setState({ userShoppingCart: userShoppingCart.shoppingCart }) })
+                .then(userShoppingCart => {
+                    this.setState({ userShoppingCart: userShoppingCart.shoppingCart })
+                })
                 .catch(err => this.setState({ error: err.message }))
         } catch (err) {
             this.setState({ error: err.message })
         }
     }
 
-    componentWillReceiveProps(props) {
+    componentWillReceiveProps() {
+
         try {
             logic.showWishlist()
                 .then(userWishlist => { this.setState({ userWishlist: userWishlist.wishlist }) })
                 .catch(err => this.setState({ error: err.message }))
-            logic.showCart()
-                .then(userShoppingCart => { this.setState({ userShoppingCart: userShoppingCart.shoppingCart }) })
-                .catch(err => this.setState({ error: err.message }))
+                .then(logic.showCart()
+                    .then(userShoppingCart => {
+                        this.setState({ userShoppingCart: userShoppingCart.shoppingCart })
+                    })
+                    .catch(err => this.setState({ error: err.message })))
         } catch (err) {
             this.setState({ error: err.message })
         }
     }
+
+
+
 
 
     toggleCollapse = collapseID => () =>
@@ -55,7 +63,9 @@ class NavbarPage extends Component {
                     <NavItem>
                         <NavLink to="/my-shoppingcart" className="waves-effect waves-light"><Fa icon="shopping-cart" className="mr-1" />My Shopping Cart <span>({this.state.userShoppingCart.length})</span></NavLink>
                     </NavItem>
-
+                    <NavItem>
+                        <NavLink to="/my-orders" className="waves-effect waves-light">My Orders</NavLink>
+                    </NavItem>
                     <NavItem>
                         <NavLink onClick={this.handleLogoutClick} to="#" className="waves-effect waves-light"><Fa icon="sign-out-alt" className="mr-1" />Log Out</NavLink>
                     </NavItem>
