@@ -29,19 +29,16 @@ class SearchBar extends Component {
                 .catch(({ message }) => Error(message))
         } catch (err) {
             this.setState({ error: err.message })
-    
+
         }
     }
 
     render() {
-        const { error } = this.state
 
         return <form onSubmit={this.handleSubmit}>
             <div className="form-group">
-                <input className="search-bar" type="text" placeholder="Search by instrument or brand" onChange={this.handleSearchChange} />
-                <label htmlFor="search-bar">Search by instrument or brand</label>
-
-                {/* {error && <Error message={error} />} */}
+                <input className="search-bar" type="text" placeholder="Search by instrument, brand or model" onChange={this.handleSearchChange} />
+                <label htmlFor="search-bar">Search by instrument, brand, or model</label>
             </div>
         </form>
     }

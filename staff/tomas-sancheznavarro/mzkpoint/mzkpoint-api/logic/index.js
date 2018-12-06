@@ -39,7 +39,7 @@ const logic = {
 
         return (async () => {
             const user = await User.findById(id, { '_id': 0, password: 0, __v: 0 }).lean()
-
+            debugger
             if (!user) throw new NotFoundError(`user with id ${id} not found`)
 
             user.id = id
@@ -104,7 +104,7 @@ const logic = {
                 {
                     $or: [{ instrument: { $regex: search, $options: 'i' } },
                     { brand: { $regex: search, $options: 'i' } },
-                    { features: { $regex: search, $options: 'i' } },
+                    { model: { $regex: search, $options: 'i' } },
                     ]
                 },
                 (err, data) => {
@@ -162,7 +162,10 @@ const logic = {
     // WISHLIST
 
     addItemToWishlist(userId, productId) {
-
+        validate([
+            { key: 'userId', value: userId, type: String },
+            { key: 'productId', value: productId, type: String }
+        ])
         return (async () => {
 
             let user = await User.findById(userId)
@@ -205,8 +208,6 @@ const logic = {
                 delete item._id
             })
 
-
-
             return products
 
         })()
@@ -240,6 +241,10 @@ const logic = {
     // SHOPPING CART  
 
     addItemToCart(userId, productId) {
+        validate([
+            { key: 'userId', value: userId, type: String },
+            { key: 'productId', value: productId, type: String }
+        ])
 
         return (async () => {
 
@@ -306,6 +311,10 @@ const logic = {
     // CHECKOUT
 
     addItemToCheckout(userId, productId) {
+        validate([
+            { key: 'userId', value: userId, type: String },
+            { key: 'productId', value: productId, type: String }
+        ])
 
         return (async () => {
 

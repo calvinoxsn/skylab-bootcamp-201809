@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha logic"
+    "test": "mocha logic",
+    "coverage": "nyc mocha logic/index.spec.js",
+    "coverage-report": "nyc report --reporter=html"
   },
   "author": "",
   "license": "ISC",
@@ -17,6 +19,8 @@
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "nodemon": "^1.18.7"
+    "mocha": "^5.2.0",
+    "nodemon": "^1.18.7",
+    "nyc": "^13.1.0"
   }
 }
