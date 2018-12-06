@@ -4,11 +4,11 @@
 
 The application allows its use by registering users. The user can upload their vinyls, follow other users, likes vinyls, add comment to vinyls.
 
-You can also searches for users and serach for vinyls
+You can also search for users and search for vinyls
 
-Each user has a profile page where they can see their data as related vinyls.
+Each user has a profile page where can see his data and the related vinyls.
 
-The user can have a section where they can edit their personal data, profile photo, edit or delete his vinyls.
+The user can has a section where they can edit his personal data, profile photo, edit or delete his vinyls.
 
 ## Use cases diagram
 
