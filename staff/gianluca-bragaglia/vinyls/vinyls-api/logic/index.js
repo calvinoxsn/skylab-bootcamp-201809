@@ -1,3 +1,4 @@
+'use strict'
 
 const { models: { User, Comment, Vinyl } } = require('vinyls-data')
 const { env: { PORT } } = process
@@ -168,8 +169,6 @@ const logic = {
         return (async () => {
             const users = await User.find().lean()
 
-            if (!users) throw new NotFoundError(`users not found`)
-
             const _users = users.filter( _index => _index._id != id )
 
             _users.forEach(user => {
@@ -203,9 +202,6 @@ const logic = {
       
         return (async () => {
             const users = await User.find().lean()
-
-            if (!users) throw new NotFoundError(`users not found`)
-
 
             users.forEach(user => {
 
@@ -348,7 +344,7 @@ const logic = {
 
             const follow = await User.findOne({ username: followUsername })
 
-            if (!follow) throw new NotFoundError(`user with username ${followUsername} not found`)
+            // if (!follow) throw new NotFoundError(`user with username ${followUsername} not found`)
 
             if (user.id === follow.id) throw new NotAllowedError('user cannot follow himself')
             
@@ -568,9 +564,6 @@ const logic = {
 
         validate([{ key: 'id', value: id, type: String }])
 
-        if (!id.trim().length) throw new ValueError('id is empty or blank')
-
-
         return (async () => {
 
             const user = await User.findById(id)
@@ -700,8 +693,6 @@ const logic = {
       
         return (async () => {
             const vinyls = await Vinyl.find().lean()
-           
-            if (!vinyls) throw new NotFoundError(`vinyls not found`)
 
             vinyls.forEach(vinyl => {
 
@@ -822,9 +813,6 @@ const logic = {
         
         return (async () => {
             
-            if (!(query.trim().length)) throw new ValueError('You must enter at least one search term')
-            
-
             const vinyls = await Vinyl.find({ title: { $regex: query, $options: 'i' } }).lean()
 
             vinyls.forEach(vinyl => {
@@ -1119,8 +1107,7 @@ const logic = {
     /**
      * Retrieve user favourites Vinyls
      * 
-     * @param {string} id The vinyl id
-     * @param {string} userId The user id
+     * @param {string} id The user id
      *  
      * @throws {TypeError} On non-string id or userId
      * @throws {Error} On empty or blank id id or userId
@@ -1139,6 +1126,8 @@ const logic = {
 
 
             const _vinyls =  await Vinyl.find( { likes : { $elemMatch :  { $eq: id } } } ).lean()
+
+            if (!id) throw new NotFoundError(`user with id ${userId} not found`)
     
             
             _vinyls.forEach(vinyl => {
@@ -1177,11 +1166,7 @@ const logic = {
 
         return (async () => {
 
-            debugger
-
             let user = await User.findById(id)
-
-            debugger
 
             if (!user) throw new NotFoundError(`user does not exist`)
 

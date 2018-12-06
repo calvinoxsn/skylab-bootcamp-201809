@@ -1,12 +1,11 @@
+'use strict'
+
 const { mongoose, models: { User, Vinyl} } = require('vinyls-data')
 const logic = require('./index')
-const { AlreadyExistsError, AuthError, NotFoundError, ValueError } = require('../errors')
+const { AlreadyExistsError, AuthError, NotFoundError, ValueError, NotAllowedError } = require('../errors')
 const { expect } = require('chai')
 const fs = require('fs')
-// const path = require('path')
-// const hasha = require('hasha')
-// const text2png = require('text2png')
-// const streamToArray = require('stream-to-array')
+
 
 const MONGO_URL = 'mongodb://localhost:27017/vinyls-test'
 
@@ -104,7 +103,7 @@ describe('logic', () => {
         })
 
         describe('authenticate', () => {
-            let user
+            let user, email, username, password
 
             beforeEach(async () => {
                 email = `email-${Math.random()}@tio.com`
@@ -162,10 +161,10 @@ describe('logic', () => {
         })
 
         describe('retrieve user by id', () => {
-            let user
+            let user, email, username, password
             
             beforeEach(async () => {
-                user = new User({ email: 'John@jon.com', username: 'jd', password: '123' })
+                user = await new User({ email: 'John@jon.com', username: 'jd', password: '123' })
 
                 await user.save()
             })
@@ -199,28 +198,25 @@ describe('logic', () => {
                 expect(() => logic.retrieveUser('   \t\n')).to.throw(ValueError, 'id is empty or blank')
             })
 
-            false && it('should fail on not found id', async () => {
-                
-               
-                const id = '1234'
-                
-                // await User.findById(id)
+            describe('without existing user', () => {
+                beforeEach(async () => await User.deleteMany())
 
-                try {
-
-                    await logic.retrieveUser(id)
-                    expect(true).to.be.false
-                } catch (err) {
-                    expect(err).to.be.instanceof(NotFoundError)
-                    expect(err.message).to.equal(`user with id ${id} not found`)
-                }
+                it('should fail on not found user', async () => {
+                    try {
+                        await logic.retrieveUser(user.id)
+                        expect(true).to.be.false
+                    } catch (err) {
+                        expect(err).to.be.instanceof(NotFoundError)
+                        expect(err.message).to.equal(`user with id ${user.id} not found`)
+                    }
+                })
             })
 
         })
 
 
         describe('retrieve gallery Users', () => {
-            let user
+            let user, user2
             
             beforeEach(async () => {
                 user = new User({ email: 'John@jon.com', username: 'jd', password: '123' })
@@ -254,7 +250,7 @@ describe('logic', () => {
         })
 
         describe('retrieve all users', () => {
-            let user
+            let user, user2
             
             beforeEach(async () => {
                 user = new User({ email: 'John@jon.com', username: 'jd', password: '123' })
@@ -271,6 +267,20 @@ describe('logic', () => {
 
                 expect(_users.length).to.equal(2)
 
+            })
+
+            false && describe('without existing user', () => {
+                beforeEach(async () => await User.deleteMany())
+
+                it('should fail on not found user', async () => {
+                    try {
+                        await logic.retrieveUsers()
+                        expect(true).to.be.false
+                    } catch (err) {
+                        expect(err).to.be.instanceof(NotFoundError)
+                        expect(err.message).to.equal(`users not found`)
+                    }
+                })
             })
 
 
@@ -296,8 +306,6 @@ describe('logic', () => {
                 const _users = await User.find().lean()
 
                 const [_user] = _users
-
-                //expect(_user.id.toString()).to.equal(id.toString())
 
                 expect(_user.imgProfileUrl).to.equal(newImgProfileUrl)
                 expect(_user.bio).to.equal(newBio)
@@ -476,9 +484,27 @@ describe('logic', () => {
 
                 expect(() => logic.updateUser(false,  username, password, imgProfileUrl, bio)).to.throw( TypeError, 'false is not a string')
             })
+        
+            describe('without existing user', () => {
+                beforeEach(async () => await User.deleteMany())
+
+                it('should fail on not found user', async () => {
+                    const { id, username, password } = user
+
+                    const newUsername = `${username}-${Math.random()}`
+
+                try {
+                    await logic.updateUser(id, newUsername, password, null, null, null)
+                    expect(true).to.be.false
+                    } catch (err) {
+                        expect(err).to.be.instanceof(NotFoundError)
+                        expect(err.message).to.equal(`user with id ${user.id} not found`)
+                    }
+                })
+            })
 
 
-        describe('with existing user', () => {
+            describe('with existing user', () => {
                 let user2
 
    
@@ -509,7 +535,7 @@ describe('logic', () => {
         })
 
         describe('search users', () => {
-            let user
+            let user, user2, user3, user4
             
             beforeEach(async () => {
                 user = new User({ email: 'John@jon.com', username: 'jda', password: '123' })
@@ -569,19 +595,14 @@ describe('logic', () => {
         })
 
         describe('add follow', () => {
-            let user, user2, user3, user4
+            let user, user2
             
             beforeEach(async () => {
                 user = new User({ email: 'John@jon.com', username: 'jdakk', password: '123' })
                 user2 = new User({ email: 'Joh2n@jon.com', username: 'jd2kk', password: '1232' })
-                user3 = new User({ email: 'Joh3n@jon.com', username: 'jd3akk', password: '1233' })
-                user4 = new User({ email: 'Joh2n4@jon.com', username: 'jd24kk', password: '12342' })
-
 
                 await user.save()
                 await user2.save()
-                await user3.save()
-                await user4.save()
             })
             
 
@@ -624,6 +645,62 @@ describe('logic', () => {
                 const id = false    
                 const followUsername = 'jd2kkd'
                 expect(() => logic.addFollow(id, followUsername)).to.throw( TypeError, 'false is not a string')
+            })
+
+            describe('without existing user', () => {
+                beforeEach(async () => await User.deleteMany())
+
+                it('should fail on not found user', async () => {
+                    const followUsername = 'jd2kkd'
+                    try {
+                        await logic.addFollow(user.id, followUsername)
+                        expect(true).to.be.false
+                    } catch (err) {
+                        expect(err).to.be.instanceof(NotFoundError)
+                        expect(err.message).to.equal(`user with id ${user.id} not found`)
+                    }
+                })
+            })
+
+            false && describe('without existing user', () => {
+                let user3, user4
+                beforeEach(async () => {
+                    user3 = new User({ email: 'Johgn@jon.com', username: 'jdhhakk', password: '123' })
+                    user4 = new User({ email: 'Jgoh2n@jon.com', username: 'jhhhd2kk', password: '1232' })
+    
+                    await user3.save()
+                    await user4.save()
+                })
+                
+
+                it('should fail on not found user', async () => {
+                    const followUsername = 'jhhhd2kk'
+                    const idUser = user3.id
+                    const _idUser = idUser.toString()
+                    try {
+                        await logic.addFollow(_idUser, followUsername)
+                        expect(true).to.be.false
+                    } catch (err) {
+                        expect(err).to.be.instanceof(NotAllowedError)
+                        expect(err.message).to.equal(`user cannot follow himself'`)
+                    }
+                })
+            })
+
+            false && describe('without existing username', () => {
+
+                
+                beforeEach(async () => await User.deleteMany())
+
+                it('should fail on not found username', async () => {
+                    try {
+                        await logic.addFollow(user2.username)
+                        expect(true).to.be.false
+                    } catch (err) {
+                        expect(err).to.be.instanceof(NotFoundError)
+                        expect(err.message).to.equal(`user with id ${user2.username} not found`)
+                    }
+                })
             })
 
             it('should fail on empty followUsername', () => {
@@ -714,6 +791,21 @@ describe('logic', () => {
                 expect(() => logic.removeFollow(id, followUsername)).to.throw( ValueError, `followUsername is empty or blank`)
             })
 
+            describe('without existing user', () => {
+                beforeEach(async () => await User.deleteMany())
+
+                it('should fail on not found user', async () => {
+                    const followUsername = 'jd2kkf'
+                    try {
+                        await logic.removeFollow(user.id, followUsername)
+                        expect(true).to.be.false
+                    } catch (err) {
+                        expect(err).to.be.instanceof(NotFoundError)
+                        expect(err.message).to.equal(`user with id ${user.id} not found`)
+                    }
+                })
+            })
+
 
         })
 
@@ -764,6 +856,20 @@ describe('logic', () => {
                 expect(() => logic.isFollows(id)).to.throw( TypeError, 'false is not a string')
             })
 
+            describe('without existing user', () => {
+                beforeEach(async () => await User.deleteMany())
+
+                it('should fail on not found user', async () => {
+                    try {
+                        await logic.isFollows(user.id)
+                        expect(true).to.be.false
+                    } catch (err) {
+                        expect(err).to.be.instanceof(NotFoundError)
+                        expect(err.message).to.equal(`user with id ${user.id} not found`)
+                    }
+                })
+            })
+
         })
 
         describe('retrieve ListFollows', () => {
@@ -812,6 +918,21 @@ describe('logic', () => {
                 const id = false    
                 expect(() => logic.retrieveListFollows(id)).to.throw( TypeError, 'false is not a string')
             })
+
+            describe('without existing user', () => {
+                beforeEach(async () => await User.deleteMany())
+
+                it('should fail on not found user', async () => {
+                    try {
+                        await logic.retrieveListFollows(user.id)
+                        expect(true).to.be.false
+                    } catch (err) {
+                        expect(err).to.be.instanceof(NotFoundError)
+                        expect(err.message).to.equal(`user with id ${user.id} not found`)
+                    }
+                })
+            })
+            
 
         })
 
@@ -865,6 +986,20 @@ describe('logic', () => {
                 expect(() => logic.retrieveVinylsFollowees(id)).to.throw( TypeError, 'false is not a string')
             })
 
+            describe('without existing user', () => {
+                beforeEach(async () => await User.deleteMany())
+
+                it('should fail on not found user', async () => {
+                    try {
+                        await logic.retrieveVinylsFollowees(user.id)
+                        expect(true).to.be.false
+                    } catch (err) {
+                        expect(err).to.be.instanceof(NotFoundError)
+                        expect(err.message).to.equal(`user with id ${user.id} not found`)
+                    }
+                })
+            })
+
         })
 
         describe('retrieve ListFollowers', () => {
@@ -916,10 +1051,26 @@ describe('logic', () => {
                 expect(() => logic.retrieveListFollowers(id)).to.throw( TypeError, 'false is not a string')
             })
 
+            describe('without existing user', () => {
+                beforeEach(async () => await User.deleteMany())
+
+                it('should fail on not found user', async () => {
+                    try {
+                        await logic.retrieveListFollowers(user.id)
+                        expect(true).to.be.false
+                    } catch (err) {
+                        expect(err).to.be.instanceof(NotFoundError)
+                        expect(err.message).to.equal(`user with id ${user.id} not found`)
+                    }
+                })
+            })
+
+            
+
         })
 
         describe('add profile pictures ', ()=> {
-            let user
+            let user, username, email, password
             beforeEach(() => {
                 username = 'John'
 
@@ -963,25 +1114,6 @@ describe('logic', () => {
                 expect(() => logic.addProfilePicture(id, file)).to.throw(TypeError, 'undefined is not a string')
             })
 
-            false && it('should fail on not found id', async () => {
-                
-                let image = './data/test-images/icon-profile.png'
-
-                let file = fs.createReadStream(image)
-                const id = '1234'
-                
-                // await User.findById(id)
-
-                try {
-
-                    await logic.addProfilePicture(id, file)
-                    expect(true).to.be.false
-                } catch (err) {
-                    expect(err).to.be.instanceof(NotFoundError)
-                    expect(err.message).to.equal(`user does not exist`)
-                }
-            })
-
             it('should fail on empty id', () => {
                 let image = './data/test-images/icon-profile.png'
 
@@ -1005,6 +1137,24 @@ describe('logic', () => {
                 const id = false    
                 expect(() => logic.addProfilePicture(id, file)).to.throw( TypeError, 'false is not a string')
             })
+
+            describe('without existing user', () => {
+                beforeEach(async () => await User.deleteMany())
+
+                it('should fail on not found user', async () => {
+                    let image = './data/test-images/icon-profile.png'
+
+                    let file = fs.createReadStream(image)
+
+                    try {
+                        await logic.addProfilePicture(user.id, file)
+                        expect(true).to.be.false
+                    } catch (err) {
+                        expect(err).to.be.instanceof(NotFoundError)
+                        expect(err.message).to.equal(`user does not exist`)
+                    }
+                })
+            })
         }) 
 
         describe('connected user', () => {
@@ -1016,8 +1166,8 @@ describe('logic', () => {
                 await user.save()
      
             })
-            
 
+            
             it('should succeed on correct data', async () => {
 
                 connected = 'online'
@@ -1037,7 +1187,7 @@ describe('logic', () => {
 
                 connected = 'online'
                 let id = '1234'
-                debugger
+               
                 try {
 
                     await logic.connectedUser(id, connected)
@@ -1095,6 +1245,21 @@ describe('logic', () => {
                 const id = user.id  
                 const connected = false
                 expect(() => logic.connectedUser(id, connected)).to.throw( TypeError, 'false is not a string')
+            })
+
+            describe('without existing user', () => {
+                beforeEach(async () => await User.deleteMany())
+
+                it('should fail on not found user', async () => {
+                    connected = 'online'
+                    try {
+                        await logic.connectedUser(user.id, connected)
+                        expect(true).to.be.false
+                    } catch (err) {
+                        expect(err).to.be.instanceof(NotFoundError)
+                        expect(err.message).to.equal(`user does not exist`)
+                    }
+                })
             })
 
             
@@ -1189,6 +1354,21 @@ describe('logic', () => {
                 const id = user.id  
                 connected = false
                 expect(() => logic.disconnectedUser(id, connected)).to.throw( TypeError, 'false is not a string')
+            })
+
+            describe('without existing user', () => {
+                beforeEach(async () => await User.deleteMany())
+
+                it('should fail on not found user', async () => {
+                    connected = 'offline'
+                    try {
+                        await logic.disconnectedUser(user.id, connected)
+                        expect(true).to.be.false
+                    } catch (err) {
+                        expect(err).to.be.instanceof(NotFoundError)
+                        expect(err.message).to.equal(`user does not exist`)
+                    }
+                })
             })
 
             
@@ -1379,15 +1559,37 @@ describe('logic', () => {
                 const info = null   
                 expect(() => logic.addVinyl(id, title, artist, year, imgVinylUrl, info )).to.throw( TypeError, 'false is not a string')
             })
+
+
+            describe('without existing user', () => {
+                beforeEach(async () => await User.deleteMany())
+
+                it('should fail on not found user', async () => {
+
+                    const title = 'neverm'
+                    const artist = 'nirvana'
+                    const year = '1992'
+                    const imgVinylUrl = null
+                    const info = null
+
+                    try {
+                        await logic.addVinyl(user.id, title, artist, year, imgVinylUrl, info)
+                        expect(true).to.be.false
+                    } catch (err) {
+                        expect(err).to.be.instanceof(NotFoundError)
+                        expect(err.message).to.equal(`user with id ${user.id} not found`)
+                    }
+                })
+            })
         })
 
         describe('add vinyl picture ',  ()=> {
             let user, vinyl
             beforeEach( async () => {
-                username = 'John'
+                const username = 'John'
 
-                email = `jd-${Math.random()}@example.com`
-                password = `jd-${Math.random()}`
+                const email = `jd-${Math.random()}@example.com`
+                const password = `jd-${Math.random()}`
 
                 user = new User({ email, username, password })
 
@@ -1429,38 +1631,26 @@ describe('logic', () => {
                 
             })
 
-            // it('should fail on undefined id', () => {
-                
-            //     let image = './data/test-images/icon-profile.png'
+        
 
-            //     var file = fs.createReadStream(image)
-            //     const id = undefined
-            //     expect(() => logic.addVinylPicture(file, id)).to.throw(TypeError, 'undefined is not a string')
-            // })
+            false && describe('without existing vinyl', () => {
+                beforeEach(async () => await Vinyl.deleteMany())
 
-            // it('should fail on empty id', () => {
-            //     let image = './data/test-images/icon-profile.png'
+                it('should fail on not found vinyl', async () => {
 
-            //     var file = fs.createReadStream(image)
-            //     const id = ''
-            //     expect(() => logic.addVinylPicture(file, id)).to.throw( ValueError, `${id} is empty or blank`)
-            // })
+                    let image = './data/test-images/icon-profile.png'
 
-            // it('should fail on blank id', () => {
-            //     let image = './data/test-images/icon-profile.png'
-
-            //     var file = fs.createReadStream(image)
-            //     const id = '  '
-            //     expect(() => logic.addVinylPicture(file, id)).to.throw( ValueError, `userId is empty or blank`)
-            // })
-
-            // it('should fail on no string id (boolean)', () => {
-            //     let image = './data/test-images/icon-profile.png'
-
-            //     var file = fs.createReadStream(image)
-            //     const id = false    
-            //     expect(() => logic.addVinylPicture(file, id)).to.throw( TypeError, 'false is not a string')
-            // })
+                    var file = fs.createReadStream(image)
+                    
+                    try {
+                        await logic.addVinylPicture(file, vinyl._id)
+                        expect(true).to.be.false
+                    } catch (err) {
+                        expect(err).to.be.instanceof(NotFoundError)
+                        expect(err.message).to.equal(`vinyl does not exist`)
+                    }
+                })
+            })
         }) 
 
         describe('retrieve all vinyls', () => {
@@ -1555,18 +1745,34 @@ describe('logic', () => {
                 expect(() => logic.retrieveVinylById(false)).to.throw(TypeError, 'false is not a string')
             })
 
+            describe('without existing vinyl', () => {
+                beforeEach(async () => await Vinyl.deleteMany())
+
+                it('should fail on not found vinyl', async () => {
+                    
+                    try {
+                        await logic.retrieveVinylById(vinyl._id.toString())
+                        expect(true).to.be.false
+                    } catch (err) {
+                        expect(err).to.be.instanceof(NotFoundError)
+                        expect(err.message).to.equal(`vinyl with id ${vinyl._id} not found`)
+                    }
+                })
+            })
+
 
         })
 
         describe('retrieve vinyl by user id', () => {
-            let vinyl, user
+            let vinyl, user, id
             
             beforeEach(async () => {
                 
                 user = new User({ email: 'Jozzhn@ff.com', username: 'jvzzvvvd', password: '123' })
 
                 await user.save()
-                const id = user._id
+
+                id = user._id
                 const title = 'neverm'
                 const artist = 'nirvana'
                 const year = 1992
@@ -1614,11 +1820,25 @@ describe('logic', () => {
                 expect(() => logic.retrieveVinylsByUserId(false)).to.throw(TypeError, 'false is not a string')
             })
 
+            false && describe('without existing user', () => {
+                beforeEach(async () => await User.deleteMany())
+
+                it('should fail on not found user', async () => {
+                    try {
+                        await logic.retrieveVinylsByUserId(id)
+                        expect(true).to.be.false
+                    } catch (err) {
+                        expect(err).to.be.instanceof(NotFoundError)
+                        expect(err.message).to.equal(`vinyls with user id ${id} not found`)
+                    }
+                })
+            })
+
 
         })
 
         describe('search vinyls', () => {
-            let vinyl, user
+            let  user
             
             beforeEach(async () => {
 
@@ -1632,10 +1852,10 @@ describe('logic', () => {
                 const imgVinylUrl = null
                 const info = null
 
-                vinyl = new Vinyl({ id, title: 'ngitvana', artist, year, imgVinylUrl, info  })
-                vinyl2 = new Vinyl({ id, title: 'gggg', artist, year, imgVinylUrl, info  })
-                vinyl3 = new Vinyl({ id, title: 'gggggh', artist, year, imgVinylUrl, info  })
-                vinyl4 = new Vinyl({ id, title: 'gggggh', artist, year, imgVinylUrl, info  })
+                const vinyl = new Vinyl({ id, title: 'ngitvana', artist, year, imgVinylUrl, info  })
+                const vinyl2 = new Vinyl({ id, title: 'gggg', artist, year, imgVinylUrl, info  })
+                const vinyl3 = new Vinyl({ id, title: 'gggggh', artist, year, imgVinylUrl, info  })
+                const vinyl4 = new Vinyl({ id, title: 'gggggh', artist, year, imgVinylUrl, info  })
 
 
                 await vinyl.save()
@@ -1749,6 +1969,21 @@ describe('logic', () => {
                 expect(() => logic.removeVinyl(vinylId)).to.throw( TypeError, 'false is not a string')
             })
 
+            describe('without existing vinyl', () => {
+                beforeEach(async () => await Vinyl.deleteMany())
+
+                it('should fail on not found vinyl', async () => {
+                    
+                    try {
+                        await logic.retrieveVinylById(vinyl._id.toString())
+                        expect(true).to.be.false
+                    } catch (err) {
+                        expect(err).to.be.instanceof(NotFoundError)
+                        expect(err.message).to.equal(`vinyl with id ${vinyl._id} not found`)
+                    }
+                })
+            })
+
 
         })
 
@@ -1826,6 +2061,23 @@ describe('logic', () => {
                 const {newTitle, newArtist, newYear, newimgVinylUrl, newInfo } = vinyl
 
                 expect(() => logic.editVinyl( false, newTitle, newArtist, newYear, newimgVinylUrl, newInfo)).to.throw(TypeError, 'false is not a string')
+            })
+
+            false && describe('without existing vinyl', () => {
+                beforeEach(async () => await Vinyl.deleteMany())
+
+                it('should fail on not found vinyl', async () => {
+
+                    const {newTitle, newArtist, newYear, newimgVinylUrl, newInfo } = vinyl
+                    
+                    try {
+                        await logic.editVinyl(vinyl._id.toString(), newTitle, newArtist, newYear, newimgVinylUrl, newInfo )
+                        expect(true).to.be.false
+                    } catch (err) {
+                        expect(err).to.be.instanceof(NotFoundError)
+                        expect(err.message).to.equal(`vinyl with id ${vinyl._id} not found`)
+                    }
+                })
             })
 
         })
@@ -2275,6 +2527,8 @@ describe('logic', () => {
 
         })
     })
+
+    
 
     after(() => mongoose.disconnect())
 })
