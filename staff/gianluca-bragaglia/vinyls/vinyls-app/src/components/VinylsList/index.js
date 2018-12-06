@@ -22,14 +22,12 @@ class VinylsList extends Component {
     render() { 
 
         const { vinyls } = this.state
-
-        const _vinyls = vinyls.reverse()
         
         return ( 
             <React.Fragment>
                 
                 <div className='list-card'>
-                        {_vinyls.map(vinyl => (
+                        {vinyls.map(vinyl => (
                             <VinylListCardItem key={vinyl.idVinyl} id={vinyl.idVinyl}  userId={vinyl.id} title={vinyl.title} artist={vinyl.artist} img={vinyl.imgVinylUrl} comments={vinyl.comments.length} likes={vinyl.likes.length} year={vinyl.year}/>
                         ))}
                 </div>

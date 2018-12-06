@@ -711,7 +711,9 @@ const logic = {
 
             })
 
-            return vinyls
+            const _vinyls = vinyls.reverse()
+
+            return _vinyls
 
         })()
     },
