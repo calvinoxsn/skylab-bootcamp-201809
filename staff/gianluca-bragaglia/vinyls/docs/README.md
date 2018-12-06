@@ -10,7 +10,7 @@ Each user has a profile page where they can see their data as related vinyls.
 
 The user can have a section where they can edit their personal data, profile photo, edit or delete his vinyls.
 
-### Use cases diagram
+## Use cases diagram
 
 ![Use cases](images/use-cases.png)
 
@@ -26,22 +26,17 @@ The front end of the application was built using React. The back end is connecte
 ![Block Diagram](images/block-diagram.png)
 
 ## Components Diagram
-The application has some react components, the business logic and the two APIs used: Ticketmaster and Skylabcoders.
+The application has some react components, the front-end logic, the API back-end, the Api logic connected to the data that interacts with the mongoDB Database.
 
 ![Components Diagram](images/components-diagram.png)
 
-## Sequence Diagram
-The most significant tasks of the application are those that use the APIs. Skylab Coders API is used to save the user data (for register and login purposes) and the user’s favourites list. Ticketmaster API is used to search for events and display its details when an event is clicked.
+## Data model
 
-![Components Diagram](images/sequence-diagram-1.png)
+The Application has 3 data models, User, Vinyl and Comment that is embedded in Vinyl.
 
-![Components Diagram](images/sequence-diagram-2.png)
-
+![Data Model](images/data-model-diagram.png)
 
 
-
-## Entity Relation Diagram
-![Data diagram](images/data-diagram.png)
 
 ## Technology Stack
 
@@ -51,6 +46,7 @@ The most significant tasks of the application are those that use the APIs. Skyla
 * React
 * React Router
 * MD Bootstrap React
+* APIs
 * Node js
 * Express
 * Mongoose

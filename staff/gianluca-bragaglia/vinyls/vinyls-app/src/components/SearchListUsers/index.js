@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import logic from '../../logic'
-import Error from '../Error'
 import UserListItem from '../UserListItem'
 import { Input } from 'mdbreact'
 import './index.css'
@@ -31,7 +30,7 @@ class SearchListUsers extends Component {
 
     render() { 
 
-        const { users, error } = this.state
+        const { users } = this.state
 
         return ( 
 

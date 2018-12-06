@@ -30,7 +30,7 @@ class SearchListVinyls extends Component {
 
     render() { 
 
-        const { vinyls, error } = this.state
+        const { vinyls } = this.state
 
         return ( 
 
