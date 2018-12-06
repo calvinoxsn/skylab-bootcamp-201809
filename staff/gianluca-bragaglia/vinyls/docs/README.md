@@ -10,6 +10,9 @@ Each user has a profile page where can see his data and the related vinyls.
 
 The user can has a section where they can edit his personal data, profile photo, edit or delete his vinyls.
 
+
+## FUNCTIONAL DESCRIPTION
+
 ## Use cases diagram
 
 ![Use cases](images/use-cases.png)
@@ -19,6 +22,9 @@ The user can has a section where they can edit his personal data, profile photo,
 The application has one main activity: publish your vinyls, and other cativities like a search users, search vinyls, follow users, likes vinyls, comment vinyls.
 
 ![Use cases](images/activity-diagram.png)
+
+
+## TECHNICAL DESCRIPTION
 
 ## Block diagram
 The front end of the application was built using React. The back end is connected to an API that is connected to data module DATA for make change on the Database(CRUD)

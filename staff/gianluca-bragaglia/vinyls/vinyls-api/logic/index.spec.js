@@ -24,13 +24,18 @@ describe('logic', () => {
         describe('register', () => {
             let email, username, password
 
-            beforeEach(() => {
-                email = `email-${Math.random()}@tio.com`
+            beforeEach( () => {
+
+                email = `email1-${Math.random()}@tio.com`
                 username = `username-${Math.random()}`
-                password = `password-${Math.random()}`
+                password = `password1-${Math.random()}`
+
+                
             })
 
             it('should succeed on correct data', async () => {
+
+            
                 await logic.registerUser(email, username, password)
 
                 const _user = await User.findOne({username})
@@ -47,6 +52,25 @@ describe('logic', () => {
 
             it('should fail on undefined username', () => {
                 expect(() => logic.registerUser(email, undefined, password)).to.throw(TypeError, 'undefined is not a string')
+            })
+
+            
+
+            it('should fail on repeted username', async () => {
+
+                const email1 = `email-${Math.random()}@tio.com`
+                const username1 = 'username'
+                const password1 = `password-${Math.random()}`
+
+                const user1 = await new User({ email: email1, username: username1, password: password1 }).save()
+
+                try {
+                    await logic.registerUser(email1, username1, password1)
+                    expect(true).to.be.false
+                } catch (err) {
+                    expect(err).to.be.instanceof(AlreadyExistsError)
+                    expect(err.message).to.equal(`username ${username1} already registered`)
+                }
             })
 
             it('should fail on undefined password', () => {
@@ -175,6 +199,23 @@ describe('logic', () => {
                 expect(() => logic.retrieveUser('   \t\n')).to.throw(ValueError, 'id is empty or blank')
             })
 
+            false && it('should fail on not found id', async () => {
+                
+               
+                const id = '1234'
+                
+                // await User.findById(id)
+
+                try {
+
+                    await logic.retrieveUser(id)
+                    expect(true).to.be.false
+                } catch (err) {
+                    expect(err).to.be.instanceof(NotFoundError)
+                    expect(err.message).to.equal(`user with id ${id} not found`)
+                }
+            })
+
         })
 
 
@@ -262,6 +303,20 @@ describe('logic', () => {
                 expect(_user.bio).to.equal(newBio)
                 expect(_user.username).to.equal(newUsername)
 
+            })
+
+            it('should fail on incorrect password', async () => {
+
+                const { id, username, password } = user
+
+                const newUsername = `${username}-${Math.random()}`
+                try {
+                    await logic.updateUser(id, newUsername, 'password', null, null, null)
+                    expect(true).to.be.false
+                } catch (err) {
+                    expect(err).to.be.instanceof(AuthError)
+                    expect(err.message).to.equal(`invalid password`)
+                }
             })
 
             it('should update on correct id and password, change username (other fields null)', async () => {
@@ -880,7 +935,7 @@ describe('logic', () => {
  
                 let image = './data/test-images/icon-profile.png'
 
-                var file = fs.createReadStream(image)
+                let file = fs.createReadStream(image)
 
                 const res = await logic.addProfilePicture(user._id.toString(), file)
 
@@ -903,15 +958,34 @@ describe('logic', () => {
                 
                 let image = './data/test-images/icon-profile.png'
 
-                var file = fs.createReadStream(image)
+                let file = fs.createReadStream(image)
                 const id = undefined
                 expect(() => logic.addProfilePicture(id, file)).to.throw(TypeError, 'undefined is not a string')
+            })
+
+            false && it('should fail on not found id', async () => {
+                
+                let image = './data/test-images/icon-profile.png'
+
+                let file = fs.createReadStream(image)
+                const id = '1234'
+                
+                // await User.findById(id)
+
+                try {
+
+                    await logic.addProfilePicture(id, file)
+                    expect(true).to.be.false
+                } catch (err) {
+                    expect(err).to.be.instanceof(NotFoundError)
+                    expect(err.message).to.equal(`user does not exist`)
+                }
             })
 
             it('should fail on empty id', () => {
                 let image = './data/test-images/icon-profile.png'
 
-                var file = fs.createReadStream(image)
+                let file = fs.createReadStream(image)
                 const id = ''
                 expect(() => logic.addProfilePicture(id, file)).to.throw( ValueError, `${id} is empty or blank`)
             })
@@ -919,7 +993,7 @@ describe('logic', () => {
             it('should fail on blank id', () => {
                 let image = './data/test-images/icon-profile.png'
 
-                var file = fs.createReadStream(image)
+                let file = fs.createReadStream(image)
                 const id = '  '
                 expect(() => logic.addProfilePicture(id, file)).to.throw( ValueError, `userId is empty or blank`)
             })
@@ -927,7 +1001,7 @@ describe('logic', () => {
             it('should fail on no string id (boolean)', () => {
                 let image = './data/test-images/icon-profile.png'
 
-                var file = fs.createReadStream(image)
+                let file = fs.createReadStream(image)
                 const id = false    
                 expect(() => logic.addProfilePicture(id, file)).to.throw( TypeError, 'false is not a string')
             })
@@ -957,6 +1031,21 @@ describe('logic', () => {
                 expect(_user.connection).to.equal('online')
 
        
+            })
+
+            false && it('should fail on not found id', async () => {
+
+                connected = 'online'
+                let id = '1234'
+                debugger
+                try {
+
+                    await logic.connectedUser(id, connected)
+                    expect(true).to.be.false
+                } catch (err) {
+                    expect(err).to.be.instanceof(NotFoundError)
+                    expect(err.message).to.equal(`user does not exist`)
+                }
             })
 
             it('should fail on undefined id', () => {
@@ -1036,6 +1125,21 @@ describe('logic', () => {
                 expect(_user.connection).to.equal('offline')
 
        
+            })
+
+            false && it('should fail on not found id', async () => {
+
+                connected = 'offline'
+                let id = '1234'
+
+                try {
+
+                    await logic.connectedUser(id, connected)
+                    expect(true).to.be.false
+                } catch (err) {
+                    expect(err).to.be.instanceof(NotFoundError)
+                    expect(err.message).to.equal(`user does not exist`)
+                }
             })
 
             it('should fail on undefined id', () => {

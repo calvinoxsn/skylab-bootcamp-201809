@@ -1,5 +1,5 @@
 
-const { models: { User, Chat, Comment, Vinyl } } = require('vinyls-data')
+const { models: { User, Comment, Vinyl } } = require('vinyls-data')
 const { env: { PORT } } = process
 const { AlreadyExistsError, AuthError, NotFoundError, ValueError, NotAllowedError } = require('../errors')
 const validate = require('../utils/validate')
@@ -134,7 +134,10 @@ const logic = {
         validate([{ key: 'id', value: id, type: String }])
 
         return (async () => {
+
+
             const user = await User.findById(id, { '_id': 0, password: 0, __v: 0 }).lean()
+
 
             if (!user) throw new NotFoundError(`user with id ${id} not found`)
 
@@ -1174,7 +1177,11 @@ const logic = {
 
         return (async () => {
 
-            const user = await User.findById(id)
+            debugger
+
+            let user = await User.findById(id)
+
+            debugger
 
             if (!user) throw new NotFoundError(`user does not exist`)
 
