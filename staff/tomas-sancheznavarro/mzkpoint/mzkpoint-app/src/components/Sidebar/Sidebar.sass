@@ -1,0 +1,27 @@
+@import "../mixins"
+ul
+    display: flex
+    justify-content: space-between
+    align-items: center
+    flex-direction: row
+    flex-wrap: wrap
+    width: 90%
+    list-style: none
+    text-align: left
+    @include screen(1024,"flex-direction", column)
+   
+
+
+    li
+        width: 20%
+        text-align: center
+        @include screen(1024,"width", 100%)
+
+    
+.aside-button
+    outline: none
+    background-color: white
+    border: none
+    padding: .5em 0
+    margin: .5em 0
+    cursor: pointer
