@@ -2,7 +2,8 @@ const logic = {
     _userId: sessionStorage.getItem('userId') || null,
     _token: sessionStorage.getItem('token') || null,
 
-    url: 'http://localhost:5000/api',
+    // url: 'http://localhost:5000/api',
+    url: 'https://guarded-hamlet-26388.herokuapp.com/api',
 
     registerUser(name, surname, username, email, password) {
         if (typeof name !== 'string') throw TypeError(`${name} is not a string`)
