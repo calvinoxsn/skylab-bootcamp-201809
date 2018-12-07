@@ -28,7 +28,7 @@ In a future release, the application will offer an administration mode, which wi
 ## Block diagram
 The front-end of the application was built using React. The back-end is connected to a custom API that feeds product information to the website.
 
-![Block Diagram](images/block-diagram.png)
+![Block Diagram](https://raw.githubusercontent.com/calvinoxsn/skylab-bootcamp-201809/develop/staff/tomas-sancheznavarro/mzkpoint/docs/images/Block-diagram.png)
 
 ## Components Diagram
 The application has some react components, a front-end logic, and an API back-end connected to the data served by a MongoDB Database.
