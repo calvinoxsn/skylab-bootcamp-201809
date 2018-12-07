@@ -9,7 +9,10 @@ class NavbarPage extends Component {
         collapseID: "",
         error: null,
         userWishlist: [],
-        userShoppingCart: []
+        userShoppingCart: [],
+        userFirstname: ''
+
+
     }
 
     componentDidMount() {
@@ -22,6 +25,18 @@ class NavbarPage extends Component {
                     this.setState({ userShoppingCart: userShoppingCart.shoppingCart })
                 })
                 .catch(err => this.setState({ error: err.message }))
+            if (logic.loggedIn) {
+                logic.retrieveAuthenticatedUser()
+                    .then(({ data: { name } }) => {
+                        debugger
+                        this.setState({ userFirstname: name })
+                    })
+            } else {
+                return
+            }
+
+
+
         } catch (err) {
             this.setState({ error: err.message })
         }
@@ -95,16 +110,31 @@ class NavbarPage extends Component {
 
     render() {
         return (
-            <Navbar color="stylish-color" dark expand="md">
-                <NavbarBrand>
-                    <strong className="white-text">Welcome to MusicPoint!</strong>
-                    <img alt="logo" className="logo" src="icons/mezzopiano.svg"></img>
-                </NavbarBrand>
-                <NavbarToggler onClick={this.toggleCollapse("navbarCollapse3")} />
-                <Collapse id="navbarCollapse3" isOpen={this.state.collapseID} navbar>
-                    {this.renderNavbar()}
-                </Collapse>
-            </Navbar>
+            <div>
+                {logic.loggedIn ?
+                    <Navbar color="stylish-color" dark expand="md">
+                        <NavbarBrand>
+                            <strong className="white-text">Welcome to MusicPoint, {this.state.userFirstname}!</strong>
+                            <img alt="logo" className="logo" src="icons/mezzopiano.svg"></img>
+                        </NavbarBrand>
+                        <NavbarToggler onClick={this.toggleCollapse("navbarCollapse3")} />
+                        <Collapse id="navbarCollapse3" isOpen={this.state.collapseID} navbar>
+                            {this.renderNavbar()}
+                        </Collapse>
+                    </Navbar> :
+                    <Navbar color="stylish-color" dark expand="md">
+                        <NavbarBrand>
+                            <strong className="white-text">Welcome to MusicPoint!</strong>
+                            <img alt="logo" className="logo" src="icons/mezzopiano.svg"></img>
+                        </NavbarBrand>
+                        <NavbarToggler onClick={this.toggleCollapse("navbarCollapse3")} />
+                        <Collapse id="navbarCollapse3" isOpen={this.state.collapseID} navbar>
+                            {this.renderNavbar()}
+                        </Collapse>
+                    </Navbar>}
+
+            </div>
+
 
         )
     }

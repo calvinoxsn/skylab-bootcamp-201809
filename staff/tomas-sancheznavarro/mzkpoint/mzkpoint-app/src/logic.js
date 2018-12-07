@@ -69,6 +69,24 @@ const logic = {
         sessionStorage.removeItem('token')
     },
 
+    retrieveAuthenticatedUser() {
+        return fetch(`${this.url}/users/${this._userId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8',
+                'Authorization': `Bearer ${this._token}`
+            }
+        })
+            .then(res => res.json())
+            .then(res => {
+
+                if (res.error) throw Error(res.error)
+                return res
+            })
+
+    },
+
+
     ////// QUERIES //////
 
     searchProduct(query) {

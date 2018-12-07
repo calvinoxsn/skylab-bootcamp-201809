@@ -4,7 +4,6 @@ const logic = require('.')
 const { AlreadyExistsError, ValueError } = require('../errors')
 // const path = require('path')
 
-
 const { expect } = require('chai')
 
 const MONGO_URL = 'mongodb://localhost:27017/mzkpoint-test'
@@ -17,11 +16,9 @@ describe('logic', () => {
     before(() => mongoose.connect(MONGO_URL, { useNewUrlParser: true, useCreateIndex: true }))
 
     beforeEach(() => Promise.all([User.deleteMany(), Product.deleteMany(), Order.deleteMany()]))
-    // beforeEach(() => Promise.all([User.deleteMany()]))
-
 
     true && describe('user', () => {
-        describe('register', () => {
+        true && describe('register', () => {
             let name, surname, username, email, password
 
             beforeEach(() => {
@@ -128,15 +125,15 @@ describe('logic', () => {
         !true && describe('update', () => {
             let user
 
-            beforeEach(() => (user = new User({ name: 'John', surname: 'Doe', username: 'jd', password: '123' })).save())
+            beforeEach(() => (user = new User({ name: 'John', surname: 'Doe', username: 'jd', email: 'jd@gmail.com', password: '123' })).save())
 
             it('should update on correct data and password', async () => {
-                const { name, surname, username, password } = user
+                const { id, name, surname, username, email, password } = user
 
                 const newName = `${name}-${Math.random()}`
                 const newSurname = `${surname}-${Math.random()}`
                 const newUsername = `${username}-${Math.random()}`
-                const newEmail = `${Math.random()}@gmail.com`
+                const newEmail = `${email}-${Math.random()}`
                 const newPassword = `${password}-${Math.random()}`
 
                 const res = await logic.updateUser(id, newName, newSurname, newUsername, newEmail, newPassword, password)
@@ -157,11 +154,11 @@ describe('logic', () => {
             })
 
             it('should update on correct id, name and password (other fields null)', async () => {
-                const { id, name, surname, username, password } = user
+                const { id, name, surname, username, email, password } = user
 
                 const newName = `${name}-${Math.random()}`
 
-                const res = await logic.updateUser(id, newName, null, null, null, password)
+                const res = await logic.updateUser(id, newName, null, null, null, null, password)
 
                 expect(res).to.be.undefined
 
@@ -174,15 +171,16 @@ describe('logic', () => {
                 expect(_user.name).to.equal(newName)
                 expect(_user.surname).to.equal(surname)
                 expect(_user.username).to.equal(username)
+                expect(_user.email).to.equal(email)
                 expect(_user.password).to.equal(password)
             })
 
             it('should update on correct id, surname and password (other fields null)', async () => {
-                const { id, name, surname, username, password } = user
+                const { id, name, surname, username, email, password } = user
 
                 const newSurname = `${surname}-${Math.random()}`
 
-                const res = await logic.updateUser(id, null, newSurname, null, null, password)
+                const res = await logic.updateUser(id, null, newSurname, null, null, null, password)
 
                 expect(res).to.be.undefined
 
@@ -195,15 +193,16 @@ describe('logic', () => {
                 expect(_user.name).to.equal(name)
                 expect(_user.surname).to.equal(newSurname)
                 expect(_user.username).to.equal(username)
+                expect(_user.email).to.equal(email)
                 expect(_user.password).to.equal(password)
             })
 
             // TODO other combinations of valid updates
 
             it('should fail on undefined id', () => {
-                const { id, name, surname, username, password } = user
+                const { id, name, surname, username, email, password } = user
 
-                expect(() => logic.updateUser(undefined, name, surname, username, password, password)).to.throw(TypeError, 'undefined is not a string')
+                expect(() => logic.updateUser(undefined, name, surname, username, email, password)).to.throw(TypeError, 'undefined is not a string')
             })
 
             // TODO other test cases
@@ -212,18 +211,18 @@ describe('logic', () => {
                 let user2
 
                 beforeEach(async () => {
-                    user2 = new User({ name: 'John', surname: 'Doe', username: 'jd2', password: '123' })
+                    user2 = new User({ name: 'John', surname: 'Doe', username: 'jd2', email: 'jd2@gmail.com', password: '123' })
 
                     await user2.save()
                 })
 
                 it('should update on correct data and password', async () => {
-                    const { id, name, surname, username, password } = user2
+                    const { id, name, surname, username, email, password } = user2
 
                     const newUsername = 'jd'
 
                     try {
-                        const res = await logic.updateUser(id, null, null, newUsername, null, password)
+                        const res = await logic.updateUser(id, null, null, newUsername, null, null, password)
 
                         expect(true).to.be.false
                     } catch (err) {
@@ -236,17 +235,15 @@ describe('logic', () => {
                         expect(_user.name).to.equal(name)
                         expect(_user.surname).to.equal(surname)
                         expect(_user.username).to.equal(username)
+                        expect(_user.email).to.equal(email)
                         expect(_user.password).to.equal(password)
                     }
                 })
             })
         })
-
-
-
     })
 
-    describe('query products', () => {
+    true && describe('query products', () => {
 
         describe('search', () => {
             beforeEach(async () => {
@@ -384,7 +381,7 @@ describe('logic', () => {
 
     })
 
-    describe('logged user', () => {
+    true && describe('logged user', () => {
         let user
 
         beforeEach(async () => {
@@ -406,20 +403,6 @@ describe('logic', () => {
             product = new Product({ instrument, brand, model, features, description, price, inStock, imageUrl, underWarranty, type })
 
             await product.save()
-
-            ///////////////////////////////////////
-            const productArray = ['abc123', 'def234']
-            const _newUser = '5c07eb3760516e2d0c054927'
-            const date = Date.now()
-            const total = 1299
-
-            orders = new Order({ productArray, _newUser, date, total })
-            await orders.save()
-
-            await user.save()
-
-
-            ///////////////////////////////////////
 
         })
 
@@ -870,6 +853,21 @@ describe('logic', () => {
 
         })
 
+        describe('create order', () => {
+
+            it('should succeed on correct data', async () => {
+                const products = [product.id]
+
+                const _user = user.id
+
+                const order = await logic.createOrder(_user, products)
+
+                expect(order).to.be.exist
+
+                expect(order.user.toString()).to.be.equal(_user)
+
+            })
+        })
     })
 
     after(() => mongoose.disconnect())

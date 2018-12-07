@@ -39,7 +39,6 @@ const logic = {
 
         return (async () => {
             const user = await User.findById(id, { '_id': 0, password: 0, __v: 0 }).lean()
-            debugger
             if (!user) throw new NotFoundError(`user with id ${id} not found`)
 
             user.id = id
@@ -48,12 +47,13 @@ const logic = {
         })()
     },
 
-    updateUser(id, name, surname, username, newPassword, password) {
+    updateUser(id, name, surname, username, email, newEmail, newPassword, password) {
         validate([
             { key: 'id', value: id, type: String },
             { key: 'name', value: name, type: String, optional: true },
             { key: 'surname', value: surname, type: String, optional: true },
             { key: 'username', value: username, type: String, optional: true },
+            { key: 'email', value: email, type: String, optional: true },
             { key: 'password', value: password, type: String }
 
         ])
@@ -76,12 +76,14 @@ const logic = {
                 name != null && (user.name = name)
                 surname != null && (user.surname = surname)
                 user.username = username
+                newEmail != null && (user.email = newEmail)
                 newPassword != null && (user.password = newPassword)
 
                 await user.save()
             } else {
                 name != null && (user.name = name)
                 surname != null && (user.surname = surname)
+                newEmail != null && (user.email = newEmail)
                 newPassword != null && (user.password = newPassword)
 
                 await user.save()
@@ -405,6 +407,8 @@ const logic = {
             await User.updateOne({ _id: user }, { $push: { orders: newOrder._id } })
 
             await _user.save()
+
+            return newOrder
         })()
     },
 
