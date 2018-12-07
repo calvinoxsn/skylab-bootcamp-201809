@@ -10,13 +10,13 @@ Finally, when the user clicks on the "Make Purchase" button, their purchase hist
 
 In a future release, registered users will be able to update their profiles by modifying their personal information (username, password, email, et cetera).
 
-You can try a live demo ![here](https://mzkpoint.surge.sh)!
+You can try a live demo [here](https://mzkpoint.surge.sh)
 
 ## FUNCTIONAL DESCRIPTION
 
 ## Use cases diagram
 
-![Use cases](images/use-cases.png)
+![Use cases](https://raw.githubusercontent.com/calvinoxsn/skylab-bootcamp-201809/develop/staff/tomas-sancheznavarro/mzkpoint/docs/images/Use-cases-diagram.png)
 
 ## Activity Diagram
 
